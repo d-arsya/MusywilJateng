@@ -1,1 +1,0 @@
-import{j as e,H as t}from"./app-CxbRGJkv.js";/* empty css            */function r(){return e.jsxs(e.Fragment,{children:[e.jsxs(t,{title:"Welcome",children:[e.jsx("link",{rel:"preconnect",href:"https://fonts.bunny.net"}),e.jsx("link",{href:"https://fonts.bunny.net/css?family=instrument-sans:400,500,600",rel:"stylesheet"})]}),e.jsx("h1",{children:"Halo"})]})}export{r as default};
