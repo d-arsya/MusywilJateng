@@ -1,0 +1,1 @@
+import{j as t}from"./app-Bov9nFG_.js";import{P as a}from"./public-BQa0EKWZ.js";/* empty css            */function n(){return t.jsx(a,{children:t.jsx("h1",{children:"Halaman Public"})})}export{n as default};

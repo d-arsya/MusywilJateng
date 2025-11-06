@@ -6,6 +6,15 @@ use Inertia\Inertia;
 Route::get('/unauthenticated', function () {
     return Inertia::render('unauthenticated');
 });
+Route::get('/dashboard', function () {
+    return Inertia::render('dashboard');
+});
+Route::get('/', function () {
+    return Inertia::render('landingpage');
+});
+Route::get('/login', function () {
+    return Inertia::render('auth/login');
+});
 Route::get('/authenticated', function () {
     return Inertia::render('authenticated');
 });

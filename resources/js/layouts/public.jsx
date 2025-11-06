@@ -6,8 +6,8 @@ export default function PublicLayout({ children }) {
                 <img
                     src="/logo.png" // ganti dengan path logo kamu
                     alt="App Logo"
-                    width={120}
-                    height={40}
+                    width={60}
+                    height={60}
                     priority
                 />
             </header>
