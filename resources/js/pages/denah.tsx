@@ -1,9 +1,9 @@
 import AuthLayout from '@/layouts/auth';
 
-export default function AuthenticatedPage() {
+export default function DenahPage() {
     return (
         <AuthLayout>
-            <h1>Halaman User</h1>
+            <img src="/assets/img/denah.jpg" alt="" />
         </AuthLayout>
     );
 }

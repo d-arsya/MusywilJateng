@@ -1,1 +1,0 @@
-import{j as t}from"./app-Bov9nFG_.js";import{A as r}from"./auth-YX2aeKu9.js";/* empty css            */import"./house-DgRGON4P.js";import"./createLucideIcon-fLDk4rea.js";function e(){return t.jsx(r,{children:t.jsx("img",{src:"/assets/img/card-horizontal.jpg",alt:""})})}export{e as default};
