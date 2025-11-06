@@ -1,0 +1,24 @@
+name: Deploy to Arenhost
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ARENHOST
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy on Arenhost server via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /home/pondoknu/disyfa.cloud/musywil
+            git restore .
+            git pull
+            rm -rf vendor
+            ../../composer install
+            php artisan migrate:fresh --seed
