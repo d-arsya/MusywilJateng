@@ -7,6 +7,7 @@ import QRCode from 'react-qr-code';
 
 export default function CardPage() {
     const cardRef = useRef(null);
+    const qrRef = useRef(null);
     const user = { name: 'Kamaluddin Arsyad Fadllillah' };
     const handleDownload = async () => {
         if (!cardRef.current) return;
@@ -15,6 +16,19 @@ export default function CardPage() {
             const dataUrl = await toPng(cardRef.current, { cacheBust: true });
             const link = document.createElement('a');
             link.download = user.name + '-id-card.png';
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error('Failed to download image:', err);
+        }
+    };
+    const handleDownloadQR = async () => {
+        if (!qrRef.current) return;
+
+        try {
+            const dataUrl = await toPng(qrRef.current, { cacheBust: true });
+            const link = document.createElement('a');
+            link.download = user.name + '-qr-code.png';
             link.href = dataUrl;
             link.click();
         } catch (err) {
@@ -40,7 +54,7 @@ export default function CardPage() {
                             className="h-24 w-24 rounded-full border-2 border-white object-cover shadow-lg"
                         />
 
-                        <div className="rounded-sm bg-white p-1">
+                        <div ref={qrRef} className="rounded-sm bg-white p-1">
                             <QRCode
                                 value={user.name} // dynamically from user.code
                                 size={128}
@@ -50,10 +64,14 @@ export default function CardPage() {
                     </div>
                 </div>
 
-                {/* Download button */}
-                <button onClick={handleDownload} className="rounded-lg bg-emerald-400 px-4 py-2 text-white shadow hover:bg-blue-700">
-                    Unduh
-                </button>
+                <div className="flex flex-row justify-between gap-6">
+                    <button onClick={handleDownload} className="rounded-lg bg-emerald-400 px-4 py-2 text-white shadow hover:bg-emerald-700">
+                        Unduh
+                    </button>
+                    <button onClick={handleDownloadQR} className="rounded-lg bg-emerald-400 px-4 py-2 text-white shadow hover:bg-emerald-700">
+                        Unduh QR
+                    </button>
+                </div>
             </div>
         </AuthLayout>
     );

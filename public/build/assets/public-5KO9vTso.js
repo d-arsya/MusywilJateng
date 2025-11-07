@@ -1,1 +1,0 @@
-import{j as e}from"./app-BMVP8BoJ.js";import{P as r,a as l}from"./header-BOrJB4GB.js";function a({children:s}){return e.jsxs(e.Fragment,{children:[e.jsx(r,{}),e.jsx("div",{className:"flex min-h-screen flex-col items-center bg-gray-50",children:e.jsx("main",{className:"flex w-full flex-1 flex-col items-center justify-center p-6",children:s})}),e.jsx(l,{})]})}export{a as P};
