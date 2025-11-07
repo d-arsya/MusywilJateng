@@ -8,7 +8,7 @@ import QRCode from 'react-qr-code';
 export default function CardPage() {
     const cardRef = useRef(null);
     const qrRef = useRef(null);
-    const user = { name: 'Kamaluddin Arsyad Fadllillah', office: 'DPD Surakarta' };
+    const user = { name: 'Kamaluddin Arsyad', office: 'DPD Surakarta' };
     const handleDownload = async () => {
         if (!cardRef.current) return;
 

@@ -1,0 +1,1 @@
+import{j as r}from"./app-D6IN3EVC.js";import{A as t}from"./admin-Cx0sJl_X.js";/* empty css            */import"./x-muUSsgms.js";import"./createLucideIcon-Cu-meMdo.js";function e(){return r.jsx(t,{children:r.jsx("h1",{children:"Data Gedung"})})}export{e as default};

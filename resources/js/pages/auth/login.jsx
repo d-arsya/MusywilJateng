@@ -1,15 +1,24 @@
 import PublicLayout from '@/layouts/public';
-import { Link } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react';
 
 export default function LoginPage() {
+    const { data, setData } = useForm({
+        code: '',
+    });
+    function submitLogin(e) {
+        e.preventDefault();
+        router.get('/s/' + data.code);
+    }
     return (
         <PublicLayout>
-            <form className="w-full max-w-sm space-y-6 rounded-xl border border-gray-200 bg-white p-8 shadow-xl">
+            <form onSubmit={submitLogin} className="w-full max-w-sm space-y-6 rounded-xl border border-gray-200 bg-white p-8 shadow-xl">
                 <div className="mb-4 flex justify-center">
                     <img src="/logo.png" alt="Logo" className="h-16 w-16 animate-bounce" />
                 </div>
                 <h1 className="text-center text-2xl font-bold text-emerald-800">Masuk</h1>
                 <input
+                    value={data.code}
+                    onChange={(e) => setData('code', e.target.value)}
                     type="text"
                     placeholder="Kode Akses"
                     className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
