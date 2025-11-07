@@ -1,6 +1,6 @@
 import AuthLayout from '@/layouts/auth';
 import { Link } from '@inertiajs/react';
-import { Calendar, CheckCircle2, HelpCircle, Home, Map, MapPin, XCircle } from 'lucide-react';
+import { Calendar, CheckCircle2, FileText, Home, Images, Map, MapPin, Phone, XCircle } from 'lucide-react';
 import QRCode from 'react-qr-code';
 
 const menuItems = [
@@ -8,31 +8,36 @@ const menuItems = [
         title: 'Jadwal',
         icon: <Calendar size={24} />,
         link: '/jadwal',
-        description: 'Lihat acara',
     },
     {
         title: 'Kamar',
         icon: <Home size={24} />,
         link: '/penginapan',
-        description: 'Info kamar',
     },
     {
         title: 'Lokasi',
         icon: <MapPin size={24} />,
         link: 'https://maps.app.goo.gl/Ep7jZZinzWccHden9',
-        description: 'Lokasi',
     },
     {
         title: 'Denah',
         icon: <Map size={24} />,
         link: '/denah',
-        description: 'Denah',
+    },
+    {
+        title: 'Materi',
+        icon: <FileText size={24} />,
+        link: '/materi',
+    },
+    {
+        title: 'Galeri',
+        icon: <Images size={24} />,
+        link: 'https://drive.google.com',
     },
     {
         title: 'Admin',
-        icon: <HelpCircle size={24} />,
-        link: '/admin',
-        description: 'Help desk',
+        icon: <Phone size={24} />,
+        link: 'https://wa.me/6289636055420',
     },
 ];
 
@@ -58,23 +63,28 @@ export default function Dashboard() {
                         alt="Foto Profil"
                         className="absolute right-12 bottom-10 h-20 w-20 rounded-full border-2 border-white object-cover shadow-lg"
                     />
-                    <div className="absolute top-12 left-6 text-lg font-semibold text-white drop-shadow-lg">Ahmad Fauzi</div>
+                    <div className="text-md absolute top-12 left-6 font-medium text-white drop-shadow-lg">
+                        Kamaluddin Arsyad Fadllillah
+                        <p className="text-xs font-thin">DPD Surakarta</p>
+                    </div>
                 </div>
 
                 {/* Banner pembayaran kontribusi */}
 
-                <div className="relative flex items-center justify-between overflow-hidden rounded-xl bg-emerald-400 p-4 shadow-md">
-                    <div className="flex items-center space-x-2">
+                <div className="relative flex flex-col overflow-hidden rounded-xl bg-emerald-400 p-4 shadow-md">
+                    <div className="flex space-x-2">
                         <CheckCircle2 className="h-6 w-6 text-white" />
                         <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
                     </div>
+                    <span className="text-xs text-white">Terimakasih pembayaran kontribusi sudah diterima</span>
                 </div>
 
-                <div className="relative flex flex-col items-center justify-between overflow-hidden rounded-xl bg-red-400 p-4 shadow-md">
-                    <div className="flex items-center space-x-2">
+                <div className="relative flex flex-col overflow-hidden rounded-xl bg-red-400 p-4 shadow-md">
+                    <div className="flex space-x-2">
                         <XCircle className="h-6 w-6 text-white" />
                         <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
                     </div>
+                    <span className="my-1 text-xs text-white">Silahkan unggah bukti pembayaran kontribusi</span>
 
                     <button
                         type="button"

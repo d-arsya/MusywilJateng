@@ -11,7 +11,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'login')->name('auth.login');
     Route::get('register', 'register')->name('auth.register');
 });
-Route::get('office', [OfficeController::class, 'index']);
 Route::controller(UserController::class)->group(function () {
     Route::post('register', 'store');
 });
@@ -23,6 +22,7 @@ Route::inertia('/card', 'card');
 Route::inertia('/jadwal', 'jadwal');
 Route::inertia('/full', 'full');
 
+Route::inertia('materi', 'materi');
 Route::prefix('admin')->group(function () {
     Route::inertia('/', 'admin');
     Route::inertia('/dashboard', 'admin/dashboard');

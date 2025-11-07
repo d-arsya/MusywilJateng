@@ -20,7 +20,6 @@ export function PublicHeader() {
         </header>
     );
 }
-('use client');
 
 export function PrivateHeader() {
     const [isOpen, setIsOpen] = useState(false);

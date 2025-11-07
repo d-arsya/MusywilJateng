@@ -8,7 +8,7 @@ import QRCode from 'react-qr-code';
 export default function CardPage() {
     const cardRef = useRef(null);
     const qrRef = useRef(null);
-    const user = { name: 'Kamaluddin Arsyad Fadllillah' };
+    const user = { name: 'Kamaluddin Arsyad Fadllillah', office: 'DPD Surakarta' };
     const handleDownload = async () => {
         if (!cardRef.current) return;
 
@@ -45,8 +45,11 @@ export default function CardPage() {
                     <img src="/assets/img/card-vertical.png" alt="Banner" className="w-full rounded-lg shadow-md" />
 
                     {/* Overlay content */}
-                    <div className="absolute top-1/5 left-1/2 flex -translate-x-1/2 transform flex-col items-center space-y-4">
-                        <div className="text-center text-lg font-semibold text-white drop-shadow-lg">{user.name}</div>
+                    <div className="absolute top-1/4 left-1/2 flex w-full -translate-x-1/2 transform flex-col items-center space-y-4">
+                        <div className="text-center text-xl font-semibold text-white drop-shadow-lg">
+                            {user.name}
+                            <p className="mt-2 text-xs font-thin">{user.office}</p>
+                        </div>
 
                         <img
                             src="/assets/img/Kotak.jpg"
