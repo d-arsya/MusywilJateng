@@ -8,13 +8,15 @@ const appName = 'Musyawarah Wilayah Hidayatullah Jateng Bagsel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
+    resolve: (name) => resolvePageComponent(`./pages/${name}.jsx`, import.meta.glob('./pages/**/*.jsx')),
     setup({ el, App, props }) {
         const root = createRoot(el);
 
         root.render(<App {...props} />);
     },
     progress: {
-        color: '#4B5563',
+        delay: 250,
+        color: '#29d',
+        includeCSS: true,
     },
 });
