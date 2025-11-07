@@ -1,14 +1,12 @@
-const CACHE_NAME = 'musywill-pwa-1';
-const DYNAMIC_CACHE_NAME = 'musywill-pwa-1-cache';
+const CACHE_NAME = 'laravel-inertia-pwa-cache-v4'; // *** BUMPED VERSION TO V4 ***
+const DYNAMIC_CACHE_NAME = 'inertia-chunks-cache-v2';
 
-// These URLs represent the static "Application Shell" (the wrapper HTML and non-hashed assets).
-// NOTE: If your main JS/CSS files (e.g., app.js, app.css) are hashed by Vite/Mix,
-// you MUST inject their full, hashed paths into this array dynamically from your Blade file
-// before the Service Worker registers, or they will only be cached on the first network fetch.
-const urlsToCache = ['/', '/login', '/dashboard', '/card', '/denah', '/jadwal', '/materi', '/panginapan', '/profile', '/logo.png'];
-
+const urlsToCache = ['/', '/login', '/card', '/denah', '/jadwal', '/materi', '/panginapan', '/profile', '/logo.png'];
 // 2. Install Event: Cache static assets
 self.addEventListener('install', (event) => {
+    // CRITICAL FIX: Skip waiting and activate immediately
+    self.skipWaiting();
+
     // Wait until the promise is resolved (all files cached)
     event.waitUntil(
         caches
@@ -52,11 +50,7 @@ self.addEventListener('fetch', (event) => {
                     if (!networkResponse || networkResponse.status !== 200) {
                         return networkResponse;
                     }
-
-                    // IMPORTANT: Clone the response to cache, as the original is used by the browser
                     const responseToCache = networkResponse.clone();
-
-                    // Determine which cache to use: Static or Dynamic (chunks/pages)
                     const cacheToOpen = urlsToCache.includes(requestUrl.pathname) ? CACHE_NAME : DYNAMIC_CACHE_NAME;
 
                     // Cache the new response
@@ -69,8 +63,6 @@ self.addEventListener('fetch', (event) => {
                 })
                 .catch((error) => {
                     console.error('Fetching failed (Offline?):', error);
-                    // Fallback logic for completely failed network requests
-                    // For a PWA, you might return a generic offline page here
                     return new Response('Offline and resource not found in cache.', { status: 503 });
                 });
         }),
@@ -79,6 +71,9 @@ self.addEventListener('fetch', (event) => {
 
 // 4. Activate Event: Clean up old caches
 self.addEventListener('activate', (event) => {
+    // CRITICAL FIX: Take control of all open windows immediately
+    self.clients.claim();
+
     const cacheWhitelist = [CACHE_NAME, DYNAMIC_CACHE_NAME];
     event.waitUntil(
         caches.keys().then((cacheNames) => {
