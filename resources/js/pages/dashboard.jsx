@@ -1,7 +1,6 @@
 import AuthLayout from '@/layouts/auth';
 import { Link } from '@inertiajs/react';
 import { Calendar, CheckCircle2, HelpCircle, Home, Map, MapPin, XCircle } from 'lucide-react';
-import { useState } from 'react';
 import QRCode from 'react-qr-code';
 
 const menuItems = [
@@ -38,7 +37,6 @@ const menuItems = [
 ];
 
 export default function Dashboard() {
-    const [hoveredIndex, setHoveredIndex] = useState(null);
     return (
         <AuthLayout>
             <div className="space-y-6">
@@ -90,11 +88,10 @@ export default function Dashboard() {
                         const isExternal = item.link.startsWith('http');
 
                         const LinkTag = isExternal ? 'a' : Link;
-                        const linkProps = isExternal ? { href: item.link, target: '_blank', rel: 'noopener noreferrer' } : { to: item.link };
 
                         return (
                             <LinkTag
-                                {...linkProps}
+                                href={item.link}
                                 key={index}
                                 className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                             >
