@@ -1,0 +1,1 @@
+import{j as t}from"./app-BIeTNDOO.js";import{A as r}from"./auth-BuLkicYQ.js";/* empty css            */import"./house-DGDzAmwT.js";import"./createLucideIcon-Drmq1AoT.js";function e(){return t.jsx(r,{children:t.jsx("img",{src:"/assets/img/denah.jpg",alt:""})})}export{e as default};

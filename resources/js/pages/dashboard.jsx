@@ -74,7 +74,7 @@ export default function Dashboard() {
                 <div className="relative flex flex-col overflow-hidden rounded-xl bg-emerald-400 p-4 shadow-md">
                     <div className="flex space-x-2">
                         <CheckCircle2 className="h-6 w-6 text-white" />
-                        <span className="text-lg font-semibold text-white">Kontribusi</span>
+                        <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
                     </div>
                     <span className="text-xs text-white">Terimakasih pembayaran kontribusi sudah diterima</span>
                 </div>
