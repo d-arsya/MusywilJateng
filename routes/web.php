@@ -1,11 +1,21 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'landingpage');
-Route::inertia('/dashboard', 'dashboard');
-Route::inertia('/login', 'auth/login');
-Route::inertia('/register', 'auth/register');
+Route::get('/', [LandingPageController::class, 'home']);
+Route::controller(AuthController::class)->group(function () {
+    Route::get('login', 'login')->name('auth.login');
+    Route::get('register', 'register')->name('auth.register');
+});
+Route::get('office', [OfficeController::class, 'index']);
+Route::controller(UserController::class)->group(function () {
+    Route::post('register', 'store');
+});
+Route::inertia('/dashboard', 'dashboard')->name('user.dashboard');
 Route::inertia('/denah', 'denah');
 Route::inertia('/penginapan', 'penginapan');
 Route::inertia('/profile', 'profile');

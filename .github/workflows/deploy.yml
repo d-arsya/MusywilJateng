@@ -24,6 +24,4 @@ jobs:
             cd /home/pondoknu/disyfa.cloud/musywil
             git restore .
             git pull
-            rm -rf vendor
-            ../../composer install
-            php artisan migrate:fresh --seed
+            ../../composer update

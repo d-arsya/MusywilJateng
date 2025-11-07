@@ -27,9 +27,9 @@ return new class extends Migration
             $table->boolean('paid')->default(false);
             $table->boolean('verified')->default(false);
             $table->boolean('admin')->default(false);
-            $table->integer('capsize')->default(false);
-            $table->date('arrive')->nullable();
-            $table->date('depart')->nullable();
+            $table->integer('capsize');
+            $table->date('arrive');
+            $table->date('depart');
             $table->timestamps();
         });
     }

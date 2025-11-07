@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (Storage::disk('public')->exists('avatars')) {
+            Storage::disk('public')->deleteDirectory('avatars');
+            Storage::disk('public')->makeDirectory('avatars');
+        }
         $this->call([
             OfficeSeeder::class,
             EmploymentSeeder::class,

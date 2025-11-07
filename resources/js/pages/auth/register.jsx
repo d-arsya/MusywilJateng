@@ -1,12 +1,41 @@
 import PublicLayout from '@/layouts/public';
+import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function RegisterPage() {
+export default function RegisterPage({ offices, employments }) {
     const [profilePhoto, setProfilePhoto] = useState(null);
+    const { data, setData, post, errors, transform } = useForm({
+        name: '',
+        phone: '',
+        office: '',
+        employment: '',
+        arrive: '',
+        depart: '',
+        capsize: '',
+        avatar: null,
+    });
+    transform((data) => ({
+        ...data,
+        employment_id: data.employment,
+        office_id: data.office,
+        phone: data.phone.startsWith('0') ? '62' + data.phone.slice(1) : data.phone,
+    }));
+    function submitRegister(e) {
+        e.preventDefault();
+
+        post('/register', {
+            onError: (errs) => {
+                console.log(data);
+                console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+            },
+            onSuccess: () => console.log('SUCCESS'),
+        });
+    }
     const [preview, setPreview] = useState(null);
 
     const handlePhotoChange = (e) => {
         if (e.target.files && e.target.files[0]) {
+            setData('avatar', e.target.files[0]);
             setProfilePhoto(e.target.files[0]);
             setPreview(URL.createObjectURL(e.target.files[0]));
         }
@@ -14,7 +43,10 @@ export default function RegisterPage() {
 
     return (
         <PublicLayout>
-            <form className="w-full max-w-2xl space-y-6 overflow-auto rounded-xl border border-gray-200 bg-white p-8 shadow-xl">
+            <form
+                onSubmit={submitRegister}
+                className="w-full max-w-2xl space-y-6 overflow-auto rounded-xl border border-gray-200 bg-white p-8 shadow-xl"
+            >
                 <h1 className="text-center text-3xl font-bold text-emerald-800">Registrasi Peserta</h1>
 
                 {/* Upload Foto Profil */}
@@ -31,6 +63,8 @@ export default function RegisterPage() {
 
                 {/* Nama Lengkap */}
                 <input
+                    value={data.name}
+                    onChange={(e) => setData('name', e.target.value)}
                     type="text"
                     placeholder="Nama Lengkap"
                     className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
@@ -38,70 +72,55 @@ export default function RegisterPage() {
 
                 {/* Nomor HP */}
                 <input
+                    value={data.phone}
+                    onChange={(e) => setData('phone', e.target.value)}
                     type="tel"
                     placeholder="Nomor HP"
                     className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                 />
 
                 {/* Utusan */}
-                <select className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <select
+                    value={data.office}
+                    onChange={(e) => setData('office', e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                >
                     <option value="">Pilih Utusan</option>
-                    <optgroup label="DPW">
-                        <option value="DPW">DPW</option>
-                    </optgroup>
-                    <optgroup label="DMW">
-                        <option value="Surakarta">Surakarta</option>
-                        <option value="Sukoharjo">Sukoharjo</option>
-                        <option value="Sragen">Sragen</option>
-                        <option value="Karanganyar">Karanganyar</option>
-                        <option value="Klaten">Klaten</option>
-                        <option value="Wonogiri">Wonogiri</option>
-                        <option value="Sleman">Sleman</option>
-                        <option value="Kota Yogyakarta">Kota Yogyakarta</option>
-                        <option value="Bantul">Bantul</option>
-                        <option value="Kulonprogo">Kulonprogo</option>
-                        <option value="Gunungkidul">Gunungkidul</option>
-                        <option value="Magelang">Magelang</option>
-                        <option value="Kota Magelang">Kota Magelang</option>
-                        <option value="Temanggung">Temanggung</option>
-                        <option value="Purworejo">Purworejo</option>
-                        <option value="Kebumen">Kebumen</option>
-                        <option value="Cilacap">Cilacap</option>
-                        <option value="Banyumas">Banyumas</option>
-                    </optgroup>
-                    <optgroup label="Kampus Madya">
-                        <option value="As Sakinah">As Sakinah</option>
-                        <option value="Al Kahfi">Al Kahfi</option>
-                    </optgroup>
-                    <optgroup label="Orpen">
-                        <option value="Mushida">Mushida</option>
-                        <option value="Pemhida">Pemhida</option>
-                    </optgroup>
-                    <optgroup label="Amal Usaha">
-                        <option value="BMH">BMH</option>
-                        <option value="LBH">LBH</option>
-                        <option value="BWH">BWH</option>
-                        <option value="SAR">SAR</option>
-                    </optgroup>
+                    {Object.entries(offices).map(([type, items]) => (
+                        <optgroup key={type} label={type}>
+                            {items.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </optgroup>
+                    ))}
                 </select>
 
                 {/* Jabatan */}
-                <select className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <select
+                    value={data.employment}
+                    onChange={(e) => setData('employment', e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                >
                     <option value="">Pilih Jabatan</option>
-                    <option value="Pembina">Pembina</option>
-                    <option value="Pengawas">Pengawas</option>
-                    <option value="Pengurus">Pengurus</option>
-                    <option value="Anggota">Anggota</option>
+                    {employments.map((item) => (
+                        <option value={item.id}>{item.name}</option>
+                    ))}
                 </select>
 
                 {/* Tanggal Kedatangan & Kepulangan */}
                 <div className="flex gap-4">
                     <input
+                        value={data.arrive}
+                        onChange={(e) => setData('arrive', e.target.value)}
                         type="date"
                         placeholder="Tanggal Kedatangan"
                         className="w-1/2 rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                     />
                     <input
+                        value={data.depart}
+                        onChange={(e) => setData('depart', e.target.value)}
                         type="date"
                         placeholder="Tanggal Kepulangan"
                         className="w-1/2 rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
@@ -109,12 +128,20 @@ export default function RegisterPage() {
                 </div>
 
                 {/* Ukuran Peci */}
-                <select className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <select
+                    value={data.capsize}
+                    onChange={(e) => setData('capsize', e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                >
                     <option value="">Pilih Ukuran Peci</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
+                    {[...Array(8)].map((_, i) => {
+                        const size = i + 5; // generates 5,6,7,...,12
+                        return (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        );
+                    })}
                 </select>
 
                 <button
