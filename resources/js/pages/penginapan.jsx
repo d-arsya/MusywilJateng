@@ -1,3 +1,4 @@
+import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
 
 const myRoom = {
@@ -39,6 +40,7 @@ export default function PenginapanPage() {
                     </div>
                 </div>
             </div>
+            <HelpSection />
         </AuthLayout>
     );
 }

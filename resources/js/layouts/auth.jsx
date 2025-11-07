@@ -19,12 +19,12 @@ export default function AuthLayout({ children }) {
                     {/* Center Logo */}
                     <Link
                         href="/card"
-                        className="absolute -top-6 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border border-gray-200 bg-white p-2 shadow-md"
+                        className="absolute -top-6 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border border-gray-200 bg-white p-3 shadow-md"
                     >
                         <img
-                            src="/logo.png" // ganti dengan path logo kamu
+                            src="/logo-small.png" // ganti dengan path logo kamu
                             alt="App Logo"
-                            className="rounded-full"
+                            className=""
                         />
                     </Link>
 

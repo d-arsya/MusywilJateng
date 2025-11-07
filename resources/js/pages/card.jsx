@@ -5,10 +5,10 @@ import { toPng } from 'html-to-image';
 import { useRef } from 'react';
 import QRCode from 'react-qr-code';
 
-export default function CardPage() {
+export default function CardPage({ auth, app }) {
+    const user = auth.user;
     const cardRef = useRef(null);
     const qrRef = useRef(null);
-    const user = { name: 'Kamaluddin Arsyad', office: 'DPD Surakarta' };
     const handleDownload = async () => {
         if (!cardRef.current) return;
 
@@ -48,18 +48,20 @@ export default function CardPage() {
                     <div className="absolute top-1/4 left-1/2 flex w-full -translate-x-1/2 transform flex-col items-center space-y-4">
                         <div className="text-center text-xl font-semibold text-white drop-shadow-lg">
                             {user.name}
-                            <p className="mt-2 text-xs font-thin">{user.office}</p>
+                            <p className="mt-2 text-xs font-thin">
+                                {user.office.type} {user.office.name}
+                            </p>
                         </div>
 
                         <img
-                            src="/assets/img/Kotak.jpg"
+                            src={user.avatar}
                             alt="Foto Profil"
-                            className="h-24 w-24 rounded-full border-2 border-white object-cover shadow-lg"
+                            className="h-24 w-24 rounded-full border-2 border-white bg-emerald-800 object-cover shadow-lg"
                         />
 
                         <div ref={qrRef} className="rounded-sm bg-white p-1">
                             <QRCode
-                                value={user.name} // dynamically from user.code
+                                value={app.url + '/s/' + user.code} // dynamically from user.code
                                 size={128}
                                 className="h-32 w-32"
                             />

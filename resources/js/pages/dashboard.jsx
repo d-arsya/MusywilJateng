@@ -37,11 +37,12 @@ const menuItems = [
     {
         title: 'Admin',
         icon: <Phone size={24} />,
-        link: 'https://wa.me/6289636055420',
+        link: 'https://wa.me/6281234895030',
     },
 ];
 
-export default function Dashboard() {
+export default function Dashboard({ auth, app }) {
+    const user = auth.user;
     return (
         <AuthLayout>
             <div className="space-y-6">
@@ -53,46 +54,52 @@ export default function Dashboard() {
                     {/* Foto Profil */}
                     <div className="absolute bottom-6 left-6 rounded-sm bg-white p-1">
                         <QRCode
-                            value={'KamaluddinArsyadFadllillah'} // dynamically generated from user.code
+                            value={app.url + '/s/' + user.code} // dynamically generated from user.code
                             size={64} // roughly same as your h-16 w-16
                             className="h-16 w-16"
                         />
                     </div>
                     <img
-                        src="/assets/img/Kotak.jpg"
+                        src={user.avatar}
                         alt="Foto Profil"
-                        className="absolute right-12 bottom-10 h-20 w-20 rounded-full border-2 border-white object-cover shadow-lg"
+                        className="absolute right-12 bottom-10 h-20 w-20 rounded-full border-2 border-white bg-emerald-800 object-cover shadow-lg"
                     />
                     <div className="text-md absolute top-12 left-6 font-medium text-white drop-shadow-lg">
-                        Kamaluddin Arsyad Fadllillah
-                        <p className="text-xs font-thin">DPD Surakarta</p>
+                        {user.name}
+                        <p className="text-xs font-thin">
+                            {user.office.type} {user.office.name}
+                        </p>
                     </div>
                 </div>
-
-                {/* Banner pembayaran kontribusi */}
-
-                <div className="relative flex flex-col overflow-hidden rounded-xl bg-emerald-400 p-4 shadow-md">
-                    <div className="flex space-x-2">
-                        <CheckCircle2 className="h-6 w-6 text-white" />
-                        <span className="text-lg font-semibold text-white">Kontribusi</span>
-                    </div>
-                    <span className="text-xs text-white">Terimakasih pembayaran kontribusi sudah diterima</span>
-                </div>
-
-                <div className="relative flex flex-col overflow-hidden rounded-xl bg-red-400 p-4 shadow-md">
-                    <div className="flex space-x-2">
-                        <XCircle className="h-6 w-6 text-white" />
-                        <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
-                    </div>
-                    <span className="my-1 text-xs text-white">Silahkan unggah bukti pembayaran kontribusi</span>
-
-                    <button
-                        type="button"
-                        className="rounded-full bg-white/30 px-3 py-1 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/50"
+                {user.paid ? (
+                    <div
+                        className={`relative flex flex-col overflow-hidden ${user.verified ? 'bg-emerald-400' : 'bg-amber-300'} rounded-xl p-3 shadow-md`}
                     >
-                        Unggah Bukti
-                    </button>
-                </div>
+                        <div className="flex space-x-2">
+                            <CheckCircle2 className="h-6 w-6 text-white" />
+                            <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
+                        </div>
+                        <span className="text-xs text-white">
+                            Terimakasih pembayaran kontribusi sudah diterima {user.verified ? '' : 'dan menunggu konfirmasi'}
+                        </span>
+                    </div>
+                ) : (
+                    <div className="relative flex flex-col overflow-hidden rounded-xl bg-red-400 p-3 shadow-md">
+                        <div className="flex space-x-2">
+                            <XCircle className="h-6 w-6 text-white" />
+                            <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
+                        </div>
+                        <span className="my-1 text-xs text-white">Silahkan unggah bukti pembayaran kontribusi</span>
+
+                        <button
+                            type="button"
+                            className="rounded-full bg-white/30 px-3 py-1 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/50"
+                        >
+                            Unggah Bukti
+                        </button>
+                    </div>
+                )}
+
                 <div className="grid grid-cols-3 gap-4 p-1">
                     {menuItems.map((item, index) => {
                         const isExternal = item.link.startsWith('http');

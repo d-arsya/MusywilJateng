@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Traits\WhatsAppTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -46,12 +47,13 @@ class UserController extends Controller
         ]);
 
         if ($request->hasFile('avatar')) {
-            $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $validated['avatar'] = Storage::url($path);
         }
         $user = User::create($validated);
-        $link = env('APP_URL');
-        $employment = $user->employment; // Jabatan (Pembina, Pengurus, Pengawas, Anggota)
-        $office = $user->office; // Asal (DPW, DPD, DMW, Kampus Madya, Orpen, Amal Usaha)
+        $link = config('app.url');
+        $employment = $user->employment;
+        $office = $user->office;
 
         $arriveDate = $this->formatTanggalIndo($user->arrive);
         $departDate = $this->formatTanggalIndo($user->depart);
@@ -95,5 +97,10 @@ class UserController extends Controller
         });
         return redirect()->route('user.dashboard')
             ->with('success', 'User berhasil ditambahkan!');
+    }
+
+    public function dashboard()
+    {
+        return inertia('dashboard');
     }
 }

@@ -1,3 +1,4 @@
+import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
 import { CalendarDays, Clock, MapPin } from 'lucide-react';
 
@@ -85,6 +86,7 @@ export default function JadwalPage() {
                     </div>
                 ))}
             </div>
+            <HelpSection />
         </AuthLayout>
     );
 }

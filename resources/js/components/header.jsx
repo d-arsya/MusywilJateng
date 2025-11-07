@@ -3,17 +3,17 @@ import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 export function PublicHeader() {
     return (
-        <header className="bg-emerald-800 text-white shadow-lg">
+        <header className="bg-gradient-to-r from-emerald-50 to-teal-100 text-white">
             <div className="container mx-auto px-4 py-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-center md:justify-between">
                     <Link href="/" className="flex items-center space-x-3">
-                        <div className="rounded-ful flex h-16 w-16 items-center justify-center">
-                            <img src="/logo.png" alt="" />
+                        <div className="rounded-ful flex h-16 w-32 items-center justify-center">
+                            <img src="/assets/img/header-horizontal.png" alt="" />
                         </div>
-                        <div>
+                        {/* <div>
                             <h1 className="text-md font-bold md:text-2xl">Musyawarah Wilayah VI Hidayatullah</h1>
                             <p className="text-sm text-emerald-200">DIY - Jateng Bagian Selatan</p>
-                        </div>
+                        </div> */}
                     </Link>
                 </div>
             </div>

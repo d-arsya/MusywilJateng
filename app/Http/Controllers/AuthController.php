@@ -14,18 +14,30 @@ class AuthController extends Controller
     {
         return inertia('auth/login');
     }
+
     public function register()
     {
         $offices = Office::all()->groupBy('type');
         $employments = Employment::all()->toArray();
         return inertia('auth/register', compact('offices', 'employments'));
     }
+
     public function enter(string $code)
     {
         $user = User::whereCode($code)->first();
         if ($user) {
             Auth::login($user);
             return redirect()->route('user.dashboard');
+        }
+        return redirect()->route('login');
+    }
+
+    public function logout(string $code)
+    {
+        $user = User::whereCode($code)->first();
+        if ($user) {
+            Auth::logout($user);
+            return redirect()->route('landingpage');
         }
         return redirect()->route('auth.login');
     }

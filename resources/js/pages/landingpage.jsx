@@ -14,11 +14,14 @@ export default function MunasHidayatullahLanding() {
             {/* Hero Section */}
             <section className="container mx-auto px-4 py-16">
                 <div className="mx-auto max-w-3xl text-center">
-                    <h2 className="mb-6 text-4xl font-bold text-emerald-900 md:text-5xl">
+                    <div className="flex w-full justify-center">
+                        <img className="w-64" src="/assets/img/jumbotron.png" alt="" />
+                    </div>
+                    {/* <h2 className="text-4xl font-bold text-emerald-900 md:text-5xl">
                         Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan
                     </h2>
-                    <p className="mb-8 text-xl text-gray-700">22 - 23 November 2025</p>
-                    <div className="flex flex-col justify-center gap-4 sm:flex-row">
+                    <p className="mb-8 text-xl text-gray-700">22 - 23 November 2025</p> */}
+                    <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row">
                         <Link
                             href="/register"
                             className="transform rounded-lg bg-emerald-600 px-8 py-3 font-semibold text-white shadow-lg transition hover:scale-105 hover:bg-emerald-700"
@@ -29,7 +32,7 @@ export default function MunasHidayatullahLanding() {
                             href="/login"
                             className="transform rounded-lg border-2 border-emerald-600 bg-white px-8 py-3 font-semibold text-emerald-600 shadow-lg transition hover:scale-105 hover:bg-gray-50"
                         >
-                            Login Panitia
+                            Login
                         </Link>
                     </div>
                 </div>
