@@ -1,8 +1,5 @@
-// service-worker.js
-
-// 1. Define Cache Name and Assets to Cache
-const CACHE_NAME = 'laravel-inertia-pwa-cache-v2'; // Bumped version for new logic
-const DYNAMIC_CACHE_NAME = 'inertia-chunks-cache-v1';
+const CACHE_NAME = 'musywill-pwa-1';
+const DYNAMIC_CACHE_NAME = 'musywill-pwa-1-cache';
 
 // These URLs represent the static "Application Shell" (the wrapper HTML and non-hashed assets).
 // NOTE: If your main JS/CSS files (e.g., app.js, app.css) are hashed by Vite/Mix,
