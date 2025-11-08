@@ -32,7 +32,8 @@ class PaymentController extends Controller
     public function change(string $type, string $code)
     {
         $user = User::whereCode($code)->first();
-        $user->update(['paid' => $type == 'check' ? 1 : 0]);
+        $isPaid = $type == 'check';
+        $user->update(['paid' => $isPaid]);
         return response()->json(['success' => true]);
     }
 }
