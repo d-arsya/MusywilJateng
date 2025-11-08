@@ -85,7 +85,7 @@ export default function AdminLayout({ children }) {
                         <div className="w-6" /> {/* spacer */}
                     </header>
 
-                    <main className="flex-1 bg-gradient-to-br from-emerald-50 to-teal-50 p-6">{children}</main>
+                    <main className="flex-1 bg-gradient-to-br from-emerald-50 to-teal-50 p-2 md:p-6">{children}</main>
                 </div>
             </div>
         </PrimeReactProvider>
