@@ -11,6 +11,11 @@ class User extends Authenticatable
     use HasFactory;
 
     protected $guarded = [];
+    protected $casts = [
+        'paid' => 'boolean',
+        'verified' => 'boolean',
+        'admin' => 'boolean',
+    ];
     protected static function boot(): void
     {
         parent::boot();

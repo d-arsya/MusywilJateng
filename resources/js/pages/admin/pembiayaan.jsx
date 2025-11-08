@@ -254,7 +254,7 @@ export default function AdminDashboardPage({ payments }) {
     const paymentTemplate = (rowData) => {
         const { paid, invoice } = rowData;
 
-        if (paid == 1) {
+        if (paid) {
             return (
                 <div className="flex items-center justify-between gap-3">
                     <Tag value="Terverifikasi" severity="success" icon={<CheckCircle2 className="mr-1 h-3 w-3" />} className="font-semibold" />
