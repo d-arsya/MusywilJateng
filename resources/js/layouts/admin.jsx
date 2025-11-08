@@ -40,14 +40,13 @@ export default function AdminLayout({ children }) {
             <div className="flex min-h-screen bg-gray-100">
                 {/* 🔹 Sidebar */}
                 <aside
-                    className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-emerald-900 text-white transition-transform duration-300 md:static md:translate-x-0 ${
+                    className={`fixed inset-y-0 left-0 z-40 w-64 transform rounded-r-xl bg-emerald-700 text-white shadow-md transition-transform duration-300 md:static md:translate-x-0 ${
                         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
                 >
-                    <div className="flex items-center justify-between border-b border-emerald-700 p-4 text-2xl font-bold">
-                        <span className="flex justify-between gap-4">
-                            <img src="/logo.png" className="w-12" alt="" />
-                            <span className="text-sm">Musyawarah Wilayah VI Hidayatullah</span>
+                    <div className="flex items-center justify-between rounded-b-xl bg-white p-4 text-2xl font-bold shadow-2xl">
+                        <span className="flex justify-center gap-4">
+                            <img src="/assets/img/header-horizontal.png" className="w-full" alt="" />
                         </span>
                         <button onClick={() => setSidebarOpen(false)} className="rounded p-2 hover:bg-emerald-800 md:hidden">
                             <X size={20} />
@@ -57,7 +56,7 @@ export default function AdminLayout({ children }) {
                     <nav className="flex-1 space-y-2 p-4">
                         {menuItems.map((e, i) => {
                             return (
-                                <Link href={e.link} className="block rounded-md px-3 py-2 hover:bg-emerald-800">
+                                <Link key={e.link} href={e.link} className="block rounded-md px-3 py-2 hover:bg-emerald-800">
                                     {e.text}
                                 </Link>
                             );
@@ -77,7 +76,7 @@ export default function AdminLayout({ children }) {
                         <button onClick={() => setSidebarOpen(true)} className="rounded p-2 hover:bg-gray-100">
                             <Menu size={22} />
                         </button>
-                        <h1 className="text-lg font-semibold">Admin Panel</h1>
+                        <img src="/assets/img/header-horizontal.png" className="w-1/3" alt="" />
                         <div className="w-6" /> {/* spacer */}
                     </header>
 

@@ -1,5 +1,6 @@
 import '../css/app.css';
 
+import { PrimeToastProvider } from '@/context/toast';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
@@ -12,7 +13,11 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(<App {...props} />);
+        root.render(
+            <PrimeToastProvider>
+                <App {...props} />
+            </PrimeToastProvider>,
+        );
     },
     progress: {
         delay: 250,

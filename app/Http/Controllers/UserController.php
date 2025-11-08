@@ -48,7 +48,9 @@ class UserController extends Controller
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
-            $validated['avatar'] = Storage::url($path);
+            $link = Storage::url($path);
+            $url = asset($link);
+            $validated['avatar'] = $url;
         }
         $user = User::create($validated);
         $link = config('app.url');
@@ -102,5 +104,11 @@ class UserController extends Controller
     public function dashboard()
     {
         return inertia('dashboard');
+    }
+
+    public function index()
+    {
+        $users = User::with(['employment', 'office'])->get();
+        return inertia('admin/peserta', compact('users'));
     }
 }

@@ -1,6 +1,7 @@
 import AuthLayout from '@/layouts/auth';
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { Calendar, CheckCircle2, FileText, Home, Images, Map, MapPin, Phone, XCircle } from 'lucide-react';
+import { useRef } from 'react';
 import QRCode from 'react-qr-code';
 
 const menuItems = [
@@ -42,7 +43,46 @@ const menuItems = [
 ];
 
 export default function Dashboard({ auth, app }) {
+    const fileInputRef = useRef(null);
     const user = auth.user;
+    const { data, setData, post } = useForm({
+        invoice: null,
+    });
+    const handleClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleChange = (e) => {
+        const file = e.target.files[0];
+        console.log(file);
+        handleUpload(file);
+    };
+    const handleUpload = async (file) => {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        const formData = new FormData();
+        formData.append('invoice', file);
+
+        try {
+            const res = await fetch('/pembayaran', {
+                method: 'POST',
+                body: formData,
+                // 🔥 2. Include the CSRF token in the headers
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    // Note: Do NOT set 'Content-Type' for FormData
+                },
+            });
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                console.error('Upload failed:', res.status, errorData);
+            }
+        } catch (error) {
+            console.log(res);
+            console.log(error);
+        }
+    };
     return (
         <AuthLayout>
             <div className="space-y-6">
@@ -71,16 +111,16 @@ export default function Dashboard({ auth, app }) {
                         </p>
                     </div>
                 </div>
-                {user.paid ? (
+                {user.invoice ? (
                     <div
-                        className={`relative flex flex-col overflow-hidden ${user.verified ? 'bg-emerald-400' : 'bg-amber-300'} rounded-xl p-3 shadow-md`}
+                        className={`relative flex flex-col overflow-hidden ${user.paid ? 'bg-emerald-400' : 'bg-amber-300'} rounded-xl p-3 shadow-md`}
                     >
                         <div className="flex space-x-2">
                             <CheckCircle2 className="h-6 w-6 text-white" />
                             <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
                         </div>
                         <span className="text-xs text-white">
-                            Terimakasih pembayaran kontribusi sudah diterima {user.verified ? '' : 'dan menunggu konfirmasi'}
+                            Terimakasih pembayaran kontribusi sudah diterima {user.paid ? '' : 'dan menunggu konfirmasi'}
                         </span>
                     </div>
                 ) : (
@@ -91,12 +131,19 @@ export default function Dashboard({ auth, app }) {
                         </div>
                         <span className="my-1 text-xs text-white">Silahkan unggah bukti pembayaran kontribusi</span>
 
-                        <button
-                            type="button"
-                            className="rounded-full bg-white/30 px-3 py-1 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/50"
-                        >
-                            Unggah Bukti
-                        </button>
+                        <div>
+                            {/* tombol */}
+                            <button
+                                type="button"
+                                className="rounded-full bg-white/30 px-3 py-1 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/50"
+                                onClick={handleClick}
+                            >
+                                Unggah Bukti
+                            </button>
+                            <form action="">
+                                <input ref={fileInputRef} type="file" onChange={handleChange} className="hidden" />
+                            </form>
+                        </div>
                     </div>
                 )}
 
