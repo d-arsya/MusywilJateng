@@ -25,3 +25,4 @@ jobs:
             git restore .
             git pull
             ../../composer update
+            php artisan cache:clear
