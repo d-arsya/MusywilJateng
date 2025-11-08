@@ -113,14 +113,14 @@ export default function Dashboard({ auth, app }) {
                 </div>
                 {user.invoice ? (
                     <div
-                        className={`relative flex flex-col overflow-hidden ${user.paid ? 'bg-emerald-400' : 'bg-amber-300'} rounded-xl p-3 shadow-md`}
+                        className={`relative flex flex-col overflow-hidden ${user.paid == '1' ? 'bg-emerald-400' : 'bg-amber-300'} rounded-xl p-3 shadow-md`}
                     >
                         <div className="flex space-x-2">
                             <CheckCircle2 className="h-6 w-6 text-white" />
                             <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
                         </div>
                         <span className="text-xs text-white">
-                            Terimakasih pembayaran kontribusi sudah diterima {user.paid ? '' : 'dan menunggu konfirmasi'}
+                            Terimakasih pembayaran kontribusi sudah diterima {user.paid == '1' ? '' : 'dan menunggu konfirmasi'}
                         </span>
                     </div>
                 ) : (
