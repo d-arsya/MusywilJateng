@@ -111,11 +111,12 @@ export default function Dashboard({ auth, app }) {
                         </p>
                     </div>
                 </div>
-                {user.invoice ? (
+                {user.paid || user.invoice ? (
                     <div
                         className={`relative flex flex-col overflow-hidden ${user.paid ? 'bg-emerald-400' : 'bg-amber-300'} rounded-xl p-3 shadow-md`}
                     >
                         <div className="flex space-x-2">
+                            {/* Note: CheckCircle2 is used for both paid and pending invoice */}
                             <CheckCircle2 className="h-6 w-6 text-white" />
                             <span className="text-lg font-semibold text-white">Kontribusi Pembayaran</span>
                         </div>
