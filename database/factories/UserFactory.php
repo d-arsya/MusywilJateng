@@ -25,8 +25,6 @@ class UserFactory extends Factory
             'room_id'       => Room::inRandomOrder()->value('id'),
             'name'          => fake()->name(),
             'phone'         => fake()->phoneNumber(),
-            'avatar'        => fake()->imageUrl(200, 200),
-            'invoice'       => fake()->numerify('INV###'),
             'paid'          => fake()->boolean(50),
             'verified'      => fake()->boolean(50),
             'admin'         => fake()->boolean(0),

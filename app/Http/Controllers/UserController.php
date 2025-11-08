@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employment;
+use App\Models\Office;
 use App\Models\User;
 use App\Traits\WhatsAppTrait;
 use Illuminate\Http\Request;
@@ -110,5 +112,11 @@ class UserController extends Controller
     {
         $users = User::with(['employment', 'office'])->get();
         return inertia('admin/peserta', compact('users'));
+    }
+    public function show(User $user)
+    {
+        $offices = Office::all()->groupBy('type');
+        $employments = Employment::all()->toArray();
+        return inertia('admin/detailPeserta', compact('user', 'offices', 'employments'));
     }
 }

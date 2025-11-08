@@ -18,4 +18,23 @@ class MeetingController extends Controller
 
         return inertia('admin/kegiatan', compact('meetings'));
     }
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'room' => 'required|string|max:255',
+            'date' => 'required|date|after_or_equal:today',
+            'description' => 'nullable|string',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'all' => 'nullable|boolean',
+        ]);
+        $validated['time'] = $validated['start_time'] . ' - ' . $validated['end_time'];
+        unset($validated['start_time']);
+        unset($validated['end_time']);
+
+        Meeting::create($validated);
+        return redirect()->route('admin.kegiatan')
+            ->with('success', 'Kegiatan berhasil ditambahkan!');
+    }
 }

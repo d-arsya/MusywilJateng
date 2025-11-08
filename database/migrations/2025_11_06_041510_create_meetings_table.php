@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('room');
             $table->date('date');
             $table->char('code', 10)->unique();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('time');
             $table->boolean('all')->default(true);
             $table->enum('status', ['Belum', 'Sedang', 'Telah'])->default('Belum');

@@ -1,10 +1,11 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Menu, X } from 'lucide-react';
 import { PrimeReactProvider } from 'primereact/api';
 import 'primereact/resources/themes/lara-light-cyan/theme.css';
 
 import { useState } from 'react';
 export default function AdminLayout({ children }) {
+    const { url } = usePage();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const menuItems = [
         {
@@ -56,7 +57,11 @@ export default function AdminLayout({ children }) {
                     <nav className="flex-1 space-y-2 p-4">
                         {menuItems.map((e, i) => {
                             return (
-                                <Link key={e.link} href={e.link} className="block rounded-md px-3 py-2 hover:bg-emerald-800">
+                                <Link
+                                    key={e.link}
+                                    href={e.link}
+                                    className={`block rounded-md px-3 py-2 hover:bg-emerald-800 ${url.startsWith(e.link) ? 'bg-emerald-900' : ''}`}
+                                >
                                     {e.text}
                                 </Link>
                             );
@@ -80,7 +85,7 @@ export default function AdminLayout({ children }) {
                         <div className="w-6" /> {/* spacer */}
                     </header>
 
-                    <main className="flex-1 p-6">{children}</main>
+                    <main className="flex-1 bg-gradient-to-br from-emerald-50 to-teal-50 p-6">{children}</main>
                 </div>
             </div>
         </PrimeReactProvider>

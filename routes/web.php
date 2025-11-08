@@ -41,6 +41,8 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/pembiayaan', [PaymentController::class, 'index']);
     Route::get('/peserta', [UserController::class, 'index']);
-    Route::get('/kegiatan', [MeetingController::class, 'index']);
+    Route::get('/peserta/{user:code}', [UserController::class, 'show'])->name('user.show');
+    Route::get('/kegiatan', [MeetingController::class, 'index'])->name('admin.kegiatan');
+    Route::post('/kegiatan', [MeetingController::class, 'store']);
     Route::inertia('/settings', 'admin/settings');
 });
