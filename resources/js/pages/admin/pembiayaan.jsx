@@ -121,7 +121,7 @@ export default function AdminDashboardPage({ payments }) {
     const header = (
         <div className="space-y-4">
             {/* Statistics Cards */}
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
                 <div className="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-4 text-white shadow-lg">
                     <div className="mb-2 flex items-center justify-between">
                         <Users className="h-8 w-8 opacity-80" />
