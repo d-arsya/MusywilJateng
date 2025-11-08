@@ -222,7 +222,7 @@ export default function AdminDashboardPage({ users }) {
 
     return (
         <AdminLayout>
-            <div className="space-y-6 p-4">
+            <div className="space-y-6 p-2 md:p-4">
                 {/* Page Header */}
                 <div className="flex items-center justify-between">
                     <div>
@@ -230,7 +230,7 @@ export default function AdminDashboardPage({ users }) {
                             <Users className="mr-3 h-8 w-8 text-emerald-600" />
                             Manajemen Peserta
                         </h1>
-                        <p className="mt-1 text-gray-600">Munas VI Hidayatullah 2025</p>
+                        <p className="mt-1 text-gray-600">Muswil VI Hidayatullah 2025</p>
                     </div>
                 </div>
 
@@ -288,7 +288,7 @@ export default function AdminDashboardPage({ users }) {
                             body={paymentTemplate}
                             header="Pembayaran"
                             filter
-                            filterField="payment_verified"
+                            filterField="paid"
                             headerClassName="hidden lg:table-cell"
                             bodyClassName="hidden lg:table-cell"
                         />

@@ -296,7 +296,7 @@ export default function AdminDashboardPage({ payments }) {
     return (
         <AdminLayout>
             <ConfirmDialog />
-            <div className="space-y-6 p-4">
+            <div className="space-y-6 p-2 md:p-4">
                 {/* Page Header */}
                 <div className="flex items-center justify-between">
                     <div>
@@ -355,7 +355,7 @@ export default function AdminDashboardPage({ payments }) {
                             bodyClassName="hidden md:table-cell"
                         />
 
-                        <Column body={paymentTemplate} header="Status Pembayaran" sortable sortField="paid" style={{ minWidth: '220px' }} />
+                        <Column body={paymentTemplate} header="Status" sortable sortField="paid" />
                     </DataTable>
                 </div>
             </div>
