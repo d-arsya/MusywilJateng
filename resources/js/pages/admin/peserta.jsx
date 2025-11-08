@@ -258,7 +258,7 @@ export default function AdminDashboardPage({ users }) {
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Menampilkan {first} - {last} dari {totalRecords} peserta"
                     >
-                        <Column body={userNameTemplate} header="Peserta" sortable sortField="name" style={{ minWidth: '250px' }} />
+                        <Column body={userNameTemplate} header="Peserta" sortable sortField="name" />
 
                         <Column
                             body={officeTemplate}
@@ -267,7 +267,6 @@ export default function AdminDashboardPage({ users }) {
                             sortField="office.name"
                             headerClassName="hidden lg:table-cell"
                             bodyClassName="hidden lg:table-cell"
-                            style={{ minWidth: '200px' }}
                         />
 
                         <Column
@@ -279,18 +278,11 @@ export default function AdminDashboardPage({ users }) {
                             sortField="employment.name"
                             headerClassName="hidden md:table-cell"
                             bodyClassName="hidden md:table-cell"
-                            style={{ minWidth: '150px' }}
                         />
 
-                        <Column body={codeTemplate} header="Kode Akses" sortable field="code" style={{ minWidth: '130px' }} />
+                        <Column body={codeTemplate} header="Kode Akses" sortable field="code" />
 
-                        <Column
-                            body={scheduleTemplate}
-                            header="Jadwal"
-                            headerClassName="hidden xl:table-cell"
-                            bodyClassName="hidden xl:table-cell"
-                            style={{ minWidth: '180px' }}
-                        />
+                        <Column body={scheduleTemplate} header="Jadwal" headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
 
                         <Column
                             body={paymentTemplate}
@@ -299,7 +291,6 @@ export default function AdminDashboardPage({ users }) {
                             filterField="payment_verified"
                             headerClassName="hidden lg:table-cell"
                             bodyClassName="hidden lg:table-cell"
-                            style={{ minWidth: '140px' }}
                         />
                     </DataTable>
                 </div>

@@ -334,9 +334,9 @@ export default function AdminDashboardPage({ payments }) {
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Menampilkan {first} - {last} dari {totalRecords} peserta"
                     >
-                        <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen />
+                        <Column selectionMode="multiple" frozen />
 
-                        <Column body={nameTemplate} header="Peserta" sortable field="name" style={{ minWidth: '250px' }} />
+                        <Column body={nameTemplate} header="Peserta" sortable field="name" />
 
                         <Column
                             body={officeTemplate}
@@ -345,7 +345,6 @@ export default function AdminDashboardPage({ payments }) {
                             sortField="office.name"
                             headerClassName="hidden lg:table-cell"
                             bodyClassName="hidden lg:table-cell"
-                            style={{ minWidth: '200px' }}
                         />
 
                         <Column
@@ -354,7 +353,6 @@ export default function AdminDashboardPage({ payments }) {
                             field="employment.name"
                             headerClassName="hidden md:table-cell"
                             bodyClassName="hidden md:table-cell"
-                            style={{ minWidth: '120px' }}
                         />
 
                         <Column body={paymentTemplate} header="Status Pembayaran" sortable sortField="paid" style={{ minWidth: '220px' }} />
