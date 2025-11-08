@@ -38,7 +38,7 @@ export default function AdminLayout({ children }) {
     };
     return (
         <PrimeReactProvider value={value}>
-            <div className="flex min-h-screen bg-gray-100">
+            <div className="flex h-screen overflow-hidden">
                 {/* 🔹 Sidebar */}
                 <aside
                     className={`fixed inset-y-0 left-0 z-40 w-64 transform rounded-r-xl bg-emerald-700 text-white shadow-md transition-transform duration-300 md:static md:translate-x-0 ${
@@ -75,7 +75,7 @@ export default function AdminLayout({ children }) {
                 )}
 
                 {/* 🔹 Main Content */}
-                <div className="flex flex-1 flex-col">
+                <div className="flex flex-1 flex-col overflow-y-auto">
                     {/* Topbar */}
                     <header className="flex items-center justify-between bg-white px-4 py-3 shadow md:hidden">
                         <button onClick={() => setSidebarOpen(true)} className="rounded p-2 hover:bg-gray-100">

@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,9 +37,9 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::inertia('/', 'admin');
     Route::inertia('/dashboard', 'admin/dashboard');
-    Route::inertia('/penginapan', 'admin/penginapan');
-    Route::inertia('/gedung/{gedung}', 'admin/gedung');
-    Route::inertia('/kamar/{kamar}', 'admin/kamar');
+    Route::get('/penginapan', [BuildingController::class, 'index']);
+    Route::get('/penginapan/gedung/{building:name}', [BuildingController::class, 'show']);
+    Route::get('/penginapan/kamar/{room:name}', [RoomController::class, 'show']);
 
     Route::get('/pembiayaan', [PaymentController::class, 'index']);
     Route::get('/peserta', [UserController::class, 'index']);

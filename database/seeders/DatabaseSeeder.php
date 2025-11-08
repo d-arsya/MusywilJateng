@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             OfficeSeeder::class,
             EmploymentSeeder::class,
-            // BuildingSeeder::class,
-            // RoomSeeder::class,
-            // UserSeeder::class,
-            // MeetingSeeder::class,
-            // AttendanceSeeder::class
+            BuildingSeeder::class,
+            RoomSeeder::class,
+            UserSeeder::class,
+            MeetingSeeder::class,
+            AttendanceSeeder::class
         ]);
     }
 }
