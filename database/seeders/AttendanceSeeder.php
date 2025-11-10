@@ -19,7 +19,7 @@ class AttendanceSeeder extends Seeder
         $meetings = Meeting::all();
 
         foreach ($meetings as $meeting) {
-            $users->shuffle()->take(5)->each(function ($user) use ($meeting) {
+            $users->shuffle()->take(3)->each(function ($user) use ($meeting) {
                 $attend = fake()->boolean(50);
                 Attendance::firstOrCreate([
                     'user_id' => $user->id,

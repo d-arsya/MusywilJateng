@@ -13,6 +13,6 @@ class BuildingSeeder extends Seeder
      */
     public function run(): void
     {
-        Building::factory(7)->create();
+        Building::factory(3)->create();
     }
 }

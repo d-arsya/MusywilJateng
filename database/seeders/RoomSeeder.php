@@ -16,7 +16,7 @@ class RoomSeeder extends Seeder
     {
         Building::all()->each(function ($building) {
             $building->rooms()->saveMany(
-                Room::factory(10)->make()
+                Room::factory(3)->make()
             );
         });
     }
