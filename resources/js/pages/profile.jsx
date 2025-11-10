@@ -65,15 +65,8 @@ export default function ProfilePage({ auth }) {
                                     size="xlarge"
                                     shape="circle"
                                     className="relative h-32 w-32 border-4 border-white/30 shadow-2xl backdrop-blur-sm"
+                                    style={{ width: '80px', height: '80px', fontSize: '32px' }}
                                 />
-                                {/* Status Badge */}
-                                <div className="absolute right-0 bottom-0 flex h-10 w-10 items-center justify-center rounded-full border-4 border-white bg-emerald-500 shadow-lg">
-                                    {user.payment_verified ? (
-                                        <CheckCircle className="h-5 w-5 text-white" />
-                                    ) : (
-                                        <Clock className="h-5 w-5 text-white" />
-                                    )}
-                                </div>
                             </div>
 
                             {/* Nama */}
