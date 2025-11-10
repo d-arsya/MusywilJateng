@@ -1,5 +1,5 @@
 import AdminLayout from '@/layouts/admin';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { ArrowLeft, ArrowRightLeft, Briefcase, Edit2, Phone, Trash2, UserPlus, Users, UserX } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
@@ -52,6 +52,7 @@ const DetailKamar = ({ room, unassignedUsers }) => {
     const [showAddUserDialog, setShowAddUserDialog] = useState(false);
     const [showMoveDialog, setShowMoveDialog] = useState(false);
     const [roomName, setRoomName] = useState(room.name);
+    const { delete: destroy } = useForm(null);
 
     // Selection state
     const [selectedUsers, setSelectedUsers] = useState([]);
@@ -87,8 +88,12 @@ const DetailKamar = ({ room, unassignedUsers }) => {
             rejectLabel: 'Batal',
             acceptClassName: 'p-button-danger',
             accept: () => {
-                console.log('Delete room and navigate back');
-                // Router back to building detail
+                destroy('/admin/penginapan/gedung/' + room.building.name + '/kamar/' + room.id, {
+                    onError: (errs) => {
+                        console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                    },
+                    onSuccess: () => console.log('SUCCESS'),
+                });
             },
         });
     };

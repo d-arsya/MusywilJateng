@@ -1,1 +1,0 @@
-import{j as r}from"./app-oTyuO9fI.js";import{A as o}from"./admin-C4FUY2Tn.js";/* empty css            */import"./x-B3zMVZ67.js";import"./createLucideIcon-DqyyGUay.js";function s(){return r.jsx(o,{children:r.jsx("h1",{children:"Halo"})})}export{s as default};

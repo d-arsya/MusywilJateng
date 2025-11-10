@@ -1,5 +1,5 @@
 import AdminLayout from '@/layouts/admin';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { Building2, DoorOpen, Edit2, Plus, Search, Trash2, Users } from 'lucide-react';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
@@ -9,13 +9,6 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { useState } from 'react';
 
-// Dummy Data
-// const dummyBuildings = [
-//     { id: 1, name: 'Gedung Aswad', rooms_count: 8, users_count: 45 },
-//     { id: 2, name: 'Gedung Biru', rooms_count: 5, users_count: 32 },
-//     { id: 3, name: 'Gedung Merah', rooms_count: 3, users_count: 18 },
-// ];
-
 const DashboardPenginapan = ({ buildings }) => {
     // const [buildings, setBuildings] = useState(dummyBuildings);
     const [showDialog, setShowDialog] = useState(false);
@@ -23,6 +16,7 @@ const DashboardPenginapan = ({ buildings }) => {
     const [currentBuilding, setCurrentBuilding] = useState(null);
     const [buildingName, setBuildingName] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+    const { data, setData, post, put } = useForm({ name: '' });
 
     // Stats
     const totalBuildings = buildings.length;
@@ -33,31 +27,33 @@ const DashboardPenginapan = ({ buildings }) => {
     // Handlers
     const handleAddBuilding = () => {
         setEditMode(false);
-        setCurrentBuilding(null);
-        setBuildingName('');
+
         setShowDialog(true);
     };
 
     const handleEditBuilding = (building) => {
         setEditMode(true);
         setCurrentBuilding(building);
-        setBuildingName(building.name);
+        setData('name', building.name);
         setShowDialog(true);
     };
 
     const handleSaveBuilding = () => {
         if (editMode) {
-            // Update
-            setBuildings(buildings.map((b) => (b.id === currentBuilding.id ? { ...b, name: buildingName } : b)));
+            put('/admin/penginapan/' + currentBuilding.id, {
+                onError: (errs) => {
+                    console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                },
+                onSuccess: () => console.log('SUCCESS'),
+            });
         } else {
-            // Create
-            const newBuilding = {
-                id: Math.max(...buildings.map((b) => b.id)) + 1,
-                name: buildingName,
-                rooms_count: 0,
-                users_count: 0,
-            };
-            setBuildings([...buildings, newBuilding]);
+            post('/admin/penginapan', {
+                onError: (errs) => {
+                    console.log(data);
+                    console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                },
+                onSuccess: () => console.log('SUCCESS'),
+            });
         }
         setShowDialog(false);
     };
@@ -257,7 +253,7 @@ const DashboardPenginapan = ({ buildings }) => {
                             label={editMode ? 'Simpan' : 'Tambah'}
                             className="p-button-success"
                             onClick={handleSaveBuilding}
-                            disabled={!buildingName.trim()}
+                            disabled={!data.name.trim()}
                         />
                     </div>
                 }
@@ -268,8 +264,8 @@ const DashboardPenginapan = ({ buildings }) => {
                             Nama Gedung <span className="text-red-500">*</span>
                         </label>
                         <InputText
-                            value={buildingName}
-                            onChange={(e) => setBuildingName(e.target.value)}
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
                             placeholder="Contoh: Gedung Aswad"
                             className="w-full"
                             autoFocus

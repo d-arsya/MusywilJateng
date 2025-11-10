@@ -1,5 +1,5 @@
 import AdminLayout from '@/layouts/admin';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { ArrowLeft, DoorOpen, Edit2, Plus, Search, Trash2, UserPlus, Users } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
@@ -24,6 +24,8 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [userSearchQuery, setUserSearchQuery] = useState('');
 
+    const { data, setData, post, put, delete: destroy } = useForm({ name: '' });
+
     // Handlers - Room CRUD
     const handleAddRoom = () => {
         setEditRoomMode(false);
@@ -35,21 +37,25 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
     const handleEditRoom = (room) => {
         setEditRoomMode(true);
         setCurrentRoom(room);
-        setRoomName(room.name);
+        setData('name', room.name);
         setShowRoomDialog(true);
     };
 
     const handleSaveRoom = () => {
         if (editRoomMode) {
-            setRooms(rooms.map((r) => (r.id === currentRoom.id ? { ...r, name: roomName } : r)));
+            put('/admin/penginapan/gedung/' + building.name + '/kamar/' + currentRoom.id, {
+                onError: (errs) => {
+                    console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                },
+                onSuccess: () => console.log('SUCCESS'),
+            });
         } else {
-            const newRoom = {
-                id: Math.max(...rooms.map((r) => r.id)) + 1,
-                building_id: building.id,
-                name: roomName,
-                users_count: 0,
-            };
-            setRooms([...rooms, newRoom]);
+            post('/admin/penginapan/gedung/' + building.name + '/kamar', {
+                onError: (errs) => {
+                    console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                },
+                onSuccess: () => console.log('SUCCESS'),
+            });
         }
         setShowRoomDialog(false);
     };
@@ -68,13 +74,18 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
             rejectLabel: 'Batal',
             acceptClassName: 'p-button-danger',
             accept: () => {
-                setRooms(rooms.filter((r) => r.id !== room.id));
+                destroy('/admin/penginapan/gedung/' + building.name + '/kamar/' + room.id, {
+                    onError: (errs) => {
+                        console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                    },
+                    onSuccess: () => console.log('SUCCESS'),
+                });
             },
         });
     };
 
     const handleViewRoomDetail = (room) => {
-        router.get('/admin/penginapan/kamar/' + room.name);
+        router.get('/admin/penginapan/gedung/' + building.name + '/kamar/' + room.name);
     };
 
     // Handlers - Assignment
@@ -101,8 +112,7 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
     };
 
     const handleBackToDashboard = () => {
-        console.log('Navigate back to dashboard');
-        // Router navigation
+        router.get('/admin/penginapan');
     };
 
     // Templates
@@ -276,7 +286,7 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
                             label={editRoomMode ? 'Simpan' : 'Tambah'}
                             className="p-button-success"
                             onClick={handleSaveRoom}
-                            disabled={!roomName.trim()}
+                            disabled={!data.name.trim()}
                         />
                     </div>
                 }
@@ -287,8 +297,8 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
                             Nama Kamar <span className="text-red-500">*</span>
                         </label>
                         <InputText
-                            value={roomName}
-                            onChange={(e) => setRoomName(e.target.value)}
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
                             placeholder="Contoh: Kamar 1"
                             className="w-full"
                             autoFocus

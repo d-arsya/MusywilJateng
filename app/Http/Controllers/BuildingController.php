@@ -21,6 +21,20 @@ class BuildingController extends Controller
 
         return inertia('admin/penginapan', compact('buildings'));
     }
+    public function store(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:20|min:3']);
+        Building::create($request->all());
+        return redirect()->route('admin.penginapan')
+            ->with('success', 'Kegiatan berhasil ditambahkan!');
+    }
+    public function update(Request $request, Building $building)
+    {
+        $request->validate(['name' => 'required|string|max:20|min:3']);
+        $building->update($request->all());
+        return redirect()->route('admin.penginapan')
+            ->with('success', 'Kegiatan berhasil diubah!');
+    }
     public function show(Building $building)
     {
         $rooms = $building->rooms;
