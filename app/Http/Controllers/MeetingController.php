@@ -36,12 +36,36 @@ class MeetingController extends Controller
             'end_time' => 'required|date_format:H:i|after:start_time',
             'all' => 'nullable|boolean',
         ]);
-        $validated['time'] = $validated['start_time'] . ' - ' . $validated['end_time'];
-        unset($validated['start_time']);
-        unset($validated['end_time']);
-
         Meeting::create($validated);
         return redirect()->route('admin.kegiatan')
             ->with('success', 'Kegiatan berhasil ditambahkan!');
+    }
+    public function update(Request $request, Meeting $meeting)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'room' => 'required|string|max:255',
+            'date' => 'required|date|after_or_equal:today',
+            'description' => 'nullable|string',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'all' => 'nullable|boolean',
+        ]);
+        $meeting->update($validated);
+        return redirect()->route('admin.kegiatan')
+            ->with('success', 'Kegiatan berhasil diubah!');
+    }
+    public function destroy(Meeting $meeting)
+    {
+        $attendance = $meeting->attendances->whereNotNull('attend')->count();
+        if ($attendance == 0) {
+            $meeting->delete();
+        }
+        return redirect()->route('admin.kegiatan')
+            ->with('success', 'Kegiatan berhasil ditambahkan!');
+    }
+    public function edit(Meeting $meeting)
+    {
+        return inertia('admin/kegiatan/create', ['meeting' => $meeting, 'isEdit' => true]);
     }
 }

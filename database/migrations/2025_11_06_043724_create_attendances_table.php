@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Meeting::class);
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Meeting::class)->constrained()->onDelete('cascade');
             $table->time('attend')->nullable();
             $table->unique(['user_id', 'meeting_id']);
             $table->timestamps();

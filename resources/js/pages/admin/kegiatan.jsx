@@ -1,6 +1,6 @@
 import AdminLayout from '@/layouts/admin';
-import { router } from '@inertiajs/react';
-import { Calendar, CheckCircle, Clock, Edit2, MapPin, Plus, QrCode, Search, Trash2, UserPlus, Users } from 'lucide-react';
+import { router, useForm } from '@inertiajs/react';
+import { Calendar, CheckCircle, Clock, Edit2, Plus, QrCode, Trash2, UserPlus, Users } from 'lucide-react';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
@@ -15,13 +15,13 @@ const AdminMeetingDashboard = ({ meetings }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filterStatus, setFilterStatus] = useState(null);
     const [filterDate, setFilterDate] = useState('');
+    const { delete: destroy } = useForm(null);
 
     // Stats
     const totalMeetings = meetings.length;
     const BelumMeetings = meetings.filter((m) => m.status === 'Belum').length;
     const SedangMeetings = meetings.filter((m) => m.status === 'Sedang').length;
     const TelahMeetings = meetings.filter((m) => m.status === 'Telah').length;
-    const todayAttendance = meetings.filter((m) => m.date === new Date().toISOString().split('T')[0]).reduce((sum, m) => sum + m.total_attended, 0);
 
     // Handlers
     const handleCreate = () => {
@@ -29,7 +29,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
     };
 
     const handleEdit = (meeting) => {
-        router.get('/admin/kegiatan/create');
+        router.get('/admin/kegiatan/' + meeting.code + '/edit');
     };
 
     const handleDelete = (meeting) => {
@@ -48,7 +48,9 @@ const AdminMeetingDashboard = ({ meetings }) => {
             rejectLabel: 'Batal',
             acceptClassName: 'p-button-danger',
             accept: () => {
-                setMeetings(meetings.filter((m) => m.id !== meeting.id));
+                destroy('/admin/kegiatan/' + meeting.code, {
+                    onError: (err) => console.log(err),
+                });
             },
         });
     };
@@ -64,11 +66,6 @@ const AdminMeetingDashboard = ({ meetings }) => {
     const handleScanner = (meeting) => {
         router.get('/admin/kegiatan/scan');
         // Router navigation
-    };
-
-    const refreshData = () => {
-        console.log('Refresh data from API');
-        // API call to refresh
     };
 
     // Templates
@@ -92,10 +89,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
     const timeTemplate = (rowData) => {
         return (
             <div className="flex items-center gap-2">
-                <Clock size={14} className="text-gray-500" />
-                <span className="text-sm">
-                    {rowData.start_time} - {rowData.end_time}
-                </span>
+                <span className="text-sm">{rowData.start_time.slice(0, 5)}</span>
             </div>
         );
     };
@@ -103,7 +97,6 @@ const AdminMeetingDashboard = ({ meetings }) => {
     const roomTemplate = (rowData) => {
         return (
             <div className="flex items-center gap-2">
-                <MapPin size={14} className="text-gray-500" />
                 <span className="text-sm">{rowData.room}</span>
             </div>
         );
@@ -144,26 +137,26 @@ const AdminMeetingDashboard = ({ meetings }) => {
             <div className="flex gap-1">
                 <Button
                     icon={<QrCode size={14} />}
-                    className="p-button-rounded p-button-text p-button-success p-button-sm"
+                    className="p-button-rounded p-button-text p-button-success p-button-xxl"
                     onClick={() => handleScanner(rowData)}
                     tooltip="Buka Scanner"
                     disabled={rowData.status === 'Telah'}
                 />
                 <Button
                     icon={<UserPlus size={14} />}
-                    className="p-button-rounded p-button-text p-button-info p-button-sm"
+                    className="p-button-rounded p-button-text p-button-info p-button-xxl"
                     onClick={() => handleAssign(rowData)}
                     tooltip="Assign Peserta"
                 />
                 <Button
                     icon={<Edit2 size={14} />}
-                    className="p-button-rounded p-button-text p-button-sm"
+                    className="p-button-rounded p-button-text p-button-xxl"
                     onClick={() => handleEdit(rowData)}
                     tooltip="Edit"
                 />
                 <Button
                     icon={<Trash2 size={14} />}
-                    className="p-button-rounded p-button-text p-button-danger p-button-sm"
+                    className="p-button-rounded p-button-text p-button-danger p-button-xxl"
                     onClick={() => handleDelete(rowData)}
                     tooltip="Hapus"
                     disabled={rowData.total_attended > 0}
@@ -173,7 +166,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
     };
 
     const detailButtonTemplate = (rowData) => {
-        return <Button label="Lihat Detail" className="p-button-sm p-button-outlined" onClick={() => handleViewDetail(rowData)} />;
+        return <Button label="Detail" className="p-button-sm p-button-outlined" onClick={() => handleViewDetail(rowData)} />;
     };
 
     // Filtered data
@@ -210,7 +203,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
             </div>
 
             {/* Stats Bar */}
-            <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-5">
+            <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
                 <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
@@ -258,35 +251,14 @@ const AdminMeetingDashboard = ({ meetings }) => {
                         </div>
                     </div>
                 </div>
-
-                <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="mb-1 text-sm text-gray-600">Hadir Hari Ini</p>
-                            <p className="text-3xl font-bold text-purple-600">{todayAttendance}</p>
-                        </div>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100">
-                            <CheckCircle className="text-purple-600" size={24} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Actions Bar */}
-            <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                    <Button label="Tambah Kegiatan Baru" icon={<Plus size={16} />} className="p-button-success" onClick={handleCreate} />
-                    <Button label="Refresh Data" icon="pi pi-refresh" className="p-button-outlined" onClick={refreshData} />
-                </div>
             </div>
 
             {/* Filters */}
             <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-                    <div className="md:col-span-2">
+                <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-8">
+                    <div className="md:col-span-3">
                         <label className="mb-2 block text-sm font-medium text-gray-700">Cari Kegiatan</label>
                         <span className="p-input-icon-left w-full">
-                            <Search size={16} className="text-gray-400" />
                             <InputText
                                 placeholder="Judul atau lokasi..."
                                 value={searchQuery}
@@ -295,7 +267,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
                             />
                         </span>
                     </div>
-                    <div>
+                    <div className="md:col-span-2">
                         <label className="mb-2 block text-sm font-medium text-gray-700">Filter Status</label>
                         <Dropdown
                             value={filterStatus}
@@ -306,10 +278,11 @@ const AdminMeetingDashboard = ({ meetings }) => {
                             showClear
                         />
                     </div>
-                    <div>
+                    <div className="md:col-span-2">
                         <label className="mb-2 block text-sm font-medium text-gray-700">Filter Tanggal</label>
                         <InputText type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="w-full" />
                     </div>
+                    <Button label="Tambah" icon={<Plus size={16} />} className="p-button-success h-max" onClick={handleCreate} />
                 </div>
             </div>
 

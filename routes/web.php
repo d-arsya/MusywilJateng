@@ -53,9 +53,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/peserta/{user:code}', [UserController::class, 'show'])->name('user.show');
     Route::get('/kegiatan', [MeetingController::class, 'index'])->name('admin.kegiatan');
     Route::post('/kegiatan', [MeetingController::class, 'store']);
+    Route::delete('/kegiatan/{meeting:code}', [MeetingController::class, 'destroy']);
     Route::inertia('/settings', 'admin/settings');
     Route::inertia('/kegiatan/create', 'admin/kegiatan/create');
     Route::inertia('/kegiatan/assign', 'admin/kegiatan/assign');
     Route::inertia('/kegiatan/scan', 'admin/kegiatan/scan');
     Route::inertia('/kegiatan/stats', 'admin/kegiatan/stats');
+    Route::get('/kegiatan/{meeting:code}/edit', [MeetingController::class, 'edit']);
+    Route::put('/kegiatan/{meeting:code}', [MeetingController::class, 'update']);
 });

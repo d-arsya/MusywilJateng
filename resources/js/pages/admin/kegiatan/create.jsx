@@ -1,82 +1,53 @@
 import AdminLayout from '@/layouts/admin';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { ArrowLeft, Calendar, Clock, FileText, MapPin, Save } from 'lucide-react';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-// Dummy existing meeting for edit mode
-const dummyMeeting = {
-    id: 2,
-    title: 'Rapat Dewan Pengawas',
-    date: '2025-11-21',
-    time_start: '14:00',
-    time_end: '16:00',
-    location: 'Ruang Angsana',
-    description: 'Rapat koordinasi dewan pengawas',
-    status: 'ongoing',
-};
-
-const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
-    const [formData, setFormData] = useState({
-        title: '',
-        date: '',
-        time_start: '',
-        time_end: '',
-        location: '',
-        description: '',
-        status: 'upcoming',
+const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
+    const { data, setData, post, put } = useForm({
+        name: meeting?.name || '',
+        date: meeting?.date || '',
+        start_time: meeting?.start_time?.slice(0, 5) || '',
+        end_time: meeting?.end_time?.slice(0, 5) || '',
+        room: meeting?.room || '',
+        description: meeting?.description || '',
+        status: meeting?.status || 'Belum',
     });
 
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
-    // Load data if edit mode
-    useEffect(() => {
-        if (isEdit && meetingId) {
-            // Simulate loading from API
-            setFormData(dummyMeeting);
-        }
-    }, [isEdit, meetingId]);
-
-    // Handlers
-    const handleChange = (field, value) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
-        // Clear error when user types
-        if (errors[field]) {
-            setErrors((prev) => ({ ...prev, [field]: null }));
-        }
-    };
-
     const validateForm = () => {
         const newErrors = {};
 
-        if (!formData.title.trim()) {
-            newErrors.title = 'Judul kegiatan wajib diisi';
+        if (!data.name.trim()) {
+            newErrors.name = 'Judul kegiatan wajib diisi';
         }
 
-        if (!formData.date) {
+        if (!data.date) {
             newErrors.date = 'Tanggal wajib diisi';
         }
 
-        if (!formData.time_start) {
-            newErrors.time_start = 'Jam mulai wajib diisi';
+        if (!data.start_time) {
+            newErrors.start_time = 'Jam mulai wajib diisi';
         }
 
-        if (!formData.time_end) {
-            newErrors.time_end = 'Jam selesai wajib diisi';
+        if (!data.end_time) {
+            newErrors.end_time = 'Jam selesai wajib diisi';
         }
 
-        if (formData.time_start && formData.time_end) {
-            if (formData.time_start >= formData.time_end) {
-                newErrors.time_end = 'Jam selesai harus lebih besar dari jam mulai';
+        if (data.start_time && data.end_time) {
+            if (data.start_time >= data.end_time) {
+                newErrors.end_time = 'Jam selesai harus lebih besar dari jam mulai';
             }
         }
 
-        if (!formData.location.trim()) {
-            newErrors.location = 'Lokasi wajib diisi';
+        if (!data.room.trim()) {
+            newErrors.room = 'Lokasi wajib diisi';
         }
 
         setErrors(newErrors);
@@ -87,16 +58,22 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
         if (!validateForm()) {
             return;
         }
-
-        setLoading(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            console.log('Submit data:', formData);
-            alert(isEdit ? 'Kegiatan berhasil diupdate!' : 'Kegiatan berhasil dibuat!');
-            setLoading(false);
-            handleBack();
-        }, 1000);
+        if (isEdit) {
+            console.log(data);
+            put('/admin/kegiatan/' + meeting.code, {
+                onError: (errs) => {
+                    console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                },
+                onSuccess: () => console.log('SUCCESS'),
+            });
+        } else {
+            post('/admin/kegiatan', {
+                onError: (errs) => {
+                    console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                },
+                onSuccess: () => console.log('SUCCESS'),
+            });
+        }
     };
 
     const handleBack = () => {
@@ -112,7 +89,7 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
 
         // Simulate API call
         setTimeout(() => {
-            console.log('Submit data:', formData);
+            console.log('Submit data:', data);
             console.log('Navigate to assign participants page');
             setLoading(false);
             // Router navigation to assign page
@@ -122,9 +99,9 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
 
     // Status options
     const statusOptions = [
-        { label: 'Belum Dimulai', value: 'upcoming' },
-        { label: 'Sedang Berlangsung', value: 'ongoing' },
-        { label: 'Selesai', value: 'completed' },
+        { label: 'Belum Dimulai', value: 'Belum' },
+        { label: 'Sedang Berlangsung', value: 'Sedang' },
+        { label: 'Selesai', value: 'Telah' },
     ];
 
     return (
@@ -156,13 +133,13 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                                 <FileText size={16} />
                             </span>
                             <InputText
-                                value={formData.title}
-                                onChange={(e) => handleChange('title', e.target.value)}
+                                value={data.name}
+                                onChange={(e) => setData('name', e.target.value)}
                                 placeholder="Contoh: Pembukaan Munas VI"
-                                className={`w-full ${errors.title ? 'p-invalid' : ''}`}
+                                className={`w-full ${errors.name ? 'p-invalid' : ''}`}
                             />
                         </div>
-                        {errors.title && <small className="mt-1 block text-red-500">{errors.title}</small>}
+                        {errors.name && <small className="mt-1 block text-red-500">{errors.name}</small>}
                     </div>
 
                     {/* Tanggal */}
@@ -176,8 +153,8 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                             </span>
                             <InputText
                                 type="date"
-                                value={formData.date}
-                                onChange={(e) => handleChange('date', e.target.value)}
+                                value={data.date}
+                                onChange={(e) => setData('date', e.target.value)}
                                 className={`w-full ${errors.date ? 'p-invalid' : ''}`}
                             />
                         </div>
@@ -190,9 +167,9 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                             Status <span className="text-red-500">*</span>
                         </label>
                         <Dropdown
-                            value={formData.status}
+                            value={data.status}
                             options={statusOptions}
-                            onChange={(e) => handleChange('status', e.value)}
+                            onChange={(e) => setData('status', e.value)}
                             placeholder="Pilih status"
                             className="w-full"
                         />
@@ -209,12 +186,12 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                             </span>
                             <InputText
                                 type="time"
-                                value={formData.time_start}
-                                onChange={(e) => handleChange('time_start', e.target.value)}
-                                className={`w-full ${errors.time_start ? 'p-invalid' : ''}`}
+                                value={data.start_time}
+                                onChange={(e) => setData('start_time', e.target.value)}
+                                className={`w-full ${errors.start_time ? 'p-invalid' : ''}`}
                             />
                         </div>
-                        {errors.time_start && <small className="mt-1 block text-red-500">{errors.time_start}</small>}
+                        {errors.start_time && <small className="mt-1 block text-red-500">{errors.start_time}</small>}
                     </div>
 
                     {/* Jam Selesai */}
@@ -228,12 +205,12 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                             </span>
                             <InputText
                                 type="time"
-                                value={formData.time_end}
-                                onChange={(e) => handleChange('time_end', e.target.value)}
-                                className={`w-full ${errors.time_end ? 'p-invalid' : ''}`}
+                                value={data.end_time}
+                                onChange={(e) => setData('end_time', e.target.value)}
+                                className={`w-full ${errors.end_time ? 'p-invalid' : ''}`}
                             />
                         </div>
-                        {errors.time_end && <small className="mt-1 block text-red-500">{errors.time_end}</small>}
+                        {errors.end_time && <small className="mt-1 block text-red-500">{errors.end_time}</small>}
                     </div>
 
                     {/* Lokasi */}
@@ -246,21 +223,21 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                                 <MapPin size={16} />
                             </span>
                             <InputText
-                                value={formData.location}
-                                onChange={(e) => handleChange('location', e.target.value)}
+                                value={data.room}
+                                onChange={(e) => setData('room', e.target.value)}
                                 placeholder="Contoh: Aula Utama"
-                                className={`w-full ${errors.location ? 'p-invalid' : ''}`}
+                                className={`w-full ${errors.room ? 'p-invalid' : ''}`}
                             />
                         </div>
-                        {errors.location && <small className="mt-1 block text-red-500">{errors.location}</small>}
+                        {errors.room && <small className="mt-1 block text-red-500">{errors.room}</small>}
                     </div>
 
                     {/* Deskripsi */}
                     <div className="md:col-span-2">
                         <label className="mb-2 block text-sm font-medium text-gray-700">Deskripsi (Opsional)</label>
                         <InputTextarea
-                            value={formData.description}
-                            onChange={(e) => handleChange('description', e.target.value)}
+                            value={data.description}
+                            onChange={(e) => setData('description', e.target.value)}
                             placeholder="Tambahkan deskripsi atau catatan tambahan..."
                             rows={4}
                             className="w-full"
@@ -311,7 +288,7 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
             </div>
 
             {/* Preview Card */}
-            {formData.title && (
+            {data.name && (
                 <div className="mt-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
                     <h3 className="mb-4 text-lg font-semibold text-gray-800">Preview Kegiatan</h3>
                     <div className="space-y-3">
@@ -319,7 +296,7 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                             <FileText className="mt-1 text-gray-500" size={18} />
                             <div>
                                 <p className="text-sm text-gray-600">Judul</p>
-                                <p className="font-semibold text-gray-800">{formData.title || '-'}</p>
+                                <p className="font-semibold text-gray-800">{data.name || '-'}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-3">
@@ -327,17 +304,17 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                             <div>
                                 <p className="text-sm text-gray-600">Tanggal & Waktu</p>
                                 <p className="font-semibold text-gray-800">
-                                    {formData.date
-                                        ? new Date(formData.date).toLocaleDateString('id-ID', {
+                                    {data.date
+                                        ? new Date(data.date).toLocaleDateString('id-ID', {
                                               weekday: 'long',
                                               year: 'numeric',
                                               month: 'long',
                                               day: 'numeric',
                                           })
                                         : '-'}
-                                    {formData.time_start && formData.time_end && (
+                                    {data.start_time && data.end_time && (
                                         <span className="ml-2">
-                                            ({formData.time_start} - {formData.time_end})
+                                            ({data.start_time} - {data.end_time})
                                         </span>
                                     )}
                                 </p>
@@ -347,15 +324,15 @@ const AdminMeetingForm = ({ isEdit = false, meetingId = 2 }) => {
                             <MapPin className="mt-1 text-gray-500" size={18} />
                             <div>
                                 <p className="text-sm text-gray-600">Lokasi</p>
-                                <p className="font-semibold text-gray-800">{formData.location || '-'}</p>
+                                <p className="font-semibold text-gray-800">{data.room || '-'}</p>
                             </div>
                         </div>
-                        {formData.description && (
+                        {data.description && (
                             <div className="flex items-start gap-3">
                                 <FileText className="mt-1 text-gray-500" size={18} />
                                 <div>
                                     <p className="text-sm text-gray-600">Deskripsi</p>
-                                    <p className="text-gray-800">{formData.description}</p>
+                                    <p className="text-gray-800">{data.description}</p>
                                 </div>
                             </div>
                         )}
