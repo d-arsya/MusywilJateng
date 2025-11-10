@@ -19,7 +19,7 @@ return new class extends Migration
         });
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Building::class);
+            $table->foreignIdFor(Building::class)->constrained()->onDelete('cascade');
             $table->string('name');
             $table->timestamps();
         });

@@ -35,6 +35,23 @@ class BuildingController extends Controller
         return redirect()->route('admin.penginapan')
             ->with('success', 'Kegiatan berhasil diubah!');
     }
+    public function destroy(Request $request, Building $building)
+    {
+        $rooms = $building->rooms->pluck('id');
+        $users = User::whereIn('room_id', $rooms)->count();
+        try {
+            if ($users > 0) {
+                throw 1;
+            }
+            $building->delete();
+            return redirect()->route('admin.penginapan')
+                ->with('success', 'Gedung berhasil dihapus!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('admin.penginapan')
+                ->with('error', 'Gedung gagal dihapus!');
+        }
+    }
     public function show(Building $building)
     {
         $rooms = $building->rooms;

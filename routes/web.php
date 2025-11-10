@@ -40,6 +40,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/penginapan', [BuildingController::class, 'index'])->name('admin.penginapan');
     Route::post('/penginapan', [BuildingController::class, 'store']);
     Route::put('/penginapan/{building}', [BuildingController::class, 'update']);
+    Route::delete('/penginapan/{building}', [BuildingController::class, 'destroy']);
     Route::get('/penginapan/gedung/{building:name}', [BuildingController::class, 'show'])->name('admin.gedung');
     Route::post('/penginapan/gedung/{building:name}/kamar', [RoomController::class, 'store']);
     Route::put('/penginapan/gedung/{building:name}/kamar/{room}', [RoomController::class, 'update']);

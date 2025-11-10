@@ -16,7 +16,7 @@ const DashboardPenginapan = ({ buildings }) => {
     const [currentBuilding, setCurrentBuilding] = useState(null);
     const [buildingName, setBuildingName] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, setData, post, put } = useForm({ name: '' });
+    const { data, setData, post, put, delete: destroy } = useForm({ name: '' });
 
     // Stats
     const totalBuildings = buildings.length;
@@ -67,7 +67,12 @@ const DashboardPenginapan = ({ buildings }) => {
             rejectLabel: 'Batal',
             acceptClassName: 'p-button-danger',
             accept: () => {
-                setBuildings(buildings.filter((b) => b.id !== building.id));
+                destroy('/admin/penginapan/' + building.id, {
+                    onError: (errs) => {
+                        console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                    },
+                    onSuccess: () => console.log('SUCCESS'),
+                });
             },
         });
     };
