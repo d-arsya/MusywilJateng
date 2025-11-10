@@ -1,6 +1,6 @@
 import { useToast } from '@/context/toast';
 import AdminLayout from '@/layouts/admin';
-import { Link, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { AlertCircle, Banknote, CheckCircle2, Clock, CreditCard, Eye, FileText, Search, Users, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Badge } from 'primereact/badge';
@@ -259,14 +259,14 @@ export default function AdminDashboardPage({ payments }) {
                 <div className="flex items-center justify-between gap-3">
                     <Tag value="Terverifikasi" severity="success" icon={<CheckCircle2 className="mr-1 h-3 w-3" />} className="font-semibold" />
                     {invoice ? (
-                        <Link
+                        <a
                             href={invoice}
                             target="_blank"
                             className="inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-emerald-600"
                         >
                             <Eye className="h-3 w-3" />
                             Bukti
-                        </Link>
+                        </a>
                     ) : (
                         <Tag value="Cash" icon={<Banknote className="mr-1 h-3 w-3" />} className="bg-blue-500 font-semibold text-white" />
                     )}
@@ -276,14 +276,14 @@ export default function AdminDashboardPage({ payments }) {
             return (
                 <div className="flex items-center justify-between gap-3">
                     <Tag value="Menunggu" severity="warning" icon={<Clock className="mr-1 h-3 w-3" />} className="font-semibold" />
-                    <Link
+                    <a
                         href={invoice}
                         target="_blank"
                         className="inline-flex items-center gap-1 rounded-lg bg-amber-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-amber-600"
                     >
                         <Eye className="h-3 w-3" />
                         Cek
-                    </Link>
+                    </a>
                 </div>
             );
         } else {
