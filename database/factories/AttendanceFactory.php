@@ -22,8 +22,7 @@ class AttendanceFactory extends Factory
         return [
             'user_id' => fake()->randomNumber(),
             'meeting_id' => fake()->randomNumber(),
-            'time'       => $attend ? fake()->time('H:i') : null,
-            'attend'     => $attend,
+            'attend'       => $attend ? fake()->time('H:i') : null,
         ];
     }
 }

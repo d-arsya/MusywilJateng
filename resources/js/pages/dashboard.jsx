@@ -1,6 +1,7 @@
 import AuthLayout from '@/layouts/auth';
 import { Link, useForm } from '@inertiajs/react';
 import { Calendar, CheckCircle2, FileText, Home, Images, Map, MapPin, Phone, XCircle } from 'lucide-react';
+import { Avatar } from 'primereact/avatar';
 import { useRef } from 'react';
 import QRCode from 'react-qr-code';
 
@@ -99,10 +100,18 @@ export default function Dashboard({ auth, app }) {
                             className="h-16 w-16"
                         />
                     </div>
-                    <img
+                    {/* <img
                         src={user.avatar}
                         alt="Foto Profil"
                         className="absolute right-12 bottom-10 h-20 w-20 rounded-full border-2 border-white bg-emerald-800 object-cover shadow-lg"
+                    /> */}
+                    <Avatar
+                        image={user.avatar || undefined}
+                        label={!user.avatar ? user.name.charAt(0) : undefined}
+                        size="xlarge"
+                        shape="circle"
+                        className="absolute right-20 bottom-10 h-20 w-20 rounded-full border-2 border-white bg-emerald-800 object-cover text-white shadow-lg"
+                        style={{ width: '60px', height: '60px', fontSize: '24px' }}
                     />
                     <div className="text-md absolute top-12 left-6 font-medium text-white drop-shadow-lg">
                         {user.name}

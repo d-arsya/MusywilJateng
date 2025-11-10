@@ -11,17 +11,7 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { useState } from 'react';
 
-const dummyUnassignedUsers = [
-    { id: 101, name: 'Ahmad Fauzi', phone: '081234567890', office: { name: 'DPW Jawa Tengah' }, employment: { name: 'Pengurus' } },
-    { id: 102, name: 'Budi Santoso', phone: '081234567891', office: { name: 'DPD Semarang' }, employment: { name: 'Anggota' } },
-    { id: 103, name: 'Siti Aminah', phone: '081234567892', office: { name: 'DPD Solo' }, employment: { name: 'Pembina' } },
-    { id: 104, name: 'Rina Wati', phone: '081234567893', office: { name: 'DMW Jakarta' }, employment: { name: 'Pengawas' } },
-    { id: 105, name: 'Hadi Wijaya', phone: '081234567894', office: { name: 'DPW Jawa Timur' }, employment: { name: 'Pengurus' } },
-];
-
-const DetailGedung = ({ building, rooms }) => {
-    const [unassignedUsers, setUnassignedUsers] = useState(dummyUnassignedUsers);
-
+const DetailGedung = ({ building, rooms, unassignedUsers }) => {
     const [showRoomDialog, setShowRoomDialog] = useState(false);
     const [showAssignDialog, setShowAssignDialog] = useState(false);
     const [editRoomMode, setEditRoomMode] = useState(false);

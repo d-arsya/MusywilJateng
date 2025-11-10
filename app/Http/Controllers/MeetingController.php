@@ -11,10 +11,17 @@ class MeetingController extends Controller
     public function index()
     {
 
-        $meetings = Meeting::with(['attendances'])->get()->map(function ($item) {
-            $item->tanggal_indo = Carbon::parse($item->date)->translatedFormat('l, j F');
-            return $item;
+        $meetings = Meeting::with(['attendances'])->get()->map(function ($meeting) {
+            $meeting->total_participants = $meeting->attendances->count();
+            $meeting->total_attended = $meeting->attendances->whereNotNull('attend')->count();
+            $meeting->tanggal_indo = Carbon::parse($meeting->date)->translatedFormat('l, j F');
+            $meeting->attendance_rate = $meeting->total_participants > 0
+                ? round(($meeting->total_attended / $meeting->total_participants) * 100, 1)
+                : 0;
+
+            return $meeting;
         });
+        // attendance_rate: 80,
 
         return inertia('admin/kegiatan', compact('meetings'));
     }

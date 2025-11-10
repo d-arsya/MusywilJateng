@@ -25,8 +25,7 @@ class AttendanceSeeder extends Seeder
                     'user_id' => $user->id,
                     'meeting_id' => $meeting->id,
                 ], [
-                    'time'       => $attend ? fake()->time('H:i') : null,
-                    'attend'     => $attend
+                    'attend'       => $attend ? fake()->time('H:i') : null
                 ]);
             });
         }

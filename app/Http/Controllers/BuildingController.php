@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Building;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BuildingController extends Controller
@@ -26,6 +27,7 @@ class BuildingController extends Controller
         $rooms->each(function ($room) {
             $room->users_count = $room->users->count();
         });
-        return inertia('admin/detailGedung', compact('building', 'rooms'));
+        $unassignedUsers = User::with(['office', 'employment'])->whereNull('room_id')->get();
+        return inertia('admin/detailGedung', compact('building', 'rooms', 'unassignedUsers'));
     }
 }

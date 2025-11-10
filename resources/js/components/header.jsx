@@ -52,16 +52,12 @@ export function PrivateHeader() {
     ];
 
     return (
-        <header className="bg-emerald-800 text-white shadow-lg">
+        <header className="bg-gradient-to-r from-emerald-50 to-teal-100">
             <div className="container mx-auto flex items-center justify-between px-4 py-4">
                 {/* Logo dan Judul */}
                 <Link href="/" className="flex items-center space-x-3">
-                    <div className="flex h-12 w-12 items-center justify-center">
-                        <img src="/logo.png" alt="Logo" className="h-full w-full object-contain" />
-                    </div>
-                    <div>
-                        <h1 className="text-base leading-tight font-bold md:text-xl">Musyawarah Wilayah VI Hidayatullah</h1>
-                        <p className="text-xs text-emerald-200 md:text-sm">DIY - Jateng Bagian Selatan</p>
+                    <div className="flex w-32 items-center justify-center">
+                        <img src="/assets/img/header-horizontal.png" alt="Logo" className="h-full w-full object-contain" />
                     </div>
                 </Link>
 
@@ -74,7 +70,7 @@ export function PrivateHeader() {
                 <nav className="hidden space-x-6 text-sm font-medium md:flex">
                     {menuItems.map((e, i) => {
                         return (
-                            <Link href={e.link} className="transition hover:text-emerald-200">
+                            <Link href={e.link} className="text-emerald-700 transition hover:text-emerald-200">
                                 {e.text}
                             </Link>
                         );

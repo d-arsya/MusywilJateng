@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pembayaran', [PaymentController::class, 'pay'])->name('payment.pay');
     Route::post('/pembayaran/{type}/{code}', [PaymentController::class, 'change']);
     Route::inertia('/denah', 'denah');
-    Route::inertia('/penginapan', 'penginapan');
+    Route::get('/penginapan', [RoomController::class, 'user']);
     Route::inertia('/profile', 'profile');
     Route::inertia('/card', 'card');
     Route::inertia('/jadwal', 'jadwal');
@@ -40,6 +40,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/penginapan', [BuildingController::class, 'index']);
     Route::get('/penginapan/gedung/{building:name}', [BuildingController::class, 'show']);
     Route::get('/penginapan/kamar/{room:name}', [RoomController::class, 'show']);
+    Route::get('/penginapan/unassigned', [RoomController::class, 'unassigned']);
 
     Route::get('/pembiayaan', [PaymentController::class, 'index']);
     Route::get('/peserta', [UserController::class, 'index']);
@@ -47,4 +48,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/kegiatan', [MeetingController::class, 'index'])->name('admin.kegiatan');
     Route::post('/kegiatan', [MeetingController::class, 'store']);
     Route::inertia('/settings', 'admin/settings');
+    Route::inertia('/kegiatan/create', 'admin/kegiatan/create');
+    Route::inertia('/kegiatan/assign', 'admin/kegiatan/assign');
+    Route::inertia('/kegiatan/scan', 'admin/kegiatan/scan');
+    Route::inertia('/kegiatan/stats', 'admin/kegiatan/stats');
 });

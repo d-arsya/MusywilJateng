@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Meeting::class);
-            $table->time('time')->nullable();
-            $table->boolean('attend')->default(false);
+            $table->time('attend')->nullable();
             $table->unique(['user_id', 'meeting_id']);
             $table->timestamps();
         });

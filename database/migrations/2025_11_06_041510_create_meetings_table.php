@@ -18,7 +18,8 @@ return new class extends Migration
             $table->date('date');
             $table->char('code', 10)->unique();
             $table->string('description')->nullable();
-            $table->string('time');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->boolean('all')->default(true);
             $table->enum('status', ['Belum', 'Sedang', 'Telah'])->default('Belum');
             $table->timestamps();

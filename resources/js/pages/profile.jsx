@@ -1,6 +1,7 @@
 import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
 import { Award, CalendarDays, MapPin, User } from 'lucide-react';
+import { Avatar } from 'primereact/avatar';
 
 export default function ProfilePage({ auth }) {
     const user = auth.user;
@@ -10,10 +11,13 @@ export default function ProfilePage({ auth }) {
                 <div className="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-xl">
                     {/* Foto Profil */}
                     <div className="mt-6 flex justify-center">
-                        <img
-                            src={user.avatar}
-                            alt={user.name}
+                        <Avatar
+                            image={user.avatar || undefined}
+                            label={!user.avatar ? user.name.charAt(0) : undefined}
+                            size="xlarge"
+                            shape="circle"
                             className="h-32 w-32 rounded-full border-2 border-emerald-500 bg-emerald-800 object-cover"
+                            style={{ width: '60px', height: '60px', fontSize: '24px' }}
                         />
                     </div>
 

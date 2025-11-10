@@ -205,7 +205,7 @@ const DashboardPenginapan = ({ buildings }) => {
                         label="Lihat Peserta Belum Terplotting"
                         icon={<Users size={16} />}
                         className="p-button-warning"
-                        onClick={() => console.log('Navigate to unassigned')}
+                        onClick={() => router.get('/admin/penginapan/unassigned')}
                     />
                 </div>
             </div>

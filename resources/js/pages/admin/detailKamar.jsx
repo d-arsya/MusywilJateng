@@ -36,12 +36,6 @@ const dummyUsers = [
     { id: 8, name: 'Eko Prasetyo', phone: '081234567808', office: { name: 'DPD Yogyakarta' }, employment: { name: 'Anggota' }, room_id: 1 },
 ];
 
-const dummyUnassignedUsers = [
-    { id: 101, name: 'Fahri Rahman', phone: '081234567901', office: { name: 'DPD Surabaya' }, employment: { name: 'Pengurus' } },
-    { id: 102, name: 'Gilang Ramadhan', phone: '081234567902', office: { name: 'DPW Sumatra' }, employment: { name: 'Anggota' } },
-    { id: 103, name: 'Hendra Wijaya', phone: '081234567903', office: { name: 'DMW Bali' }, employment: { name: 'Pembina' } },
-];
-
 const dummyOtherRooms = [
     { id: 2, building_id: 1, name: 'Kamar 2', building: dummyBuilding },
     { id: 3, building_id: 1, name: 'Kamar 3', building: dummyBuilding },
@@ -49,11 +43,9 @@ const dummyOtherRooms = [
     { id: 5, building_id: 2, name: 'Kamar 2', building: { id: 2, name: 'Gedung Biru' } },
 ];
 
-const DetailKamar = ({ room }) => {
+const DetailKamar = ({ room, unassignedUsers }) => {
     // const [room, setRoom] = useState(dummyRoom);
     const users = room.users;
-    console.log(users);
-    const [unassignedUsers, setUnassignedUsers] = useState(dummyUnassignedUsers);
     const [otherRooms, setOtherRooms] = useState(dummyOtherRooms);
 
     const [showEditRoomDialog, setShowEditRoomDialog] = useState(false);

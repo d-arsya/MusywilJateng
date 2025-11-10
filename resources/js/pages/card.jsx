@@ -2,6 +2,7 @@
 
 import AuthLayout from '@/layouts/auth';
 import { toPng } from 'html-to-image';
+import { Avatar } from 'primereact/avatar';
 import { useRef } from 'react';
 import QRCode from 'react-qr-code';
 
@@ -52,13 +53,14 @@ export default function CardPage({ auth, app }) {
                                 {user.office.type} {user.office.name}
                             </p>
                         </div>
-
-                        <img
-                            src={user.avatar}
-                            alt="Foto Profil"
-                            className="h-24 w-24 rounded-full border-2 border-white bg-emerald-800 object-cover shadow-lg"
+                        <Avatar
+                            image={user.avatar || undefined}
+                            label={!user.avatar ? user.name.charAt(0) : undefined}
+                            size="xlarge"
+                            shape="circle"
+                            className="h-32 w-32 rounded-full border-2 border-white bg-emerald-800 object-cover shadow-lg"
+                            style={{ width: '80px', height: '80px', fontSize: '32px' }}
                         />
-
                         <div ref={qrRef} className="rounded-sm bg-white p-1">
                             <QRCode
                                 value={app.url + '/s/' + user.code} // dynamically from user.code
