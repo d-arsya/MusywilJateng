@@ -39,14 +39,13 @@ class RoomController extends Controller
     public function user()
     {
         $user = Auth::user();
-        $room = $user->room;
-        $building = $room->building;
+        $room = $user->room ?? null;
+        $building = $room->building ?? null;
         $myRoom = [
             "building" => $building,
             "room" => $room,
-            "roommates" => User::with(['office', 'employment'])->whereRoomId($room->id)->get()
+            "roommates" => $room ? User::with(['office', 'employment'])->whereRoomId($room->id)->get() : null
         ];
-        // dd($myRoom['roommates']);
         return inertia('penginapan', compact('myRoom'));
     }
 }
