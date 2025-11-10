@@ -60,7 +60,8 @@ export default function ProfilePage({ auth }) {
                             <div className="relative mb-4">
                                 <div className="absolute inset-0 animate-pulse rounded-full bg-white/20 blur-xl"></div>
                                 <Avatar
-                                    image={user.avatar || `https://ui-avatars.com/api/?name=${user.name}&background=10b981&color=fff&size=200`}
+                                    image={user.avatar || undefined}
+                                    label={!user.avatar ? user.name.charAt(0) : undefined}
                                     size="xlarge"
                                     shape="circle"
                                     className="relative h-32 w-32 border-4 border-white/30 shadow-2xl backdrop-blur-sm"
