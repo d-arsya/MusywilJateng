@@ -2,50 +2,7 @@ import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
 import { CalendarDays, Clock, MapPin } from 'lucide-react';
 
-const schedule = [
-    {
-        date: 'Senin, 11 November 2025',
-        activities: [
-            {
-                name: 'Registrasi Peserta',
-                description: 'Registrasi peserta dan pembagian kartu tanda hadir.',
-                location: 'Aula Utama',
-                time: '08:00 - 09:00',
-            },
-            {
-                name: 'Pembukaan & Sambutan',
-                description: 'Sambutan oleh panitia dan pembukaan acara resmi.',
-                location: 'Aula Utama',
-                time: '09:00 - 10:30',
-            },
-            {
-                name: 'Workshop: Team Building',
-                description: 'Sesi workshop untuk membangun kerja sama tim.',
-                location: 'Ruang Workshop 1',
-                time: '10:30 - 12:00',
-            },
-        ],
-    },
-    {
-        date: 'Selasa, 12 November 2025',
-        activities: [
-            {
-                name: 'Senam Pagi & Ice Breaking',
-                description: 'Senam pagi bersama dan permainan ice breaking.',
-                location: 'Lapangan',
-                time: '08:00 - 09:30',
-            },
-            {
-                name: 'Sesi Materi: Kepemimpinan',
-                description: 'Materi tentang kepemimpinan untuk peserta.',
-                location: 'Aula Utama',
-                time: '09:30 - 11:00',
-            },
-        ],
-    },
-];
-
-export default function JadwalPage() {
+export default function JadwalPage({ schedule }) {
     return (
         <AuthLayout>
             <div className="space-y-6 p-4">
@@ -70,7 +27,7 @@ export default function JadwalPage() {
                                     <p className="mt-1 text-sm text-gray-600">{activity.description}</p>
 
                                     {/* Lokasi & Jam */}
-                                    <div className="mt-2 flex items-center gap-4 text-sm text-gray-500">
+                                    <div className="mt-2 flex flex-col gap-4 text-sm text-gray-500">
                                         <div className="flex items-center gap-1">
                                             <MapPin className="h-4 w-4" />
                                             <span>{activity.location}</span>

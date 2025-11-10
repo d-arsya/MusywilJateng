@@ -6,10 +6,8 @@ import { Divider } from 'primereact/divider';
 import { Tag } from 'primereact/tag';
 import QRCode from 'react-qr-code';
 
-export default function ProfilePage({ auth }) {
-    const user = auth.user;
-
-    // Format tanggal
+export default function ProfilePage({ user }) {
+    console.log(user);
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('id-ID', {

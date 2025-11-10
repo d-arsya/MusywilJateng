@@ -7,6 +7,7 @@ use App\Models\Office;
 use App\Models\User;
 use App\Traits\WhatsAppTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -109,7 +110,8 @@ class UserController extends Controller
     }
     public function profile()
     {
-        return inertia('profile');
+        $user = User::with(['office', 'employment', 'room.building'])->whereId(Auth::id())->first();
+        return inertia('profile', compact('user'));
     }
 
     public function index()

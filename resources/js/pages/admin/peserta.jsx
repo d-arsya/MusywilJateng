@@ -20,7 +20,7 @@ export default function AdminDashboardPage({ users }) {
     const stats = {
         total: users.length,
         verified: users.filter((u) => u.paid).length,
-        pending: users.filter((u) => !u.paid).length,
+        pending: users.filter((u) => !u.paid && u.invoice != null).length,
         arriving: users.filter((u) => new Date(u.arrive) <= new Date()).length,
     };
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Meeting;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class MeetingController extends Controller
 {
@@ -67,5 +69,38 @@ class MeetingController extends Controller
     public function edit(Meeting $meeting)
     {
         return inertia('admin/kegiatan/create', ['meeting' => $meeting, 'isEdit' => true]);
+    }
+
+    public function userView()
+    {
+        $attendances = Attendance::where('user_id', Auth::id())->with(['meeting'])->get();
+        $sorted = $attendances->sortBy(function ($item) {
+            return $item->meeting->date;
+        });
+
+        // Group meetings by formatted date
+        $grouped = $sorted->groupBy(function ($item) {
+            return Carbon::parse($item->meeting->date)
+                ->locale('id')
+                ->translatedFormat('l, d F Y');
+        });
+
+        // Transform into your desired structure
+        $schedule = $grouped->map(function ($items, $date) {
+            return [
+                'date' => $date,
+                'activities' => $items->map(function ($attendance) {
+                    $meeting = $attendance->meeting;
+
+                    return [
+                        'name' => $meeting->name,
+                        'description' => $meeting->description,
+                        'location' => $meeting->room,
+                        'time' => substr($meeting->start_time, 0, 5) . ' - ' . substr($meeting->end_time, 0, 5),
+                    ];
+                })->sortBy('time')->values(), // optional: sort by start time
+            ];
+        })->values();
+        return inertia('jadwal', compact('schedule'));
     }
 }

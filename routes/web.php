@@ -7,6 +7,7 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
+use App\Models\Meeting;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingPageController::class, 'home'])->name('landingpage');
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/penginapan', [RoomController::class, 'user']);
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
     Route::inertia('/card', 'card');
-    Route::inertia('/jadwal', 'jadwal');
+    Route::get('/jadwal', [MeetingController::class, 'userView']);
     Route::inertia('/full', 'full');
     Route::inertia('materi', 'materi');
 });
