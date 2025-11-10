@@ -107,6 +107,10 @@ class UserController extends Controller
     {
         return inertia('dashboard');
     }
+    public function profile()
+    {
+        return inertia('profile');
+    }
 
     public function index()
     {

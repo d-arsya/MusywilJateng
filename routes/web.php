@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pembayaran/{type}/{code}', [PaymentController::class, 'change']);
     Route::inertia('/denah', 'denah');
     Route::get('/penginapan', [RoomController::class, 'user']);
-    Route::inertia('/profile', 'profile');
+    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
     Route::inertia('/card', 'card');
     Route::inertia('/jadwal', 'jadwal');
     Route::inertia('/full', 'full');
