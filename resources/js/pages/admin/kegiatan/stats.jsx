@@ -319,7 +319,10 @@ const AdminMeetingDetail = ({ meetingId = 2 }) => {
                     </div>
                 </div>
                 <div className="col-span-2">
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+                    <div
+                        onClick={() => router.get('/admin/kegiatan/assign')}
+                        className="mb-6 cursor-pointer rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
+                    >
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                             <div className="flex items-start gap-3">
                                 <Calendar className="mt-1 text-emerald-600" size={20} />

@@ -111,8 +111,8 @@ const AdminMeetingDashboard = ({ meetings }) => {
 
     const statusTemplate = (rowData) => {
         const statusConfig = {
-            Belum: { label: 'Belum Dimulai', severity: 'info' },
-            Sedang: { label: 'Sedang Berlangsung', severity: 'warning' },
+            Belum: { label: 'Belum', severity: 'info' },
+            Sedang: { label: 'Berlangsung', severity: 'warning' },
             Telah: { label: 'Selesai', severity: 'success' },
         };
         const config = statusConfig[rowData.status];

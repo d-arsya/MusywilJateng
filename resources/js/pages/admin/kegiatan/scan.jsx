@@ -1,4 +1,5 @@
 import FullLayout from '@/layouts/full';
+import { router } from '@inertiajs/react';
 import { Html5Qrcode } from 'html5-qrcode';
 import { ArrowLeft, CheckCircle, Clock, QrCode, Scan, Users, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
@@ -193,8 +194,7 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
     };
 
     const handleBack = () => {
-        console.log('Navigate back to detail');
-        // Router navigation
+        router.get('/admin/kegiatan');
     };
 
     const refreshData = () => {

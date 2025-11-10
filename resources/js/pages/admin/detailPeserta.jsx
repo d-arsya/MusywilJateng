@@ -135,7 +135,7 @@ export default function AdminEditUserPage({ employments, user, offices }) {
                                 <div className="relative">
                                     <div className="h-32 w-32 overflow-hidden rounded-2xl border-4 border-gray-100 shadow-md">
                                         <img
-                                            src={formData.avatar || '/api/placeholder/128/128'}
+                                            src={avatarPreview || '/assets/img/placeholder.webp'}
                                             alt="Avatar"
                                             className="h-full w-full object-cover"
                                         />

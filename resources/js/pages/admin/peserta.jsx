@@ -182,16 +182,6 @@ export default function AdminDashboardPage({ users }) {
         );
     };
 
-    const paymentTemplate = (user) => {
-        if (user.paid) {
-            return <Tag value="Terverifikasi" severity="success" icon={<CheckCircle2 className="mr-1 h-3 w-3" />} className="font-semibold" />;
-        }
-        if (user.invoice) {
-            return <Tag value="Menunggu" severity="warning" icon={<Clock className="mr-1 h-3 w-3" />} className="font-semibold" />;
-        }
-        return <Tag value="Belum" severity="danger" icon={<Clock className="mr-1 h-3 w-3" />} className="font-semibold" />;
-    };
-
     const actionsTemplate = (user) => {
         return (
             <div className="flex gap-2">
@@ -204,15 +194,6 @@ export default function AdminDashboardPage({ users }) {
                     tooltipOptions={{ position: 'top' }}
                     onClick={() => show(user.code)}
                 />
-                {/* <Button icon={<Edit className="h-4 w-4" />} rounded outlined severity="warning" tooltip="Edit" tooltipOptions={{ position: 'top' }} />
-                <Button
-                    icon={<Trash2 className="h-4 w-4" />}
-                    rounded
-                    outlined
-                    severity="danger"
-                    tooltip="Hapus"
-                    tooltipOptions={{ position: 'top' }}
-                /> */}
             </div>
         );
     };
@@ -283,15 +264,6 @@ export default function AdminDashboardPage({ users }) {
                         <Column body={codeTemplate} header="Kode Akses" sortable field="code" />
 
                         <Column body={scheduleTemplate} header="Jadwal" headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
-
-                        <Column
-                            body={paymentTemplate}
-                            header="Pembayaran"
-                            filter
-                            filterField="paid"
-                            headerClassName="hidden lg:table-cell"
-                            bodyClassName="hidden lg:table-cell"
-                        />
                     </DataTable>
                 </div>
             </div>

@@ -13,6 +13,6 @@ class MeetingSeeder extends Seeder
      */
     public function run(): void
     {
-        Meeting::factory(15)->create();
+        Meeting::factory(5)->create();
     }
 }
