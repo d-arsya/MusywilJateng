@@ -8,6 +8,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use App\Models\Meeting;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingPageController::class, 'home'])->name('landingpage');
@@ -37,7 +38,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::inertia('/', 'admin');
-    Route::inertia('/dashboard', 'admin/dashboard');
+    Route::get('/dashboard', [UserController::class, 'adminDashboard']);
     Route::get('/penginapan', [BuildingController::class, 'index'])->name('admin.penginapan');
     Route::post('/penginapan', [BuildingController::class, 'store']);
     Route::put('/penginapan/{building}', [BuildingController::class, 'update']);

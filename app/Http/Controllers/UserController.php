@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
+use App\Models\Building;
 use App\Models\Employment;
+use App\Models\Meeting;
 use App\Models\Office;
+use App\Models\Room;
 use App\Models\User;
 use App\Traits\WhatsAppTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Pest\Mutate\Mutators\Logical\TrueToFalse;
 
 class UserController extends Controller
 {
@@ -119,6 +124,75 @@ class UserController extends Controller
         $users = User::with(['employment', 'office'])->get();
         return inertia('admin/peserta', compact('users'));
     }
+    public function adminDashboard()
+    {
+        // Ambil semua meeting hari ini + attendance-nya
+        $meetings = Meeting::with('attendances')
+            ->whereDate('date', now()->toDateString())
+            ->orderBy('date')
+            ->get();
+
+        // Daftar meeting hari ini
+        $mockTodayMeetings = $meetings->map(function ($meeting) {
+            $totalParticipants = $meeting->attendances->count();
+            $totalAttended = $meeting->attendances->where('attend', true)->count();
+
+            return [
+                'id' => $meeting->id,
+                'code' => $meeting->code,
+                'name' => $meeting->name,
+                'start_time' => substr($meeting->start_time, 0, 5),
+                'end_time' => substr($meeting->end_time, 0, 5),
+                'room' => $meeting->room,
+                'total_participants' => $totalParticipants,
+                'total_attended' => $totalAttended,
+                'status' => $meeting->status,
+            ];
+        })->values();
+
+        // Distribusi pengguna
+        $users = User::with(['office', 'employment'])->get();
+
+        $mockOfficeDistribution = $users->groupBy(fn($u) => $u->office->name ?? 'Tidak Diketahui')
+            ->map(fn($group) => $group->count());
+
+        $mockEmploymentDistribution = $users->groupBy(fn($u) => $u->employment->name ?? 'Tidak Diketahui')
+            ->map(fn($group) => $group->count());
+
+        // Hitung kehadiran hari ini
+        $todayMeetingIds = $meetings->pluck('id');
+
+        $totalAttendances = Attendance::whereIn('meeting_id', $todayMeetingIds)->count();
+        $attendedCount = Attendance::whereIn('meeting_id', $todayMeetingIds)
+            ->whereNotNull('attend')
+            ->count();
+
+        // Hitung kamar yang terisi (user dengan room_id != null)
+        $assignedRooms = User::whereNotNull('room_id')->distinct('room_id')->count();
+
+        // Statistik umum dashboard
+        $mockStats = [
+            "totalUsers" => User::count(),
+            "verifiedPayment" => User::where('paid', true)->count(),
+            "pendingPayment" => User::where('paid', false)->count(),
+            "totalMeetings" => Meeting::count(),
+            "todayMeetings" => $meetings->count(),
+            "totalRooms" => Room::count(),
+            "totalBuildings" => Building::count(),
+            "assignedRooms" => $assignedRooms,
+            "todayAttendance" => $attendedCount,
+            "averageAttendance" => $totalAttendances > 0
+                ? round(($attendedCount / $totalAttendances) * 100, 2)
+                : 0, // hasil persentase
+        ];
+        return inertia('admin/dashboard', compact(
+            'mockStats',
+            'mockTodayMeetings',
+            'mockOfficeDistribution',
+            'mockEmploymentDistribution'
+        ));
+    }
+
     public function show(User $user)
     {
         $offices = Office::all()->groupBy('type');

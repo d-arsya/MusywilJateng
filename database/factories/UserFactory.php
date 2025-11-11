@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Employment;
 use App\Models\Office;
 use App\Models\Room;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,6 +20,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $arrive = Carbon::instance(fake()->dateTimeBetween('-2 days', '+3 days'));
+
         return [
             'employment_id' => Employment::inRandomOrder()->value('id'),
             'office_id'     => Office::inRandomOrder()->value('id'),
@@ -29,8 +32,8 @@ class UserFactory extends Factory
             'verified'      => fake()->boolean(50),
             'admin'         => fake()->boolean(0),
             'capsize'       => fake()->numberBetween(1, 100),
-            'arrive'        => fake()->date(),
-            'depart'        => fake()->date(),
+            'arrive'        => $arrive,
+            'depart'        => $arrive->copy()->addDays(fake()->numberBetween(2, 10)),
         ];
     }
 }
