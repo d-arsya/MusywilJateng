@@ -16,9 +16,48 @@ class RoomController extends Controller
     {
         $room = Room::whereBuildingId($building->id)->whereName($room)->with(['building', 'users', 'users.office', 'users.employment'])->first();
         $unassignedUsers = User::with(['office', 'employment'])->whereNull('room_id')->get();
-        // dd($room);
-        return inertia('admin/detailKamar', compact('room', 'unassignedUsers'));
+        $otherRooms = Room::with(['building'])->whereNot('id', $room->id)->get();
+        return inertia('admin/detailKamar', compact('room', 'unassignedUsers', 'otherRooms'));
     }
+
+    public function assign(Request $request)
+    {
+        logs()->info($request->all());
+        $validated = $request->validate([
+            'room' => 'nullable|integer|exists:rooms,id',
+            'users' => 'required|array'
+        ]);
+        if ($validated['room']) {
+            $userIds = collect($validated['users'])
+                ->map(fn($u) => is_array($u) ? $u['id'] : $u)
+                ->filter() // hapus null
+                ->values()
+                ->toArray();
+
+            User::whereIn('id', $userIds)
+                ->update(['room_id' => $validated['room']]);
+        } else {
+            User::whereIn('id', $validated['users'])
+                ->update(['room_id' => null]);
+        }
+
+
+        return redirect()->back()
+            ->with('success', 'Kamar berhasil diassign.');
+    }
+    public function unassignedUser(Request $request, string $code)
+    {
+        if ($code == 'bulk') {
+            $users = explode(',', $request->query('code'));
+            logs()->info($users);
+            User::whereIn('code', $users)->update(['room_id' => null]);
+        } else {
+            User::whereCode($code)->update(['room_id' => null]);
+        }
+        return redirect()->back()
+            ->with('success', 'Kamar berhasil diassign.');
+    }
+
 
     public function update(Request $request, Building $building, Room $room)
     {

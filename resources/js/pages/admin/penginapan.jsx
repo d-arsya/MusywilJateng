@@ -1,6 +1,6 @@
 import AdminLayout from '@/layouts/admin';
 import { router, useForm } from '@inertiajs/react';
-import { Building2, DoorOpen, Edit2, Plus, Search, Trash2, Users } from 'lucide-react';
+import { Building2, DoorOpen, Edit2, Plus, Trash2, Users } from 'lucide-react';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
@@ -9,7 +9,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { useState } from 'react';
 
-const DashboardPenginapan = ({ buildings }) => {
+const DashboardPenginapan = ({ buildings, totalUnassigned }) => {
     // const [buildings, setBuildings] = useState(dummyBuildings);
     const [showDialog, setShowDialog] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -22,7 +22,6 @@ const DashboardPenginapan = ({ buildings }) => {
     const totalBuildings = buildings.length;
     const totalRooms = buildings.reduce((sum, b) => sum + b.rooms_count, 0);
     const totalAssigned = buildings.reduce((sum, b) => sum + b.users_count, 0);
-    const totalUnassigned = 23; // Dummy
 
     // Handlers
     const handleAddBuilding = () => {
@@ -78,7 +77,6 @@ const DashboardPenginapan = ({ buildings }) => {
     };
 
     const handleViewDetail = (building) => {
-        // console.log('Navigate to detail gedung:', building.id);
         router.get('/admin/penginapan/gedung/' + building.name);
     };
 
@@ -218,7 +216,6 @@ const DashboardPenginapan = ({ buildings }) => {
                         <h2 className="text-xl font-semibold text-gray-800">Daftar Gedung</h2>
                         <div className="flex items-center gap-2">
                             <span className="p-input-icon-left">
-                                <Search size={16} className="text-gray-400" />
                                 <InputText
                                     placeholder="Cari gedung..."
                                     value={searchQuery}

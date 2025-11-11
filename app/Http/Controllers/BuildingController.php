@@ -18,8 +18,8 @@ class BuildingController extends Controller
             // total rooms in this building
             $building->rooms_count = $building->rooms->count();
         });
-
-        return inertia('admin/penginapan', compact('buildings'));
+        $totalUnassigned = User::whereNull('room_id')->count();
+        return inertia('admin/penginapan', compact('buildings', 'totalUnassigned'));
     }
     public function store(Request $request)
     {

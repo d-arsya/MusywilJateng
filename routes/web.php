@@ -41,14 +41,16 @@ Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [UserController::class, 'adminDashboard']);
     Route::get('/penginapan', [BuildingController::class, 'index'])->name('admin.penginapan');
     Route::post('/penginapan', [BuildingController::class, 'store']);
-    Route::put('/penginapan/{building}', [BuildingController::class, 'update']);
-    Route::delete('/penginapan/{building}', [BuildingController::class, 'destroy']);
     Route::get('/penginapan/gedung/{building:name}', [BuildingController::class, 'show'])->name('admin.gedung');
     Route::post('/penginapan/gedung/{building:name}/kamar', [RoomController::class, 'store']);
     Route::put('/penginapan/gedung/{building:name}/kamar/{room}', [RoomController::class, 'update']);
     Route::delete('/penginapan/gedung/{building:name}/kamar/{room}', [RoomController::class, 'destroy']);
     Route::get('/penginapan/gedung/{building:name}/kamar/{room}', [RoomController::class, 'show']);
     Route::get('/penginapan/unassigned', [RoomController::class, 'unassigned']);
+    Route::put('/penginapan/unassigned/{code}', [RoomController::class, 'unassignedUser']);
+    Route::put('/penginapan/assign', [RoomController::class, 'assign']);
+    Route::put('/penginapan/{building}', [BuildingController::class, 'update']);
+    Route::delete('/penginapan/{building}', [BuildingController::class, 'destroy']);
 
     Route::get('/pembiayaan', [PaymentController::class, 'index']);
     Route::get('/peserta', [UserController::class, 'index']);

@@ -1,6 +1,6 @@
 import AdminLayout from '@/layouts/admin';
 import { router, useForm } from '@inertiajs/react';
-import { ArrowLeft, DoorOpen, Edit2, Plus, Search, Trash2, UserPlus, Users } from 'lucide-react';
+import { ArrowLeft, DoorOpen, Edit2, Plus, Trash2, UserPlus, Users } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
@@ -25,6 +25,7 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
     const [userSearchQuery, setUserSearchQuery] = useState('');
 
     const { data, setData, post, put, delete: destroy } = useForm({ name: '' });
+    const { data: userData, setData: setUserData, post: userPost, put: userPut } = useForm({ room: null, users: [] });
 
     // Handlers - Room CRUD
     const handleAddRoom = () => {
@@ -92,23 +93,17 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
     const handleOpenAssign = (room) => {
         setCurrentRoom(room);
         setSelectedRoom(room);
-        setSelectedUsers([]);
+        setUserData('room', room.id);
+        setUserData('users', []);
         setUserSearchQuery('');
         setShowAssignDialog(true);
     };
 
     const handleAssignUsers = () => {
-        if (selectedUsers.length === 0) return;
-
-        // Simulate assignment
-        const updatedRoom = rooms.find((r) => r.id === selectedRoom.id);
-        updatedRoom.users_count += selectedUsers.length;
-
-        setRooms([...rooms]);
-        setUnassignedUsers(unassignedUsers.filter((u) => !selectedUsers.includes(u.id)));
-        setShowAssignDialog(false);
-
-        alert(`Berhasil assign ${selectedUsers.length} peserta ke ${selectedRoom.name}`);
+        userPut('/admin/penginapan/assign', {
+            onSuccess: () => setShowAssignDialog(false),
+            onError: () => setShowAssignDialog(false),
+        });
     };
 
     const handleBackToDashboard = () => {
@@ -252,7 +247,6 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
                         <h2 className="text-xl font-semibold text-gray-800">Daftar Kamar</h2>
                         <div className="flex items-center gap-2">
                             <span className="p-input-icon-left">
-                                <Search size={16} className="text-gray-400" />
                                 <InputText
                                     placeholder="Cari kamar..."
                                     value={searchQuery}
@@ -317,10 +311,10 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
                     <div>
                         <Button label="Batal" className="p-button-text" onClick={() => setShowAssignDialog(false)} />
                         <Button
-                            label={`Assign ${selectedUsers.length} Peserta`}
+                            label={`Assign ${userData.users.length} Peserta`}
                             className="p-button-success"
                             onClick={handleAssignUsers}
-                            disabled={selectedUsers.length === 0}
+                            disabled={userData.users.length === 0}
                         />
                     </div>
                 }
@@ -335,7 +329,6 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
                     <div>
                         <label className="mb-2 block text-sm font-medium text-gray-700">Pilih Peserta Belum Terplotting</label>
                         <span className="p-input-icon-left w-full">
-                            <Search size={16} className="text-gray-400" />
                             <InputText
                                 placeholder="Cari nama atau utusan..."
                                 value={userSearchQuery}
@@ -353,17 +346,20 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
                                 <div
                                     key={user.id}
                                     className={`flex cursor-pointer items-center gap-3 border-b border-gray-100 p-3 hover:bg-gray-50 ${
-                                        selectedUsers.includes(user.id) ? 'bg-emerald-50' : ''
+                                        userData.users.includes(user.id) ? 'bg-emerald-50' : ''
                                     }`}
                                     onClick={() => {
-                                        if (selectedUsers.includes(user.id)) {
-                                            setSelectedUsers(selectedUsers.filter((id) => id !== user.id));
+                                        if (userData.users.includes(user.id)) {
+                                            setUserData(
+                                                'users',
+                                                userData.users.filter((id) => id !== user.id),
+                                            );
                                         } else {
-                                            setSelectedUsers([...selectedUsers, user.id]);
+                                            setUserData('users', [...userData.users, user.id]);
                                         }
                                     }}
                                 >
-                                    <input type="checkbox" checked={selectedUsers.includes(user.id)} onChange={() => {}} className="h-4 w-4" />
+                                    <input type="checkbox" checked={userData.users.includes(user.id)} onChange={() => {}} className="h-4 w-4" />
                                     <Avatar label={user.name.charAt(0)} size="normal" shape="circle" className="bg-emerald-600 text-white" />
                                     <div className="flex-1">
                                         <div className="font-semibold text-gray-800">{user.name}</div>
@@ -376,10 +372,10 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
                         )}
                     </div>
 
-                    {selectedUsers.length > 0 && (
+                    {userData.users.length > 0 && (
                         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
                             <p className="text-sm text-emerald-800">
-                                <strong>{selectedUsers.length} peserta</strong> dipilih untuk di-assign
+                                <strong>{userData.users.length} peserta</strong> dipilih untuk di-assign
                             </p>
                         </div>
                     )}

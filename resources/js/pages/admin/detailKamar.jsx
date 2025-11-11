@@ -12,56 +12,19 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { useState } from 'react';
 
-// Dummy Data
-const dummyBuilding = {
-    id: 1,
-    name: 'Gedung Aswad',
-};
-
-const dummyRoom = {
-    id: 1,
-    building_id: 1,
-    name: 'Kamar 1',
-    building: dummyBuilding,
-};
-
-const dummyUsers = [
-    { id: 1, name: 'Arsyad Muhammad', phone: '081234567801', office: { name: 'DPW Jawa Tengah' }, employment: { name: 'Pembina' }, room_id: 1 },
-    { id: 2, name: 'Amhar Aziz', phone: '081234567802', office: { name: 'DPD Semarang' }, employment: { name: 'Pengurus' }, room_id: 1 },
-    { id: 3, name: 'Aslam Hakim', phone: '081234567803', office: { name: 'DPD Solo' }, employment: { name: 'Pengurus' }, room_id: 1 },
-    { id: 4, name: 'Ahmad Fauzi', phone: '081234567804', office: { name: 'DPW Jawa Timur' }, employment: { name: 'Anggota' }, room_id: 1 },
-    { id: 5, name: 'Budi Santoso', phone: '081234567805', office: { name: 'DMW Jakarta' }, employment: { name: 'Anggota' }, room_id: 1 },
-    { id: 6, name: 'Cahya Dermawan', phone: '081234567806', office: { name: 'DPD Bandung' }, employment: { name: 'Pengawas' }, room_id: 1 },
-    { id: 7, name: 'Dedi Kurniawan', phone: '081234567807', office: { name: 'DPW Jawa Barat' }, employment: { name: 'Anggota' }, room_id: 1 },
-    { id: 8, name: 'Eko Prasetyo', phone: '081234567808', office: { name: 'DPD Yogyakarta' }, employment: { name: 'Anggota' }, room_id: 1 },
-];
-
-const dummyOtherRooms = [
-    { id: 2, building_id: 1, name: 'Kamar 2', building: dummyBuilding },
-    { id: 3, building_id: 1, name: 'Kamar 3', building: dummyBuilding },
-    { id: 4, building_id: 2, name: 'Kamar 1', building: { id: 2, name: 'Gedung Biru' } },
-    { id: 5, building_id: 2, name: 'Kamar 2', building: { id: 2, name: 'Gedung Biru' } },
-];
-
-const DetailKamar = ({ room, unassignedUsers }) => {
-    // const [room, setRoom] = useState(dummyRoom);
+const DetailKamar = ({ room, unassignedUsers, otherRooms }) => {
     const users = room.users;
-    const [otherRooms, setOtherRooms] = useState(dummyOtherRooms);
 
     const [showEditRoomDialog, setShowEditRoomDialog] = useState(false);
     const [showAddUserDialog, setShowAddUserDialog] = useState(false);
     const [showMoveDialog, setShowMoveDialog] = useState(false);
     const [roomName, setRoomName] = useState(room.name);
     const { delete: destroy } = useForm(null);
-
-    // Selection state
-    const [selectedUsers, setSelectedUsers] = useState([]);
     const [selectedUsersForBulk, setSelectedUsersForBulk] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
     const [targetRoom, setTargetRoom] = useState(null);
 
-    // Add user state
-    const [selectedNewUsers, setSelectedNewUsers] = useState([]);
+    const { data: newData, setData: setNewData, put: putNewData } = useForm({ users: [], room: room.id });
 
     // Handlers - Room Edit
     const handleEditRoom = () => {
@@ -75,10 +38,7 @@ const DetailKamar = ({ room, unassignedUsers }) => {
     };
 
     const handleDeleteRoom = () => {
-        if (users.length > 0) {
-            alert('Tidak bisa menghapus kamar yang masih berpenghuni!');
-            return;
-        }
+        if (users.length > 0) return;
 
         confirmDialog({
             message: `Apakah Anda yakin ingin menghapus ${room.name}?`,
@@ -100,19 +60,15 @@ const DetailKamar = ({ room, unassignedUsers }) => {
 
     // Handlers - Add Users
     const handleOpenAddUser = () => {
-        setSelectedNewUsers([]);
+        setNewData('users', []);
         setShowAddUserDialog(true);
     };
 
     const handleAddUsers = () => {
-        const usersToAdd = unassignedUsers.filter((u) => selectedNewUsers.includes(u.id));
-        const updatedUsers = usersToAdd.map((u) => ({ ...u, room_id: room.id }));
-
-        setUsers([...users, ...updatedUsers]);
-        setUnassignedUsers(unassignedUsers.filter((u) => !selectedNewUsers.includes(u.id)));
-        setShowAddUserDialog(false);
-
-        alert(`Berhasil menambahkan ${selectedNewUsers.length} peserta ke ${room.name}`);
+        putNewData('/admin/penginapan/assign', {
+            onSuccess: () => setShowAddUserDialog(false),
+            onError: () => setShowAddUserDialog(false),
+        });
     };
 
     // Handlers - Move User
@@ -123,12 +79,11 @@ const DetailKamar = ({ room, unassignedUsers }) => {
     };
 
     const handleMoveUser = () => {
-        if (!targetRoom) return;
-
-        setUsers(users.filter((u) => u.id !== currentUser.id));
-        setShowMoveDialog(false);
-
-        alert(`${currentUser.name} berhasil dipindah ke ${targetRoom.name} - ${targetRoom.building.name}`);
+        setNewData('room', targetRoom.id);
+        putNewData('/admin/penginapan/assign', {
+            onSuccess: () => setShowMoveDialog(false),
+            onError: (err) => console.log(err),
+        });
     };
 
     // Handlers - Remove User
@@ -141,10 +96,15 @@ const DetailKamar = ({ room, unassignedUsers }) => {
             rejectLabel: 'Batal',
             acceptClassName: 'p-button-danger',
             accept: () => {
-                setUsers(users.filter((u) => u.id !== user.id));
-                const removedUser = { ...user, room_id: null };
-                setUnassignedUsers([...unassignedUsers, removedUser]);
-                alert(`${user.name} berhasil dikeluarkan dari kamar`);
+                setSelectedUsersForBulk([]);
+                putNewData('/admin/penginapan/unassigned/' + user.code, {
+                    onSuccess: () => {
+                        setShowAddUserDialog(false);
+                    },
+                    onError: (err) => {
+                        setShowAddUserDialog(false);
+                    },
+                });
             },
         });
     };
@@ -169,23 +129,24 @@ const DetailKamar = ({ room, unassignedUsers }) => {
             rejectLabel: 'Batal',
             acceptClassName: 'p-button-danger',
             accept: () => {
-                const removedUsers = users.filter((u) => selectedUsersForBulk.includes(u.id));
-                setUsers(users.filter((u) => !selectedUsersForBulk.includes(u.id)));
-                setUnassignedUsers([...unassignedUsers, ...removedUsers.map((u) => ({ ...u, room_id: null }))]);
-                setSelectedUsersForBulk([]);
-                alert(`${removedUsers.length} peserta berhasil dikeluarkan dari kamar`);
+                let data = selectedUsersForBulk.map((u) => u.code);
+                putNewData('/admin/penginapan/unassigned/bulk?code=' + data.join(','), {
+                    onSuccess: () => setShowAddUserDialog(false),
+                    onError: (err) => {
+                        console.log(err);
+                    },
+                });
             },
         });
     };
 
     const handleMoveBulk = () => {
-        if (!targetRoom || selectedUsersForBulk.length === 0) return;
-
-        setUsers(users.filter((u) => !selectedUsersForBulk.includes(u.id)));
-        setSelectedUsersForBulk([]);
-        setShowMoveDialog(false);
-
-        alert(`${selectedUsersForBulk.length} peserta berhasil dipindah ke ${targetRoom.name} - ${targetRoom.building.name}`);
+        if (!targetRoom || newData.length === 0) return;
+        console.log(newData);
+        putNewData('/admin/penginapan/assign', {
+            onSuccess: () => setShowMoveDialog(false),
+            onError: (err) => console.log(err),
+        });
     };
 
     const handleBack = () => {
@@ -232,15 +193,15 @@ const DetailKamar = ({ room, unassignedUsers }) => {
     const actionTemplate = (rowData) => {
         return (
             <div className="flex gap-2">
-                <Button
+                {/* <Button
                     icon={<ArrowRightLeft size={16} />}
                     className="p-button-rounded p-button-text p-button-info p-button-sm"
                     onClick={() => handleOpenMove(rowData)}
                     tooltip="Pindah Kamar"
-                />
+                /> */}
                 <Button
                     icon={<UserX size={16} />}
-                    className="p-button-rounded p-button-text p-button-danger p-button-sm"
+                    className="p-button-rounded p-button-text p-button-danger"
                     onClick={() => handleRemoveUser(rowData)}
                     tooltip="Keluarkan"
                 />
@@ -283,10 +244,10 @@ const DetailKamar = ({ room, unassignedUsers }) => {
                         {room.building.name} - {room.name}
                     </h1>
                     <div className="flex gap-2">
-                        <Button icon={<Edit2 size={16} />} label="Edit Nama" className="p-button-outlined p-button-sm" onClick={handleEditRoom} />
+                        <Button icon={<Edit2 size={16} />} label="Edit" className="p-button-outlined p-button-sm" onClick={handleEditRoom} />
                         <Button
                             icon={<Trash2 size={16} />}
-                            label="Hapus Kamar"
+                            label="Hapus"
                             className="p-button-outlined p-button-danger p-button-sm"
                             onClick={handleDeleteRoom}
                             disabled={users.length > 0}
@@ -317,13 +278,13 @@ const DetailKamar = ({ room, unassignedUsers }) => {
                     {selectedUsersForBulk.length > 0 && (
                         <>
                             <Button
-                                label={`Pindahkan ${selectedUsersForBulk.length} Peserta`}
+                                label={`Pindahkan ${newData.users.length} Peserta`}
                                 icon={<ArrowRightLeft size={16} />}
                                 className="p-button-info"
                                 onClick={handleBulkMove}
                             />
                             <Button
-                                label={`Keluarkan ${selectedUsersForBulk.length} Peserta`}
+                                label={`Keluarkan ${newData.users.length} Peserta`}
                                 icon={<UserX size={16} />}
                                 className="p-button-danger"
                                 onClick={handleBulkRemove}
@@ -342,7 +303,12 @@ const DetailKamar = ({ room, unassignedUsers }) => {
                 <DataTable
                     value={sortedUsers}
                     selection={selectedUsersForBulk}
-                    onSelectionChange={(e) => setSelectedUsersForBulk(e.value.map((u) => u.id))}
+                    onSelectionChange={(e) => {
+                        const selected = e.value;
+                        const userIds = selected.map((w) => w.id);
+                        setSelectedUsersForBulk(selected);
+                        setNewData('users', userIds);
+                    }}
                     dataKey="id"
                     emptyMessage="Kamar ini masih kosong. Tambahkan peserta!"
                     className="text-sm"
@@ -394,10 +360,10 @@ const DetailKamar = ({ room, unassignedUsers }) => {
                     <div>
                         <Button label="Batal" className="p-button-text" onClick={() => setShowAddUserDialog(false)} />
                         <Button
-                            label={`Tambahkan ${selectedNewUsers.length} Peserta`}
+                            label={`Tambahkan ${newData.users.length} Peserta`}
                             className="p-button-success"
                             onClick={handleAddUsers}
-                            disabled={selectedNewUsers.length === 0}
+                            disabled={newData.users.length === 0}
                         />
                     </div>
                 }
@@ -417,17 +383,21 @@ const DetailKamar = ({ room, unassignedUsers }) => {
                                 <div
                                     key={user.id}
                                     className={`flex cursor-pointer items-center gap-3 border-b border-gray-100 p-3 hover:bg-gray-50 ${
-                                        selectedNewUsers.includes(user.id) ? 'bg-emerald-50' : ''
+                                        newData.users.includes(user.id) ? 'bg-emerald-50' : ''
                                     }`}
                                     onClick={() => {
-                                        if (selectedNewUsers.includes(user.id)) {
-                                            setSelectedNewUsers(selectedNewUsers.filter((id) => id !== user.id));
+                                        setNewData('room', room.id);
+                                        if (newData.users.includes(user.id)) {
+                                            setNewData(
+                                                'users',
+                                                newData.users.filter((id) => id !== user.id),
+                                            );
                                         } else {
-                                            setSelectedNewUsers([...selectedNewUsers, user.id]);
+                                            setNewData('users', [...newData.users, user.id]);
                                         }
                                     }}
                                 >
-                                    <input type="checkbox" checked={selectedNewUsers.includes(user.id)} onChange={() => {}} className="h-4 w-4" />
+                                    <input type="checkbox" checked={newData.users.includes(user.id)} onChange={() => {}} className="h-4 w-4" />
                                     <Avatar label={user.name.charAt(0)} size="normal" shape="circle" className="bg-emerald-600 text-white" />
                                     <div className="flex-1">
                                         <div className="font-semibold text-gray-800">{user.name}</div>
@@ -444,7 +414,7 @@ const DetailKamar = ({ room, unassignedUsers }) => {
 
             {/* Dialog Move User(s) */}
             <Dialog
-                header={currentUser ? `Pindahkan ${currentUser.name}` : `Pindahkan ${selectedUsersForBulk.length} Peserta`}
+                header={currentUser ? `Pindahkan ${currentUser.name}` : `Pindahkan ${newData.users.length} Peserta`}
                 visible={showMoveDialog}
                 style={{ width: '500px' }}
                 onHide={() => setShowMoveDialog(false)}
@@ -455,7 +425,7 @@ const DetailKamar = ({ room, unassignedUsers }) => {
                             label="Pindahkan"
                             className="p-button-info"
                             onClick={currentUser ? handleMoveUser : handleMoveBulk}
-                            disabled={!targetRoom}
+                            disabled={!newData.room}
                         />
                     </div>
                 }
@@ -474,7 +444,11 @@ const DetailKamar = ({ room, unassignedUsers }) => {
                         <Dropdown
                             value={targetRoom}
                             options={roomOptions}
-                            onChange={(e) => setTargetRoom(e.value)}
+                            onChange={(e) => {
+                                setNewData('users', selectedUsersForBulk);
+                                setNewData('room', e.value.id);
+                                setTargetRoom(e.value);
+                            }}
                             placeholder="Pilih kamar tujuan"
                             className="w-full"
                             filter
