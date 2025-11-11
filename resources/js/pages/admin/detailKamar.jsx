@@ -19,7 +19,7 @@ const DetailKamar = ({ room, unassignedUsers, otherRooms }) => {
     const [showAddUserDialog, setShowAddUserDialog] = useState(false);
     const [showMoveDialog, setShowMoveDialog] = useState(false);
     const [roomName, setRoomName] = useState(room.name);
-    const { delete: destroy } = useForm(null);
+    const { delete: destroy, data: roomData, setData: setRoomData, put: putRoomData } = useForm({ name: room.name });
     const [selectedUsersForBulk, setSelectedUsersForBulk] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
     const [targetRoom, setTargetRoom] = useState(null);
@@ -33,8 +33,13 @@ const DetailKamar = ({ room, unassignedUsers, otherRooms }) => {
     };
 
     const handleSaveRoom = () => {
-        setRoom({ ...room, name: roomName });
-        setShowEditRoomDialog(false);
+        putRoomData('/admin/penginapan/gedung/' + room.building.name + '/kamar/' + room.id, {
+            onError: (errs) => {
+                console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
+                setShowEditRoomDialog(false);
+            },
+            onSuccess: () => setShowEditRoomDialog(false),
+        });
     };
 
     const handleDeleteRoom = () => {
@@ -340,8 +345,8 @@ const DetailKamar = ({ room, unassignedUsers, otherRooms }) => {
                             Nama Kamar <span className="text-red-500">*</span>
                         </label>
                         <InputText
-                            value={roomName}
-                            onChange={(e) => setRoomName(e.target.value)}
+                            value={roomData.name}
+                            onChange={(e) => setRoomData('name', e.target.value)}
                             placeholder="Contoh: Kamar 1"
                             className="w-full"
                             autoFocus
