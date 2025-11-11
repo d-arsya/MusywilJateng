@@ -1,11 +1,11 @@
 import { useToast } from '@/context/toast';
 import AdminLayout from '@/layouts/admin';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { AlertCircle, Banknote, CheckCircle2, Clock, CreditCard, Eye, FileText, Search, Users, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Badge } from 'primereact/badge';
 import { Column } from 'primereact/column';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
@@ -17,6 +17,7 @@ export default function AdminDashboardPage({ payments }) {
     const [globalFilter, setGlobalFilter] = useState('');
     const [statusFilter, setStatusFilter] = useState(null);
     const { showToast } = useToast();
+    const { data, post } = useForm(null);
 
     useEffect(() => {
         const verifiedRows = payments.filter((p) => p.paid);
@@ -68,28 +69,18 @@ export default function AdminDashboardPage({ payments }) {
             }, RELOAD_DELAY_MS);
         }
     };
-
     const handleRowSelect = (e) => {
-        confirmDialog({
-            message: `Konfirmasi pembayaran dari ${e.data.name}?`,
-            header: 'Konfirmasi Verifikasi',
-            icon: <CheckCircle2 className="h-6 w-6 text-emerald-600" />,
-            acceptClassName: 'p-button-success',
-            acceptLabel: 'Ya, Verifikasi',
-            rejectLabel: 'Batal',
-            accept: () => sendApiAction(e.data.code, 'check', e.data.name),
+        post(`/pembayaran/check/${e.data.code}`, {
+            onSuccess: () => showToast('success', 'Berhasil!', `Berhasil mengonfirmasi pembayaran ${e.data.name}`),
+            onError: () => showToast('warn', 'Gagal!', `Gagal mengonfirmasi pembayaran ${e.data.name}`),
         });
     };
 
     const handleRowUnselect = (e) => {
-        confirmDialog({
-            message: `Batalkan verifikasi pembayaran ${e.data.name}?`,
-            header: 'Konfirmasi Pembatalan',
-            icon: <AlertCircle className="h-6 w-6 text-amber-600" />,
-            acceptClassName: 'p-button-warning',
-            acceptLabel: 'Ya, Batalkan',
-            rejectLabel: 'Tidak',
-            accept: () => sendApiAction(e.data.code, 'uncheck', e.data.name),
+        post(`/pembayaran/uncheck/${e.data.code}`, {
+            preserveState: true,
+            onSuccess: () => showToast('success', 'Berhasil!', `Berhasil mengonfirmasi pembayaran ${e.data.name}`),
+            onError: () => showToast('warn', 'Gagal!', `Gagal mengonfirmasi pembayaran ${e.data.name}`),
         });
     };
 

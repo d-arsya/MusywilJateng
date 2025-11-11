@@ -31,9 +31,13 @@ class PaymentController extends Controller
 
     public function change(string $type, string $code)
     {
-        $user = User::whereCode($code)->first();
-        $isPaid = $type == 'check';
-        $user->update(['paid' => $isPaid]);
-        return response()->json(['success' => true]);
+        try {
+            $user = User::whereCode($code)->first();
+            $isPaid = $type == 'check';
+            $user->update(['paid' => $isPaid]);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            return redirect()->back();
+        }
     }
 }

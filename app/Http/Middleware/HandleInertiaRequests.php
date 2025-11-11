@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -37,7 +38,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $user = $request->user();
+        $user = Auth::guard('web')->user();
         if ($user) {
             $user = User::with(['office', 'employment', 'room'])->whereCode($user->code)->first();
         }

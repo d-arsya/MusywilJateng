@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'static_admin', // will not use a model
+        ],
     ],
 
     /*
@@ -63,6 +67,9 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        'static_admin' => [
+            'driver' => 'static_admin',
         ],
 
         // 'users' => [

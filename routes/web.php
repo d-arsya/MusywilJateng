@@ -9,8 +9,16 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use App\Models\Meeting;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test', function () {
+    return [
+        'admin_logged_in' => Auth::guard('admin')->check(),
+        'web_logged_in' => Auth::guard('web')->check(),
+        'admin_user' => Auth::guard('admin')->user(),
+    ];
+});
 Route::get('/', [LandingPageController::class, 'home'])->name('landingpage');
 Route::redirect('/home', '/dashboard')->name('home');
 Route::middleware('guest')->controller(AuthController::class)->group(function () {
@@ -22,11 +30,11 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
 Route::controller(UserController::class)->group(function () {
     Route::post('register', 'store')->middleware('guest');
 });
+Route::get('t/{code}', [AuthController::class, 'logout'])->name('auth.logout');
+Route::post('/pembayaran/{type}/{code}', [PaymentController::class, 'change'])->middleware('auth:admin');
 Route::middleware('auth')->group(function () {
-    Route::get('t/{code}', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
     Route::post('/pembayaran', [PaymentController::class, 'pay'])->name('payment.pay');
-    Route::post('/pembayaran/{type}/{code}', [PaymentController::class, 'change']);
     Route::inertia('/denah', 'denah');
     Route::get('/penginapan', [RoomController::class, 'user']);
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
@@ -36,9 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::inertia('materi', 'materi');
 });
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::inertia('/', 'admin');
-    Route::get('/dashboard', [UserController::class, 'adminDashboard']);
+    Route::get('/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
     Route::get('/penginapan', [BuildingController::class, 'index'])->name('admin.penginapan');
     Route::post('/penginapan', [BuildingController::class, 'store']);
     Route::get('/penginapan/gedung/{building:name}', [BuildingController::class, 'show'])->name('admin.gedung');
