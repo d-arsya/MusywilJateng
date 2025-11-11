@@ -60,7 +60,9 @@ Route::prefix('admin')->group(function () {
     Route::delete('/kegiatan/{meeting:code}', [MeetingController::class, 'destroy']);
     Route::inertia('/settings', 'admin/settings');
     Route::inertia('/kegiatan/create', 'admin/kegiatan/create');
-    Route::inertia('/kegiatan/assign', 'admin/kegiatan/assign');
+    Route::get('/kegiatan/assign/{meeting:code}', [MeetingController::class, 'assign']);
+    Route::put('/kegiatan/assign/{meeting:code}', [MeetingController::class, 'assignUsers']);
+    Route::put('/kegiatan/unassign/{meeting:code}', [MeetingController::class, 'unassignUsers']);
     Route::inertia('/kegiatan/scan', 'admin/kegiatan/scan');
     Route::inertia('/kegiatan/stats', 'admin/kegiatan/stats');
     Route::get('/kegiatan/{meeting:code}/edit', [MeetingController::class, 'edit']);

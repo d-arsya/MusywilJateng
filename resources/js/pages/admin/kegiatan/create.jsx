@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { SelectButton } from 'primereact/selectbutton';
 import { useState } from 'react';
 
 const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
@@ -16,6 +17,7 @@ const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
         room: meeting?.room || '',
         description: meeting?.description || '',
         status: meeting?.status || 'Belum',
+        all: true,
     });
 
     const [errors, setErrors] = useState({});
@@ -80,24 +82,6 @@ const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
         router.get('/admin/kegiatan');
     };
 
-    const handleSaveAndAssign = () => {
-        if (!validateForm()) {
-            return;
-        }
-
-        setLoading(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            console.log('Submit data:', data);
-            console.log('Navigate to assign participants page');
-            setLoading(false);
-            // Router navigation to assign page
-            router.get('/admin/kegiatan/assign');
-        }, 1000);
-    };
-
-    // Status options
     const statusOptions = [
         { label: 'Belum Dimulai', value: 'Belum' },
         { label: 'Sedang Berlangsung', value: 'Sedang' },
@@ -243,6 +227,13 @@ const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
                             className="w-full"
                         />
                     </div>
+                    {isEdit || (
+                        <SelectButton
+                            value={data.all ? 'Semua' : 'Sebagian'}
+                            onChange={(e) => setData('all', e.value == 'Semua')}
+                            options={['Semua', 'Sebagian']}
+                        />
+                    )}
                 </div>
 
                 {/* Info Box */}
@@ -273,16 +264,6 @@ const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
                             onClick={handleSubmit}
                             loading={loading}
                         />
-                        {!isEdit && (
-                            <Button
-                                label="Simpan & Lanjut Plot Peserta"
-                                icon="pi pi-arrow-right"
-                                iconPos="right"
-                                className="p-button-success"
-                                onClick={handleSaveAndAssign}
-                                loading={loading}
-                            />
-                        )}
                     </div>
                 </div>
             </div>

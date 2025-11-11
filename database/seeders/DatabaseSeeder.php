@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             RoomSeeder::class,
             UserSeeder::class,
-            MeetingSeeder::class,
-            AttendanceSeeder::class
+            // MeetingSeeder::class,
+            // AttendanceSeeder::class
         ]);
     }
 }

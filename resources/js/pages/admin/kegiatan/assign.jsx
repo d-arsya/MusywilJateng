@@ -1,5 +1,5 @@
 import AdminLayout from '@/layouts/admin';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { ArrowLeft, Briefcase, UserPlus, Users, UserX } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
@@ -11,128 +11,7 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { useState } from 'react';
 
-// Dummy Data
-const dummyMeeting = {
-    id: 2,
-    title: 'Rapat Dewan Pengawas',
-    date: '2025-11-21',
-    time_start: '14:00',
-    time_end: '16:00',
-    location: 'Ruang Angsana',
-};
-
-const dummyAllUsers = [
-    {
-        id: 1,
-        name: 'Arsyad Muhammad',
-        phone: '081234567801',
-        office: { id: 1, name: 'DPW Jawa Tengah' },
-        employment: { id: 1, name: 'Pembina' },
-        assigned: true,
-        attended: true,
-    },
-    {
-        id: 2,
-        name: 'Amhar Aziz',
-        phone: '081234567802',
-        office: { id: 2, name: 'DPD Semarang' },
-        employment: { id: 2, name: 'Pengurus' },
-        assigned: true,
-        attended: false,
-    },
-    {
-        id: 3,
-        name: 'Aslam Hakim',
-        phone: '081234567803',
-        office: { id: 3, name: 'DPD Solo' },
-        employment: { id: 2, name: 'Pengurus' },
-        assigned: true,
-        attended: true,
-    },
-    {
-        id: 4,
-        name: 'Ahmad Fauzi',
-        phone: '081234567804',
-        office: { id: 1, name: 'DPW Jawa Tengah' },
-        employment: { id: 3, name: 'Anggota' },
-        assigned: true,
-        attended: false,
-    },
-    {
-        id: 5,
-        name: 'Budi Santoso',
-        phone: '081234567805',
-        office: { id: 4, name: 'DMW Jakarta' },
-        employment: { id: 3, name: 'Anggota' },
-        assigned: true,
-        attended: false,
-    },
-    {
-        id: 6,
-        name: 'Cahya Dermawan',
-        phone: '081234567806',
-        office: { id: 5, name: 'DPD Bandung' },
-        employment: { id: 4, name: 'Pengawas' },
-        assigned: false,
-        attended: false,
-    },
-    {
-        id: 7,
-        name: 'Dedi Kurniawan',
-        phone: '081234567807',
-        office: { id: 6, name: 'DPW Jawa Barat' },
-        employment: { id: 3, name: 'Anggota' },
-        assigned: false,
-        attended: false,
-    },
-    {
-        id: 8,
-        name: 'Eko Prasetyo',
-        phone: '081234567808',
-        office: { id: 7, name: 'DPD Yogyakarta' },
-        employment: { id: 3, name: 'Anggota' },
-        assigned: false,
-        attended: false,
-    },
-    {
-        id: 9,
-        name: 'Fitri Handayani',
-        phone: '081234567809',
-        office: { id: 8, name: 'DPW Bali' },
-        employment: { id: 2, name: 'Pengurus' },
-        assigned: false,
-        attended: false,
-    },
-    {
-        id: 10,
-        name: 'Galih Nugroho',
-        phone: '081234567810',
-        office: { id: 2, name: 'DPD Semarang' },
-        employment: { id: 3, name: 'Anggota' },
-        assigned: false,
-        attended: false,
-    },
-];
-
-const dummyOffices = [
-    { id: 1, name: 'DPW Jawa Tengah' },
-    { id: 2, name: 'DPD Semarang' },
-    { id: 3, name: 'DPD Solo' },
-    { id: 4, name: 'DMW Jakarta' },
-    { id: 5, name: 'DPD Bandung' },
-];
-
-const dummyEmployments = [
-    { id: 1, name: 'Pembina' },
-    { id: 2, name: 'Pengurus' },
-    { id: 3, name: 'Anggota' },
-    { id: 4, name: 'Pengawas' },
-];
-
-const AdminMeetingAssign = ({ meetingId = 2 }) => {
-    const [meeting, setMeeting] = useState(dummyMeeting);
-    const [allUsers, setAllUsers] = useState(dummyAllUsers);
-
+const AdminMeetingAssign = ({ meeting, offices, employments, allUsers }) => {
     // Filter states for available users
     const [filterOffice, setFilterOffice] = useState(null);
     const [filterEmployment, setFilterEmployment] = useState(null);
@@ -149,21 +28,17 @@ const AdminMeetingAssign = ({ meetingId = 2 }) => {
     const assignedUsers = allUsers.filter((u) => u.assigned);
     const availableUsers = allUsers.filter((u) => !u.assigned);
 
+    const { put } = useForm(null);
+
     // Handlers
     const handleBack = () => {
         router.get('/admin/kegiatan');
     };
 
     const handleAssignSelected = () => {
-        if (selectedAvailable.length === 0) return;
-
-        const usersToAssign = allUsers.filter((u) => selectedAvailable.includes(u.id));
-        const updatedUsers = allUsers.map((u) => (selectedAvailable.includes(u.id) ? { ...u, assigned: true } : u));
-
-        setAllUsers(updatedUsers);
-        setSelectedAvailable([]);
-
-        alert(`Berhasil assign ${usersToAssign.length} peserta ke kegiatan`);
+        put('/admin/kegiatan/assign/' + meeting.code + '?users=' + selectedAvailable.join(','), {
+            onError: (err) => console.log(err),
+        });
     };
 
     const handleAssignAll = () => {
@@ -180,66 +55,42 @@ const AdminMeetingAssign = ({ meetingId = 2 }) => {
             acceptClassName: 'p-button-success',
             accept: () => {
                 const userIds = filtered.map((u) => u.id);
-                const updatedUsers = allUsers.map((u) => (userIds.includes(u.id) ? { ...u, assigned: true } : u));
-                setAllUsers(updatedUsers);
-                setSelectedAvailable([]);
-                alert(`Berhasil assign ${filtered.length} peserta`);
+                put('/admin/kegiatan/assign/' + meeting.code + '?users=' + userIds.join(','), {
+                    onError: (err) => console.log(err),
+                });
             },
         });
     };
 
     const handleUnassignSelected = () => {
         if (selectedAssigned.length === 0) return;
-
-        // Check if any selected user has attended
-        const usersToUnassign = allUsers.filter((u) => selectedAssigned.includes(u.id));
-        const hasAttended = usersToUnassign.some((u) => u.attended);
-
-        if (hasAttended) {
-            alert('Tidak bisa unassign peserta yang sudah check-in!');
-            return;
-        }
-
-        confirmDialog({
-            message: `Unassign ${usersToUnassign.length} peserta dari kegiatan ini?`,
-            header: 'Konfirmasi Unassign',
-            icon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'Unassign',
-            rejectLabel: 'Batal',
-            acceptClassName: 'p-button-danger',
-            accept: () => {
-                const updatedUsers = allUsers.map((u) => (selectedAssigned.includes(u.id) ? { ...u, assigned: false } : u));
-                setAllUsers(updatedUsers);
-                setSelectedAssigned([]);
-                alert(`Berhasil unassign ${usersToUnassign.length} peserta`);
-            },
+        const userIds = selectedAssigned.map((u) => u.id);
+        put('/admin/kegiatan/unassign/' + meeting.code + '?users=' + userIds.join(','), {
+            onError: (err) => console.log(err),
         });
-    };
+        // // Check if any selected user has attended
+        // const usersToUnassign = allUsers.filter((u) => selectedAssigned.includes(u.id));
+        // const hasAttended = usersToUnassign.some((u) => u.attended);
 
-    const handleUnassignIndividual = (user) => {
-        if (user.attended) {
-            alert('Tidak bisa unassign peserta yang sudah check-in!');
-            return;
-        }
+        // if (hasAttended) {
+        //     alert('Tidak bisa unassign peserta yang sudah check-in!');
+        //     return;
+        // }
 
-        confirmDialog({
-            message: `Unassign ${user.name} dari kegiatan ini?`,
-            header: 'Konfirmasi Unassign',
-            icon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'Unassign',
-            rejectLabel: 'Batal',
-            acceptClassName: 'p-button-danger',
-            accept: () => {
-                const updatedUsers = allUsers.map((u) => (u.id === user.id ? { ...u, assigned: false } : u));
-                setAllUsers(updatedUsers);
-                alert(`${user.name} berhasil di-unassign`);
-            },
-        });
-    };
-
-    const refreshData = () => {
-        console.log('Refresh data from API');
-        // API call
+        // confirmDialog({
+        //     message: `Unassign ${usersToUnassign.length} peserta dari kegiatan ini?`,
+        //     header: 'Konfirmasi Unassign',
+        //     icon: 'pi pi-exclamation-triangle',
+        //     acceptLabel: 'Unassign',
+        //     rejectLabel: 'Batal',
+        //     acceptClassName: 'p-button-danger',
+        //     accept: () => {
+        //         const updatedUsers = allUsers.map((u) => (selectedAssigned.includes(u.id) ? { ...u, assigned: false } : u));
+        //         setAllUsers(updatedUsers);
+        //         setSelectedAssigned([]);
+        //         alert(`Berhasil unassign ${usersToUnassign.length} peserta`);
+        //     },
+        // });
     };
 
     // Filtering
@@ -255,7 +106,11 @@ const AdminMeetingAssign = ({ meetingId = 2 }) => {
     };
 
     const getFilteredAssigned = () => {
-        return assignedUsers.filter((u) => u.name.toLowerCase().includes(searchAssigned.toLowerCase()) || u.phone.includes(searchAssigned));
+        return (
+            assignedUsers.filter((u) => u.name.toLowerCase().includes(searchAssigned.toLowerCase()) || u.phone.includes(searchAssigned)) ||
+            u.office.name.toLowerCase().includes(searchAssigned.toLowerCase()) ||
+            u.office.type.toLowerCase().includes(searchAssigned.toLowerCase())
+        );
     };
 
     const filteredAvailable = getFilteredAvailable();
@@ -295,26 +150,14 @@ const AdminMeetingAssign = ({ meetingId = 2 }) => {
 
     const statusTemplate = (rowData) => {
         if (rowData.attended) {
-            return <Tag value="Sudah Check-in" severity="success" icon="pi pi-check" />;
+            return <Tag value="Hadir" severity="success" icon="pi pi-check" />;
         }
-        return <Tag value="Belum Check-in" severity="secondary" />;
-    };
-
-    const actionTemplate = (rowData) => {
-        return (
-            <Button
-                icon={<UserX size={14} />}
-                label="Unassign"
-                className="p-button-sm p-button-danger p-button-outlined"
-                onClick={() => handleUnassignIndividual(rowData)}
-                disabled={rowData.attended}
-            />
-        );
+        return <Tag value="Belum" severity="secondary" />;
     };
 
     // Options
-    const officeOptions = dummyOffices.map((o) => ({ label: o.name, value: o }));
-    const employmentOptions = dummyEmployments.map((e) => ({ label: e.name, value: e }));
+    const officeOptions = offices.map((o) => ({ label: o.type + ' ' + o.name, value: o }));
+    const employmentOptions = employments.map((e) => ({ label: e.name, value: e }));
 
     return (
         <AdminLayout>
@@ -329,13 +172,20 @@ const AdminMeetingAssign = ({ meetingId = 2 }) => {
                 <div className="mb-2 flex items-center gap-2 text-sm text-gray-600">
                     <span>Dashboard</span>
                     <span>›</span>
-                    <span>{meeting.title}</span>
+                    <span>{meeting.name}</span>
                     <span>›</span>
                     <span className="font-medium text-gray-800">Assign Peserta</span>
                 </div>
                 <h1 className="text-3xl font-bold text-gray-800">Assign Peserta</h1>
                 <p className="mt-2 text-gray-600">
-                    {meeting.title} • {new Date(meeting.date).toLocaleDateString('id-ID')} • {meeting.time_start} - {meeting.time_end}
+                    {meeting.name} •{' '}
+                    {new Date(meeting.date).toLocaleDateString('id-ID', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}{' '}
+                    • {meeting.start_time.slice(0, 5)} - {meeting.end_time.slice(0, 5)}
                 </p>
             </div>
 
@@ -376,11 +226,6 @@ const AdminMeetingAssign = ({ meetingId = 2 }) => {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            {/* Actions */}
-            <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-                <Button label="Refresh Data" icon="pi pi-refresh" className="p-button-outlined" onClick={refreshData} />
             </div>
 
             {/* Split Screen */}
@@ -476,7 +321,7 @@ const AdminMeetingAssign = ({ meetingId = 2 }) => {
 
                         {/* Search */}
                         <InputText
-                            placeholder="Cari nama atau telepon..."
+                            placeholder="Cari nama, Utusan, atau telepon..."
                             value={searchAssigned}
                             onChange={(e) => setSearchAssigned(e.target.value)}
                             className="w-full"
@@ -498,19 +343,19 @@ const AdminMeetingAssign = ({ meetingId = 2 }) => {
 
                     <DataTable
                         value={filteredAssigned}
-                        selection={filteredAssigned.filter((u) => selectedAssigned.includes(u.id))}
-                        onSelectionChange={(e) => setSelectedAssigned(e.value.map((u) => u.id))}
+                        selection={selectedAssigned}
+                        onSelectionChange={(e) => setSelectedAssigned(e.value)}
                         dataKey="id"
-                        emptyMessage="Belum ada peserta yang di-assign"
                         scrollable
                         scrollHeight="500px"
+                        virtualScrollerOptions={{ itemSize: 40 }} // tinggi tiap baris
+                        lazy
                         className="text-sm"
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} />
                         <Column field="name" header="Nama" body={userNameTemplate} />
                         <Column field="office.name" header="Utusan" body={officeTemplate} />
                         <Column header="Status" body={statusTemplate} />
-                        <Column header="Aksi" body={actionTemplate} style={{ width: '140px' }} />
                     </DataTable>
                 </div>
             </div>

@@ -15,12 +15,26 @@ class Meeting extends Model
     {
         parent::boot();
         static::creating(function ($meeting) {
-            // Generate unique 6 karakter code
             do {
                 $code = strtolower(Str::random(10));
             } while (self::where('code', $code)->exists());
 
             $meeting->code = $code;
+        });
+        static::created(function ($meeting) {
+            if ($meeting->all) {;
+                User::query()
+                    ->select('id')
+                    ->chunk(1000, function ($users) use ($meeting) {
+                        $attendances = $users->map(fn($u) => [
+                            'user_id' => $u->id,
+                            'meeting_id' => $meeting->id,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ])->toArray();
+                        Attendance::insert($attendances);
+                    });
+            }
         });
     }
 

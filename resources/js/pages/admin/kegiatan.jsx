@@ -60,7 +60,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
     };
 
     const handleAssign = (meeting) => {
-        router.get('/admin/kegiatan/assign');
+        router.get('/admin/kegiatan/assign/' + meeting.code);
     };
 
     const handleScanner = (meeting) => {

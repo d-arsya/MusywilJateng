@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Employment;
 use App\Models\Meeting;
+use App\Models\Office;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +39,7 @@ class MeetingController extends Controller
             'description' => 'nullable|string',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'all' => 'nullable|boolean',
+            'all' => 'boolean',
         ]);
         Meeting::create($validated);
         return redirect()->route('admin.kegiatan')
@@ -50,8 +53,7 @@ class MeetingController extends Controller
             'date' => 'required|date|after_or_equal:today',
             'description' => 'nullable|string',
             'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-            'all' => 'nullable|boolean',
+            'end_time' => 'required|date_format:H:i|after:start_time'
         ]);
         $meeting->update($validated);
         return redirect()->route('admin.kegiatan')
@@ -69,6 +71,64 @@ class MeetingController extends Controller
     public function edit(Meeting $meeting)
     {
         return inertia('admin/kegiatan/create', ['meeting' => $meeting, 'isEdit' => true]);
+    }
+    public function assignUsers(Request $request, Meeting $meeting)
+    {
+        $userIds = explode(',', $request->query('users'));
+
+        // Pastikan tidak ada data kosong
+        $userIds = array_filter($userIds);
+
+        // Hindari duplikasi attendance
+        $existing = Attendance::where('meeting_id', $meeting->id)
+            ->pluck('user_id')
+            ->toArray();
+
+        $newAttendances = collect($userIds)
+            ->reject(fn($id) => in_array($id, $existing))
+            ->map(fn($id) => [
+                'user_id' => $id,
+                'meeting_id' => $meeting->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ])
+            ->values()
+            ->all();
+
+        if (!empty($newAttendances)) {
+            Attendance::insert($newAttendances);
+        }
+
+        return back(303)->with('success', 'Peserta berhasil di-assign.');
+    }
+    public function unassignUsers(Request $request, Meeting $meeting)
+    {
+        $userIds = explode(',', $request->query('users'));
+        $userIds = array_filter($userIds);
+        Attendance::where('meeting_id', $meeting->id)->whereIn('user_id', $userIds)->whereNull('attend')->delete();
+
+        return back(303)->with('success', 'Peserta berhasil di-assign.');
+    }
+    public function assign(Meeting $meeting)
+    {
+        $employments = Employment::all();
+        $offices = Office::all();
+        $users = User::with(['employment', 'office', 'attendances'])->get();
+        $allUsers = $users->map(function ($user) use ($meeting) {
+            // cari attendance untuk meeting tertentu
+            $attendance = $user->attendances->firstWhere('meeting_id', $meeting->id);
+
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'phone' => $user->phone,
+                'office' => $user->office,
+                'employment' => $user->employment,
+                'assigned' => !is_null($attendance),                // ada attendance untuk meeting ini
+                'attended' => !is_null($attendance?->attend),       // attendance-nya sudah terisi jam attend
+            ];
+        });
+        return inertia('admin/kegiatan/assign', compact('meeting', 'employments', 'offices', 'allUsers'));
     }
 
     public function userView()

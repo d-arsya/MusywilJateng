@@ -22,7 +22,6 @@ class RoomController extends Controller
 
     public function assign(Request $request)
     {
-        logs()->info($request->all());
         $validated = $request->validate([
             'room' => 'nullable|integer|exists:rooms,id',
             'users' => 'required|array'
