@@ -10,6 +10,10 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/sitemap.xml', function () {
+    $links = ['/login', '/register', '/', '/dashboard', '/penginapan', '/jadwal', '/denah', '/penginapan', '/profile', '/card', '/jadwal', '/materi'];
+    return response()->view('sitemap', ['links' => $links])->header('Content-Type', 'application/xml');
+});
 Route::get('/test', function () {
     return [
         'admin_logged_in' => Auth::guard('admin')->check(),

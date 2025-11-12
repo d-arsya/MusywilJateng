@@ -51,7 +51,7 @@ class UserController extends Controller
             'capsize' => ['required', 'integer'],
             'arrive' => ['required', 'date'],
             'depart' => ['required', 'date', 'after_or_equal:arrive'],
-            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ]);
 
         if ($request->hasFile('avatar')) {
@@ -119,7 +119,7 @@ class UserController extends Controller
             'capsize' => ['required', 'integer'],
             'arrive' => ['required', 'date'],
             'depart' => ['required', 'date', 'after_or_equal:arrive'],
-            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ]);
 
         if ($request->hasFile('avatar')) {
