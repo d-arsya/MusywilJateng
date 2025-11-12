@@ -12,7 +12,16 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const usersAttended = attendances.filter((a) => a.attend !== null);
     const [filterUser, setFilterUser] = useState('Hadir');
 
-    // Chart Data
+    useEffect(() => {
+        router.reload({ attendances }); // immediate
+
+        const interval = setInterval(() => {
+            router.reload({ attendances });
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const chartData = {
         labels: ['Hadir', 'Belum Hadir'],
         datasets: [
@@ -31,10 +40,7 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
             },
         },
     };
-    const handleUpdate = () => {
-        router.reload({ attendances });
-    };
-    setInterval(handleUpdate, 15000);
+
     const filterOptions = [
         { label: 'Semua', value: 'Semua' },
         { label: 'Hadir', value: 'Hadir' },
