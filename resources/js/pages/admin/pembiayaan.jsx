@@ -197,7 +197,7 @@ export default function AdminDashboardPage({ payments }) {
                     image={rowData.avatar || `https://ui-avatars.com/api/?name=${rowData.name}&background=10b981&color=fff`}
                     shape="circle"
                     size="large"
-                    className="border-2 border-emerald-100"
+                    className="border-2 border-emerald-100 [&_img]:object-cover"
                 />
                 <div>
                     <p className="font-semibold text-gray-800">{rowData.name}</p>

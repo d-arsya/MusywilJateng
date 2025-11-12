@@ -58,7 +58,7 @@ export default function CardPage({ auth, app }) {
                             label={!user.avatar ? user.name.charAt(0) : undefined}
                             size="xlarge"
                             shape="circle"
-                            className="h-32 w-32 rounded-full border-2 border-white bg-emerald-800 object-cover shadow-lg"
+                            className="h-32 w-32 rounded-full border-2 border-white bg-emerald-800 shadow-lg [&_img]:object-cover"
                             style={{ width: '80px', height: '80px', fontSize: '32px' }}
                         />
                         <div ref={qrRef} className="rounded-sm bg-white p-1">

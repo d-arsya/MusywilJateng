@@ -110,7 +110,7 @@ export default function Dashboard({ auth, app }) {
                         label={!user.avatar ? user.name.charAt(0) : undefined}
                         size="xlarge"
                         shape="circle"
-                        className="absolute right-20 bottom-10 h-20 w-20 rounded-full border-2 border-white bg-emerald-800 object-cover text-white shadow-lg"
+                        className="absolute right-20 bottom-10 h-20 w-20 rounded-full border-2 border-white bg-emerald-800 text-white shadow-lg [&_img]:object-cover"
                         style={{ width: '60px', height: '60px', fontSize: '24px' }}
                     />
                     <div className="text-md absolute top-12 left-6 font-medium text-white drop-shadow-lg">

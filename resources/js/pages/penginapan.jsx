@@ -107,7 +107,7 @@ const PenginapanPage = ({ myRoom }) => {
                                             label={!roommate.avatar ? roommate.name.charAt(0) : undefined}
                                             size="xlarge"
                                             shape="circle"
-                                            className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white"
+                                            className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white [&_img]:object-cover"
                                             style={{ width: '60px', height: '60px', fontSize: '24px' }}
                                         />
                                         <div className="absolute -right-1 -bottom-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-purple-600 text-xs font-bold text-white">

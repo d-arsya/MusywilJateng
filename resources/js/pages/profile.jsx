@@ -101,7 +101,7 @@ export default function ProfilePage({ user }) {
                                     label={!user.avatar ? user.name.charAt(0) : undefined}
                                     size="xlarge"
                                     shape="circle"
-                                    className="relative h-32 w-32 border-4 border-white/30 shadow-2xl backdrop-blur-sm"
+                                    className="relative h-32 w-32 border-4 border-white/30 shadow-2xl backdrop-blur-sm [&_img]:object-cover"
                                     style={{ width: '80px', height: '80px', fontSize: '32px' }}
                                 />
                                 <label
