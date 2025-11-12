@@ -45,10 +45,10 @@ export function PrivateHeader() {
             text: 'Peserta',
             link: '/admin/peserta',
         },
-        {
-            text: 'Settings',
-            link: '/admin/setting',
-        },
+        // {
+        //     text: 'Settings',
+        //     link: '/admin/setting',
+        // },
     ];
 
     return (

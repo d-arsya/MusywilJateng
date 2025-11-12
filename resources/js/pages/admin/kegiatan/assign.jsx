@@ -120,7 +120,13 @@ const AdminMeetingAssign = ({ meeting, offices, employments, allUsers }) => {
     const userNameTemplate = (rowData) => {
         return (
             <div className="flex items-center gap-3">
-                <Avatar label={rowData.name.charAt(0)} size="normal" shape="circle" className="bg-emerald-600 text-white" />
+                <Avatar
+                    image={user.avatar || undefined}
+                    label={!user.avatar ? user.name.charAt(0) : undefined}
+                    size="normal"
+                    shape="circle"
+                    className="bg-emerald-600 text-white"
+                />
                 <div>
                     <div className="font-semibold text-gray-800">{rowData.name}</div>
                     <div className="text-sm text-gray-600">{rowData.phone}</div>

@@ -54,7 +54,7 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     return (
         <div className="p-6">
             <ConfirmDialog />
-            <div className="grid grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
                 <div className="col-span-1 flex flex-col gap-y-6">
                     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
                         <h3 className="mb-4 text-lg font-semibold text-gray-800">Visualisasi Kehadiran</h3>

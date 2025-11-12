@@ -1,7 +1,7 @@
 import { useToast } from '@/context/toast';
 import AdminLayout from '@/layouts/admin';
 import { router, useForm } from '@inertiajs/react';
-import { AlertCircle, Banknote, CheckCircle2, Clock, CreditCard, Eye, FileText, Search, Users, XCircle } from 'lucide-react';
+import { AlertCircle, Banknote, CheckCircle2, Clock, CreditCard, Eye, FileText, Users, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Badge } from 'primereact/badge';
 import { Column } from 'primereact/column';
@@ -153,7 +153,6 @@ export default function AdminDashboardPage({ payments }) {
             {/* Filter Section */}
             <div className="flex flex-col gap-3 rounded-xl bg-white p-4 shadow-md lg:flex-row">
                 <div className="relative flex-1">
-                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                     <InputText
                         value={globalFilter}
                         onChange={(e) => setGlobalFilter(e.target.value)}

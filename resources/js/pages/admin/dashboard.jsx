@@ -68,12 +68,12 @@ export default function AdminDashboardPage({ mockTodayMeetings, mockOfficeDistri
         <AdminLayout>
             <div className="space-y-6">
                 {/* Header */}
-                <div className="flex items-center justify-between">
+                <div className="grid grid-cols-1 md:grid-cols-2">
                     <div>
                         <h1 className="text-3xl font-bold text-gray-800">Dashboard Admin</h1>
                         <p className="mt-1 text-gray-600">Muswil VI Hidayatullah 2025</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left md:text-right">
                         <p className="text-sm text-gray-500">Hari ini</p>
                         <p className="text-lg font-semibold text-gray-800">
                             {new Date().toLocaleDateString('id-ID', {
@@ -202,7 +202,7 @@ export default function AdminDashboardPage({ mockTodayMeetings, mockOfficeDistri
                         <h2 className="mb-4 text-xl font-bold text-gray-800">Akses Cepat</h2>
                         <div className="grid grid-cols-2 gap-4">
                             <Link
-                                href="/admin/users"
+                                href="/admin/peserta"
                                 className="group flex flex-col items-center justify-center rounded-xl border-2 border-gray-100 p-6 transition-all hover:border-blue-300 hover:bg-blue-50"
                             >
                                 <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 transition-transform group-hover:scale-110">
@@ -213,7 +213,7 @@ export default function AdminDashboardPage({ mockTodayMeetings, mockOfficeDistri
                             </Link>
 
                             <Link
-                                href="/admin/payments"
+                                href="/admin/pembiayaan"
                                 className="group flex flex-col items-center justify-center rounded-xl border-2 border-gray-100 p-6 transition-all hover:border-emerald-300 hover:bg-emerald-50"
                             >
                                 <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 transition-transform group-hover:scale-110">
@@ -235,7 +235,7 @@ export default function AdminDashboardPage({ mockTodayMeetings, mockOfficeDistri
                             </Link>
 
                             <Link
-                                href="/admin/meetings"
+                                href="/admin/kegiatan"
                                 className="group flex flex-col items-center justify-center rounded-xl border-2 border-gray-100 p-6 transition-all hover:border-amber-300 hover:bg-amber-50"
                             >
                                 <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 transition-transform group-hover:scale-110">
