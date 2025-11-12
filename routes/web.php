@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::inertia('/denah', 'denah');
     Route::get('/penginapan', [RoomController::class, 'user']);
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::post('/profile', [UserController::class, 'editProfile']);
     Route::inertia('/card', 'card');
     Route::get('/jadwal', [MeetingController::class, 'userView']);
     Route::inertia('/full', 'full');
@@ -59,8 +60,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::delete('/penginapan/{building}', [BuildingController::class, 'destroy']);
 
     Route::get('/pembiayaan', [PaymentController::class, 'index']);
-    Route::get('/peserta', [UserController::class, 'index']);
+    Route::get('/peserta', [UserController::class, 'index'])->name('admin.peserta');
     Route::get('/peserta/{user:code}', [UserController::class, 'show'])->name('user.show');
+    Route::post('/peserta/{user:code}', [UserController::class, 'editUser'])->name('user.update');
     Route::get('/kegiatan', [MeetingController::class, 'index'])->name('admin.kegiatan');
     Route::post('/kegiatan', [MeetingController::class, 'store']);
     Route::delete('/kegiatan/{meeting:code}', [MeetingController::class, 'destroy']);

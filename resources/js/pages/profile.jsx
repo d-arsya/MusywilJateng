@@ -1,13 +1,30 @@
 import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
-import { Award, Briefcase, Building2, Calendar, CalendarDays, CheckCircle, Clock, Hash, Home, Phone, QrCode, User } from 'lucide-react';
+import { useForm } from '@inertiajs/react';
+import {
+    Award,
+    Briefcase,
+    Building2,
+    Calendar,
+    CalendarDays,
+    CheckCircle,
+    Clock,
+    Hash,
+    Home,
+    LoaderCircle,
+    Phone,
+    QrCode,
+    Upload,
+    User,
+} from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Divider } from 'primereact/divider';
 import { Tag } from 'primereact/tag';
+import { useEffect } from 'react';
 import QRCode from 'react-qr-code';
 
 export default function ProfilePage({ user }) {
-    console.log(user);
+    const { data, setData, post, processing } = useForm({ avatar: null });
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('id-ID', {
@@ -43,6 +60,28 @@ export default function ProfilePage({ user }) {
         Orpen: 'danger',
     };
 
+    useEffect(() => {
+        if (!data.avatar) return;
+
+        // Optional: validate before upload
+        const file = data.avatar;
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Ukuran file maksimal 2MB');
+            return;
+        }
+
+        if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
+            alert('Format file harus JPG, PNG, atau WebP');
+            return;
+        }
+
+        // Auto-upload
+        post('/profile', {
+            forceFormData: true,
+            onError: (err) => console.log(err),
+        });
+    }, [data.avatar]);
+
     return (
         <AuthLayout>
             <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 p-4">
@@ -65,9 +104,22 @@ export default function ProfilePage({ user }) {
                                     className="relative h-32 w-32 border-4 border-white/30 shadow-2xl backdrop-blur-sm"
                                     style={{ width: '80px', height: '80px', fontSize: '32px' }}
                                 />
+                                <label
+                                    htmlFor="avatar-upload"
+                                    className="absolute -right-2 -bottom-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-emerald-600 text-white shadow-lg transition hover:bg-emerald-700"
+                                >
+                                    {processing ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
+                                </label>
                             </div>
-
-                            {/* Nama */}
+                            <input
+                                id="avatar-upload"
+                                type="file"
+                                accept="image/jpeg,image/jpg,image/png,image/webp"
+                                onChange={(e) => {
+                                    setData('avatar', e.target.files?.[0]);
+                                }}
+                                className="hidden"
+                            />
                             <h1 className="mb-2 text-center text-3xl font-bold text-white">{user.name}</h1>
 
                             {/* Kode Akses */}

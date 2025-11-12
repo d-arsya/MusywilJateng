@@ -57,12 +57,13 @@ export default function RegisterPage({ offices, employments }) {
                         ) : (
                             <span className="text-center text-sm text-emerald-400">Upload Foto</span>
                         )}
-                        <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
+                        <input required type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
                     </label>
                 </div>
 
                 {/* Nama Lengkap */}
                 <input
+                    required
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
                     type="text"
@@ -72,6 +73,7 @@ export default function RegisterPage({ offices, employments }) {
 
                 {/* Nomor HP */}
                 <input
+                    required
                     value={data.phone}
                     onChange={(e) => setData('phone', e.target.value)}
                     type="tel"
@@ -81,6 +83,7 @@ export default function RegisterPage({ offices, employments }) {
 
                 {/* Utusan */}
                 <select
+                    required
                     value={data.office}
                     onChange={(e) => setData('office', e.target.value)}
                     className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
@@ -99,6 +102,7 @@ export default function RegisterPage({ offices, employments }) {
 
                 {/* Jabatan */}
                 <select
+                    required
                     value={data.employment}
                     onChange={(e) => setData('employment', e.target.value)}
                     className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
@@ -114,6 +118,7 @@ export default function RegisterPage({ offices, employments }) {
                     <div className="">
                         <h1 className="mb-2">Kedatangan</h1>
                         <input
+                            required
                             value={data.arrive}
                             onChange={(e) => setData('arrive', e.target.value)}
                             type="date"
@@ -123,7 +128,8 @@ export default function RegisterPage({ offices, employments }) {
                     </div>
                     <div>
                         <h1 className="mb-2">Kepulangan</h1>
-                        <input
+                        <inpute
+                            required
                             value={data.depart}
                             onChange={(e) => setData('depart', e.target.value)}
                             type="date"
@@ -135,6 +141,7 @@ export default function RegisterPage({ offices, employments }) {
 
                 {/* Ukuran Peci */}
                 <select
+                    required
                     value={data.capsize}
                     onChange={(e) => setData('capsize', e.target.value)}
                     className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"

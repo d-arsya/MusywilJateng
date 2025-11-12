@@ -1,4 +1,5 @@
 import AdminLayout from '@/layouts/admin';
+import { useForm } from '@inertiajs/react';
 import { AlertCircle, Briefcase, Calendar, Phone, Save, Upload, User, X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -27,27 +28,20 @@ import { useState } from 'react';
 
 export default function AdminEditUserPage({ employments, user, offices }) {
     const initialUser = user;
-    const [formData, setFormData] = useState(initialUser);
+    const { data: formData, setData: setFormData, post } = useForm(initialUser);
     const [avatarPreview, setAvatarPreview] = useState(initialUser.avatar);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-        // Clear error when user types
-        if (errors[name]) {
-            setErrors((prev) => ({ ...prev, [name]: null }));
-        }
+        setFormData(name, value);
     };
 
     const handleAvatarChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
-            // Validate file
+            setFormData('avatar', file);
             if (file.size > 2048 * 1024) {
                 setErrors((prev) => ({ ...prev, avatar: 'Ukuran file maksimal 2MB' }));
                 return;
@@ -67,39 +61,12 @@ export default function AdminEditUserPage({ employments, user, offices }) {
         }
     };
 
-    const validateForm = () => {
-        const newErrors = {};
-
-        if (!formData.name.trim()) newErrors.name = 'Nama wajib diisi';
-        if (!formData.phone.trim()) newErrors.phone = 'Nomor telepon wajib diisi';
-        if (!formData.employment_id) newErrors.employment_id = 'Jabatan wajib dipilih';
-        if (!formData.office_id) newErrors.office_id = 'Utusan wajib dipilih';
-        if (!formData.capsize || formData.capsize < 50 || formData.capsize > 70) {
-            newErrors.capsize = 'Ukuran peci harus antara 50-70';
-        }
-        if (!formData.arrive) newErrors.arrive = 'Tanggal kedatangan wajib diisi';
-        if (!formData.depart) newErrors.depart = 'Tanggal kepulangan wajib diisi';
-        if (formData.depart < formData.arrive) {
-            newErrors.depart = 'Tanggal kepulangan harus setelah kedatangan';
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
     const handleSubmit = async (e) => {
+        console.log(formData);
         e.preventDefault();
-
-        if (!validateForm()) return;
-
-        setIsSubmitting(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            setIsSubmitting(false);
-            alert('Data peserta berhasil diperbarui!');
-            // window.location.href = '/admin/users';
-        }, 1500);
+        post('/admin/peserta/' + formData.code, {
+            onError: (err) => console.log(err),
+        });
     };
 
     const handleCancel = () => {

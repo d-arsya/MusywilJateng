@@ -97,7 +97,7 @@ class UserController extends Controller
             . "3️⃣ Tunggu verifikasi dari panitia\n"
             . "4️⃣ Cek informasi kamar penginapan\n\n"
             . "Jika ada pertanyaan, hubungi:\n"
-            . "📱 Sekretariat: 0812xxxxxxxx\n\n"
+            . "📱 Sekretariat: 6281234895030\n\n"
             . "Barakallahu fiikum 🤲\n\n"
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "---\n"
@@ -109,6 +109,56 @@ class UserController extends Controller
             ->with('success', 'User berhasil ditambahkan!');
     }
 
+    public function editUser(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'employment_id' => ['required', 'exists:employments,id'],
+            'office_id' => ['required', 'exists:offices,id'],
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:20'],
+            'capsize' => ['required', 'integer'],
+            'arrive' => ['required', 'date'],
+            'depart' => ['required', 'date', 'after_or_equal:arrive'],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ]);
+
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $link = Storage::url($path);
+            $url = asset($link);
+            $validated['avatar'] = $url;
+        } else {
+            unset($validated['avatar']);
+        }
+        $user->update($validated);
+        return redirect()->route('admin.peserta');
+    }
+
+    public function editProfile(Request $request)
+    {
+        $user = Auth::user();
+        $validated = $request->validate([
+            // 'employment_id' => ['required', 'exists:employments,id'],
+            // 'office_id' => ['required', 'exists:offices,id'],
+            // 'name' => ['required', 'string', 'max:255'],
+            // 'phone' => ['required', 'string', 'max:20'],
+            // 'capsize' => ['required', 'integer'],
+            // 'arrive' => ['required', 'date'],
+            // 'depart' => ['required', 'date', 'after_or_equal:arrive'],
+            'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ]);
+
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $link = Storage::url($path);
+            $url = asset($link);
+            $validated['avatar'] = $url;
+        } else {
+            unset($validated['avatar']);
+        }
+        $user->update($validated);
+        return redirect()->route('user.profile');
+    }
     public function dashboard()
     {
         return inertia('dashboard');
