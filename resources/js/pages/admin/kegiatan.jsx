@@ -56,7 +56,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
     };
 
     const handleViewDetail = (meeting) => {
-        router.get('/admin/kegiatan/stats');
+        router.get('/admin/kegiatan/stats/' + meeting.code);
     };
 
     const handleAssign = (meeting) => {
@@ -64,8 +64,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
     };
 
     const handleScanner = (meeting) => {
-        router.get('/admin/kegiatan/scan');
-        // Router navigation
+        router.get('/admin/kegiatan/scan/' + meeting.code);
     };
 
     // Templates

@@ -1,106 +1,17 @@
 import { router } from '@inertiajs/react';
-import { Calendar, CheckCircle, Clock, FileText, MapPin, Users, XCircle } from 'lucide-react';
+import { Calendar, CalendarDays, CheckCircle, Clock, FileText, MapPin, Users, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Chart } from 'primereact/chart';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
-import { ProgressBar } from 'primereact/progressbar';
-import { Tag } from 'primereact/tag';
-import { Timeline } from 'primereact/timeline';
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { SelectButton } from 'primereact/selectbutton';
 import { useState } from 'react';
 
-// Dummy Data
-const dummyMeeting = {
-    id: 2,
-    title: 'Rapat Dewan Pengawas',
-    date: '2025-11-21',
-    time_start: '14:00',
-    time_end: '16:00',
-    location: 'Ruang Angsana',
-    description: 'Rapat koordinasi dewan pengawas untuk membahas program kerja tahun 2025',
-    status: 'ongoing',
-};
-
-const events = [
-    { status: 'Ordered', date: '15/10/2020 10:30' },
-    { status: 'Processing', date: '15/10/2020 14:00' },
-    { status: 'Shipped', date: '15/10/2020 16:15' },
-    { status: 'Delivered', date: '16/10/2020 10:00' },
-];
-
-const dummyAttendances = [
-    {
-        id: 1,
-        user: {
-            id: 1,
-            name: 'Arsyad Muhammad',
-            phone: '081234567801',
-            code: 'ABC001',
-            office: { name: 'DPW Jawa Tengah' },
-            employment: { name: 'Pembina' },
-        },
-        attend: '2025-11-21T14:05:00',
-    },
-    {
-        id: 2,
-        user: {
-            id: 2,
-            name: 'Amhar Aziz',
-            phone: '081234567802',
-            code: 'ABC002',
-            office: { name: 'DPD Semarang' },
-            employment: { name: 'Pengurus' },
-        },
-        attend: null,
-    },
-    {
-        id: 3,
-        user: {
-            id: 3,
-            name: 'Aslam Hakim',
-            phone: '081234567803',
-            code: 'ABC003',
-            office: { name: 'DPD Solo' },
-            employment: { name: 'Pengurus' },
-        },
-        attend: '2025-11-21T14:12:00',
-    },
-    {
-        id: 4,
-        user: {
-            id: 4,
-            name: 'Ahmad Fauzi',
-            phone: '081234567804',
-            code: 'ABC004',
-            office: { name: 'DPW Jawa Timur' },
-            employment: { name: 'Anggota' },
-        },
-        attend: null,
-    },
-    {
-        id: 5,
-        user: {
-            id: 5,
-            name: 'Budi Santoso',
-            phone: '081234567805',
-            code: 'ABC005',
-            office: { name: 'DMW Jakarta' },
-            employment: { name: 'Anggota' },
-        },
-        attend: '2025-11-21T14:18:00',
-    },
-];
-
-const AdminMeetingDetail = ({ meetingId = 2 }) => {
-    const [meeting, setMeeting] = useState(dummyMeeting);
-    const [attendances, setAttendances] = useState(dummyAttendances);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterStatus, setFilterStatus] = useState(null);
-
-    // Stats
+const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const totalParticipants = attendances.length;
     const totalAttended = attendances.filter((a) => a.attend !== null).length;
     const totalNotAttended = totalParticipants - totalAttended;
-    const attendanceRate = totalParticipants > 0 ? Math.round((totalAttended / totalParticipants) * 100) : 0;
+    const usersAttended = attendances.filter((a) => a.attend !== null);
+    const [filterUser, setFilterUser] = useState('Hadir');
 
     // Chart Data
     const chartData = {
@@ -121,141 +32,25 @@ const AdminMeetingDetail = ({ meetingId = 2 }) => {
             },
         },
     };
-
-    // Handlers
-    const handleBack = () => {
-        router.get('/admin/kegiatan');
+    const handleUpdate = () => {
+        router.reload({ attendances });
     };
-
-    const handleEdit = () => {
-        router.get('/admin/kegiatan/create');
-    };
-
-    const handleDelete = () => {
-        const hasAttendance = totalAttended > 0;
-
-        if (hasAttendance) {
-            alert('Tidak bisa menghapus kegiatan yang sudah ada peserta hadir!');
-            return;
-        }
-
-        confirmDialog({
-            message: `Apakah Anda yakin ingin menghapus "${meeting.title}"?`,
-            header: 'Konfirmasi Hapus',
-            icon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'Hapus',
-            rejectLabel: 'Batal',
-            acceptClassName: 'p-button-danger',
-            accept: () => {
-                console.log('Delete meeting and navigate to dashboard');
-                alert('Kegiatan berhasil dihapus');
-                handleBack();
-            },
-        });
-    };
-
-    const handleOpenScanner = () => {
-        router.get('/admin/kegiatan/scan');
-    };
-
-    const handleAssignParticipants = () => {
-        router.get('/admin/kegiatan/assign');
-    };
-
-    const handleExport = () => {
-        console.log('Export attendance data');
-        alert('Fitur export akan segera tersedia');
-    };
-
-    const refreshData = () => {
-        console.log('Refresh data from API');
-    };
-
-    // Templates
-    const userNameTemplate = (rowData) => {
-        return (
-            <div className="flex items-center gap-3">
-                <Avatar
-                    label={rowData.user.name.charAt(0)}
-                    size="large"
-                    shape="circle"
-                    className={rowData.attend ? 'bg-emerald-600 text-white' : 'bg-gray-400 text-white'}
-                />
-                <div>
-                    <div className="font-semibold text-gray-800">{rowData.user.name}</div>
-                    <div className="text-sm text-gray-600">{rowData.user.office.name}</div>
-                </div>
-            </div>
-        );
-    };
-
-    const officeTemplate = (rowData) => {
-        return (
-            <div>
-                <div className="text-sm font-medium text-gray-800">{rowData.user.office.name}</div>
-                <div className="text-xs text-gray-600">{rowData.user.employment.name}</div>
-            </div>
-        );
-    };
-
-    const statusTemplate = (rowData) => {
-        if (rowData.attend) {
-            return (
-                <div>
-                    <Tag value="Hadir" severity="success" icon="pi pi-check" className="mb-1" />
-                    <div className="mt-1 text-xs text-gray-600">
-                        {new Date(rowData.attend).toLocaleTimeString('id-ID', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                        })}
-                    </div>
-                </div>
-            );
-        }
-        return <Tag value="Belum Hadir" severity="secondary" />;
-    };
-
-    // Filtered data
-    const filteredAttendances = attendances
-        .filter((a) => {
-            const matchSearch =
-                a.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                a.user.phone.includes(searchQuery) ||
-                a.user.office.name.toLowerCase().includes(searchQuery.toLowerCase());
-
-            let matchStatus = true;
-            if (filterStatus) {
-                if (filterStatus.value === 'attended') {
-                    matchStatus = a.attend !== null;
-                } else if (filterStatus.value === 'not_attended') {
-                    matchStatus = a.attend === null;
-                }
-            }
-
-            return matchSearch && matchStatus;
-        })
-        .sort((a, b) => {
-            // Attended first, then by time
-            if (a.attend && !b.attend) return -1;
-            if (!a.attend && b.attend) return 1;
-            if (a.attend && b.attend) {
-                return new Date(a.attend) - new Date(b.attend);
-            }
-            return a.user.name.localeCompare(b.user.name);
-        });
-
-    // Status filter options
-    const statusOptions = [
-        { label: 'Semua', value: null },
-        { label: 'Sudah Hadir', value: 'attended' },
-        { label: 'Belum Hadir', value: 'not_attended' },
+    setInterval(handleUpdate, 5000);
+    const filterOptions = [
+        { label: 'Semua', value: 'Semua' },
+        { label: 'Hadir', value: 'Hadir' },
+        { label: 'Belum', value: 'Belum' },
     ];
-
-    // Timeline data
-    const attendanceTimeline = attendances
-        .filter((a) => a.attend !== null)
-        .sort((a, b) => new Date(a.attend) - new Date(b.attend))
-        .slice(0, 5); // Last 5
+    const getTitle = () => {
+        switch (filterUser) {
+            case 'Hadir':
+                return 'Presensi Terakhir';
+            case 'Belum':
+                return 'Belum hadir';
+            default:
+                return 'Semua Peserta';
+        }
+    };
 
     return (
         <div className="p-6">
@@ -266,53 +61,37 @@ const AdminMeetingDetail = ({ meetingId = 2 }) => {
                         <h3 className="mb-4 text-lg font-semibold text-gray-800">Visualisasi Kehadiran</h3>
                         <Chart type="doughnut" data={chartData} options={chartOptions} />
                     </div>
-                    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm md:col-span-3">
-                        <p className="mb-3 text-sm text-gray-600">Persentase Kehadiran</p>
-                        <div className="flex items-center gap-4">
-                            <div className="flex-1">
-                                <ProgressBar
-                                    value={attendanceRate}
-                                    showValue={false}
-                                    style={{ height: '24px' }}
-                                    color={attendanceRate >= 80 ? '#10b981' : attendanceRate >= 50 ? '#f97316' : '#ef4444'}
-                                />
-                            </div>
-                            <p className="text-3xl font-bold text-purple-600">{attendanceRate}%</p>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:col-span-2">
-                        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="mb-4 flex items-center justify-between">
-                                <div>
-                                    <p className="mb-1 text-sm text-gray-600">Total Peserta</p>
-                                    <p className="text-3xl font-bold text-gray-800">{totalParticipants}</p>
-                                </div>
-                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
+                    <div className="grid grid-cols-1 gap-2">
+                        <div className="rounded-lg border border-gray-200 bg-white p-2 shadow-sm">
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100">
                                     <Users className="text-blue-600" size={24} />
                                 </div>
+                                <div>
+                                    <p className="mb-1 text-sm text-gray-600">Total Peserta</p>
+                                    <p className="text-xl font-bold text-gray-800">{totalParticipants}</p>
+                                </div>
                             </div>
                         </div>
-
-                        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="mb-4 flex items-center justify-between">
-                                <div>
-                                    <p className="mb-1 text-sm text-gray-600">Sudah Hadir</p>
-                                    <p className="text-3xl font-bold text-emerald-600">{totalAttended}</p>
-                                </div>
-                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100">
+                        <div className="rounded-lg border border-gray-200 bg-white p-2 shadow-sm">
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100">
                                     <CheckCircle className="text-emerald-600" size={24} />
                                 </div>
+                                <div>
+                                    <p className="mb-1 text-sm text-gray-600">Sudah Hadir</p>
+                                    <p className="text-xl font-bold text-gray-800">{totalAttended}</p>
+                                </div>
                             </div>
                         </div>
-
-                        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="mb-4 flex items-center justify-between">
+                        <div className="rounded-lg border border-gray-200 bg-white p-2 shadow-sm">
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100">
+                                    <XCircle className="text-orange-600" size={24} />
+                                </div>
                                 <div>
                                     <p className="mb-1 text-sm text-gray-600">Belum Hadir</p>
-                                    <p className="text-3xl font-bold text-orange-600">{totalNotAttended}</p>
-                                </div>
-                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100">
-                                    <XCircle className="text-orange-600" size={24} />
+                                    <p className="text-xl font-bold text-gray-800">{totalNotAttended}</p>
                                 </div>
                             </div>
                         </div>
@@ -320,7 +99,7 @@ const AdminMeetingDetail = ({ meetingId = 2 }) => {
                 </div>
                 <div className="col-span-2">
                     <div
-                        onClick={() => router.get('/admin/kegiatan/assign')}
+                        onClick={() => router.get('/admin/kegiatan')}
                         className="mb-6 cursor-pointer rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
                     >
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -343,7 +122,7 @@ const AdminMeetingDetail = ({ meetingId = 2 }) => {
                                 <div>
                                     <p className="mb-1 text-sm text-gray-600">Waktu</p>
                                     <p className="font-semibold text-gray-800">
-                                        {meeting.time_start} - {meeting.time_end}
+                                        {meeting.start_time.slice(0, 5)} - {meeting.end_time.slice(0, 5)}
                                     </p>
                                 </div>
                             </div>
@@ -351,7 +130,7 @@ const AdminMeetingDetail = ({ meetingId = 2 }) => {
                                 <MapPin className="mt-1 text-emerald-600" size={20} />
                                 <div>
                                     <p className="mb-1 text-sm text-gray-600">Lokasi</p>
-                                    <p className="font-semibold text-gray-800">{meeting.location}</p>
+                                    <p className="font-semibold text-gray-800">{meeting.room}</p>
                                 </div>
                             </div>
                         </div>
@@ -367,35 +146,39 @@ const AdminMeetingDetail = ({ meetingId = 2 }) => {
                             </div>
                         )}
                     </div>
-                    {attendanceTimeline.length > 0 && (
+                    {usersAttended.length > 0 && (
                         <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-800">
-                                <Clock className="text-purple-600" size={20} />
-                                Timeline Presensi Terakhir
-                            </h3>
-                            <div className="space-y-3">
-                                {attendanceTimeline.map((attendance) => (
-                                    <div
-                                        key={attendance.id}
-                                        className="flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3"
-                                    >
+                            <div className="mb-4 flex justify-between gap-2 text-lg font-semibold text-gray-800">
+                                <h3 className="flex items-center gap-2">
+                                    <Clock className="text-purple-600" size={20} />
+                                    {getTitle()}
+                                </h3>
+                                <SelectButton
+                                    value={filterUser}
+                                    onChange={(e) => {
+                                        console.log(e.value);
+                                        setFilterUser(e.value);
+                                    }}
+                                    options={filterOptions}
+                                />
+                            </div>
+                            <div className="max-h-80 space-y-3 overflow-y-auto pr-2">
+                                {usersAttended.map((attendance) => (
+                                    <div key={attendance.id} className="flex items-center gap-3">
                                         <Avatar
-                                            label={attendance.user.name.charAt(0)}
+                                            label={attendance.name.charAt(0)}
                                             size="normal"
                                             shape="circle"
                                             className="bg-emerald-600 text-white"
                                         />
                                         <div className="flex-1">
-                                            <p className="font-semibold text-gray-800">{attendance.user.name}</p>
-                                            <p className="text-sm text-gray-600">{attendance.user.office.name}</p>
+                                            <p className="font-semibold text-gray-800">{attendance.name}</p>
+                                            <p className="text-sm text-gray-600">
+                                                {attendance.office.type} {attendance.office.name}
+                                            </p>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-sm font-semibold text-emerald-600">
-                                                {new Date(attendance.attend).toLocaleTimeString('id-ID', {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                })}
-                                            </p>
+                                            <p className="text-sm font-semibold text-emerald-600">{attendance.attend.slice(0, 5)}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -404,14 +187,34 @@ const AdminMeetingDetail = ({ meetingId = 2 }) => {
                     )}
                 </div>
                 <div className="col-span-1">
-                    <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
-                        <Timeline
-                            value={events}
-                            separarator={(item) => <h1>{item.status}</h1>}
-                            content={(item) => item.status}
-                            // opposite={(item) => item.status}
-                            // content={(item) => <small className="text-color-secondary">{item.date}</small>}
-                        />
+                    <div className="max-h-screen overflow-y-scroll rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                        {schedule.map((dayItem, dayIndex) => (
+                            <div key={dayIndex} className="space-y-3">
+                                {/* Hari */}
+                                <div className="flex items-center gap-2">
+                                    <CalendarDays className="h-5 w-5 text-emerald-600" />
+                                    <span className="text-lg font-semibold text-gray-800">{dayItem.date}</span>
+                                </div>
+
+                                {/* Kegiatan */}
+                                <div className="mb-6 space-y-2">
+                                    {dayItem.activities.map((activity, idx) => (
+                                        <div key={idx} className="pl-8">
+                                            {/* Nama kegiatan */}
+                                            <span className="text-sm font-semibold text-gray-800">{activity.name}</span>
+
+                                            {/* Lokasi & Jam */}
+                                            <div className="mt-2 flex flex-col gap-4 text-xs text-gray-500">
+                                                <div className="flex items-center gap-1">
+                                                    <Clock className="h-4 w-4" />
+                                                    <span>{activity.time}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

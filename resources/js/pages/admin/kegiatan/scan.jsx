@@ -1,88 +1,22 @@
+import { useToast } from '@/context/toast';
 import FullLayout from '@/layouts/full';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { Html5Qrcode } from 'html5-qrcode';
-import { ArrowLeft, CheckCircle, Clock, QrCode, Scan, Users, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, QrCode, Users, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { useEffect, useRef, useState } from 'react';
 
-// Dummy Data
-const dummyMeeting = {
-    id: 2,
-    title: 'Rapat Dewan Pengawas',
-    date: '2025-11-21',
-    time_start: '14:00',
-    time_end: '16:00',
-    location: 'Ruang Angsana',
-};
-
-const dummyAttendances = [
-    {
-        id: 1,
-        user: {
-            id: 1,
-            name: 'Arsyad Muhammad',
-            code: 'ABC001',
-            office: { name: 'DPW Jawa Tengah' },
-            employment: { name: 'Pembina' },
-        },
-        attend: '2025-11-21T14:05:00',
-    },
-    {
-        id: 2,
-        user: {
-            id: 2,
-            name: 'Amhar Aziz',
-            code: 'ABC002',
-            office: { name: 'DPD Semarang' },
-            employment: { name: 'Pengurus' },
-        },
-        attend: null,
-    },
-    {
-        id: 3,
-        user: {
-            id: 3,
-            name: 'Aslam Hakim',
-            code: 'ABC003',
-            office: { name: 'DPD Solo' },
-            employment: { name: 'Pengurus' },
-        },
-        attend: '2025-11-21T14:12:00',
-    },
-    {
-        id: 4,
-        user: {
-            id: 4,
-            name: 'Ahmad Fauzi',
-            code: 'ABC004',
-            office: { name: 'DPW Jawa Timur' },
-            employment: { name: 'Anggota' },
-        },
-        attend: null,
-    },
-    {
-        id: 5,
-        user: {
-            id: 5,
-            name: 'Budi Santoso',
-            code: 'ABC005',
-            office: { name: 'DMW Jakarta' },
-            employment: { name: 'Anggota' },
-        },
-        attend: null,
-    },
-];
-
-const AdminMeetingScanner = ({ meetingId = 2 }) => {
-    const [meeting, setMeeting] = useState(dummyMeeting);
-    const [attendances, setAttendances] = useState(dummyAttendances);
+const AdminMeetingScanner = ({ meeting, attendances }) => {
     const [scannerActive, setScannerActive] = useState(false);
     const [manualCode, setManualCode] = useState('');
     const [recentScans, setRecentScans] = useState([]);
     const [scanResult, setScanResult] = useState(null);
+    const { showToast } = useToast();
+
+    const { post } = useForm(null);
 
     const scannerRef = useRef(null);
     const html5QrCodeRef = useRef(null);
@@ -100,6 +34,10 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
         };
     }, []);
 
+    useEffect(() => {
+        setRecentScans(attendances.filter((e) => e.attend));
+    }, [attendances]);
+
     const startScanner = async () => {
         try {
             html5QrCodeRef.current = new Html5Qrcode('qr-reader');
@@ -107,7 +45,7 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
             await html5QrCodeRef.current.start(
                 { facingMode: 'environment' },
                 {
-                    fps: 10,
+                    fps: 1,
                     qrbox: { width: 250, height: 250 },
                 },
                 onScanSuccess,
@@ -132,10 +70,17 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
             }
         }
     };
-
     const onScanSuccess = (decodedText) => {
-        // Process scanned code
-        processAttendance(decodedText);
+        const code = decodedText.split('/').reverse()[0];
+        if (scanResult === code) return;
+        setScanResult(code);
+        post(`/admin/kegiatan/scan/${meeting.code}/${code}`, {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                showToast('success', 'Berhasil!', `Berhasil presensi`);
+            },
+        });
     };
 
     const onScanError = (error) => {
@@ -143,52 +88,29 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
     };
 
     const processAttendance = (code) => {
-        // Find user by code
-        const attendance = attendances.find((a) => a.user.code === code);
-
-        if (!attendance) {
-            setScanResult({
-                success: false,
-                message: 'Peserta tidak terdaftar dalam kegiatan ini',
-                timestamp: new Date(),
-            });
-            return;
-        }
-
-        if (attendance.attend !== null) {
-            setScanResult({
-                success: false,
-                message: `${attendance.user.name} sudah check-in sebelumnya pada ${new Date(attendance.attend).toLocaleTimeString('id-ID')}`,
-                timestamp: new Date(),
-                user: attendance.user,
-            });
-            return;
-        }
-
-        // Simulate API call to check-in
-        const now = new Date().toISOString();
-        const updatedAttendances = attendances.map((a) => (a.user.code === code ? { ...a, attend: now } : a));
-
-        setAttendances(updatedAttendances);
-
-        const scanData = {
-            success: true,
-            attendance: { ...attendance, attend: now },
-            timestamp: new Date(),
-        };
-
-        setScanResult(scanData);
-        setRecentScans((prev) => [scanData, ...prev].slice(0, 10)); // Keep last 10
-
-        // Clear result after 3 seconds
-        setTimeout(() => {
-            setScanResult(null);
-        }, 3000);
+        post(`/admin/kegiatan/scan/${meeting.code}/${code}`, {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                // optional: show success feedback
+                setScanResult(null);
+                console.log('Attendance recorded ✅');
+                startScanner();
+            },
+            onError: () => {
+                // handle fail — also restart scanner
+                console.error('Failed to record attendance ❌');
+                startScanner();
+            },
+            onFinish: () => {
+                // fallback to ensure scanner always restarts
+                startScanner();
+            },
+        });
     };
 
     const handleManualScan = () => {
         if (!manualCode.trim()) return;
-
         processAttendance(manualCode.trim());
         setManualCode('');
     };
@@ -222,7 +144,7 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
                 <div className="mb-2 flex items-center gap-2 text-sm text-gray-600">
                     <span>Dashboard</span>
                     <span>›</span>
-                    <span>{meeting.title}</span>
+                    <span>{meeting.name}</span>
                     <span>›</span>
                     <span className="font-medium text-gray-800">Scanner Presensi</span>
                 </div>
@@ -231,7 +153,14 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
                     Scanner Presensi
                 </h1>
                 <p className="mt-2 text-gray-600">
-                    {meeting.title} • {new Date(meeting.date).toLocaleDateString('id-ID')} • {meeting.time_start} - {meeting.time_end}
+                    {meeting.name} •{' '}
+                    {new Date(meeting.date).toLocaleDateString('id-ID', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}{' '}
+                    • {meeting.start_time.slice(0, 5)} - {meeting.end_time.slice(0, 5)}
                 </p>
             </div>
 
@@ -290,11 +219,17 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
             <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
                 <div className="flex items-center gap-3">
                     {!scannerActive ? (
-                        <Button label="Aktifkan Scanner" icon={<Scan size={16} />} className="p-button-success" onClick={startScanner} />
+                        <button className="cursor-pointer rounded-md bg-emerald-700 p-2 text-white" onClick={startScanner}>
+                            Buka Scanner
+                        </button>
                     ) : (
-                        <Button label="Hentikan Scanner" icon="pi pi-stop" className="p-button-danger" onClick={stopScanner} />
+                        <button className="cursor-pointer rounded-md bg-red-700 p-2 text-white" onClick={stopScanner}>
+                            Tutup Scanner
+                        </button>
                     )}
-                    <Button label="Refresh Data" icon="pi pi-refresh" className="p-button-outlined" onClick={refreshData} />
+                    <button className="cursor-pointer rounded-md bg-amber-700 p-2 text-white" onClick={refreshData}>
+                        Refresh Data
+                    </button>
                 </div>
             </div>
 
@@ -321,42 +256,6 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
                                 </div>
                             )}
                         </div>
-
-                        {/* Scan Result */}
-                        {scanResult && (
-                            <div
-                                className={`rounded-lg p-4 ${
-                                    scanResult.success ? 'border border-emerald-200 bg-emerald-50' : 'border border-red-200 bg-red-50'
-                                }`}
-                            >
-                                <div className="flex items-start gap-3">
-                                    <div
-                                        className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${
-                                            scanResult.success ? 'bg-emerald-100' : 'bg-red-100'
-                                        }`}
-                                    >
-                                        {scanResult.success ? (
-                                            <CheckCircle className="text-emerald-600" size={20} />
-                                        ) : (
-                                            <XCircle className="text-red-600" size={20} />
-                                        )}
-                                    </div>
-                                    <div className="flex-1">
-                                        <p className={`mb-1 font-semibold ${scanResult.success ? 'text-emerald-800' : 'text-red-800'}`}>
-                                            {scanResult.success ? 'Check-in Berhasil!' : 'Check-in Gagal'}
-                                        </p>
-                                        {scanResult.success && scanResult.attendance && (
-                                            <div className="text-sm text-emerald-700">
-                                                <p className="font-semibold">{scanResult.attendance.user.name}</p>
-                                                <p>{scanResult.attendance.user.office.name}</p>
-                                                <p>Check-in: {formatTime(scanResult.attendance.attend)}</p>
-                                            </div>
-                                        )}
-                                        {!scanResult.success && <p className="text-sm text-red-700">{scanResult.message}</p>}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     {/* Manual Input */}
@@ -394,16 +293,11 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
                             <div className="max-h-96 space-y-3 overflow-y-auto">
                                 {recentScans.map((scan, index) => (
                                     <div key={index} className="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
-                                        <Avatar
-                                            label={scan.attendance.user.name.charAt(0)}
-                                            size="normal"
-                                            shape="circle"
-                                            className="bg-emerald-600 text-white"
-                                        />
+                                        <Avatar label={scan.user.name.charAt(0)} size="normal" shape="circle" className="bg-emerald-600 text-white" />
                                         <div className="flex-1">
-                                            <p className="font-semibold text-gray-800">{scan.attendance.user.name}</p>
-                                            <p className="text-sm text-gray-600">{scan.attendance.user.office.name}</p>
-                                            <p className="text-sm font-medium text-emerald-600">{formatTime(scan.attendance.attend)}</p>
+                                            <p className="font-semibold text-gray-800">{scan.user.name}</p>
+                                            <p className="text-sm text-gray-600">{scan.user.office.name}</p>
+                                            <p className="text-sm font-medium text-emerald-600">{scan.attend.slice(0, 5)}</p>
                                         </div>
                                         <CheckCircle className="text-emerald-600" size={20} />
                                     </div>
@@ -445,7 +339,7 @@ const AdminMeetingScanner = ({ meetingId = 2 }) => {
                                         {attendance.attend ? (
                                             <div className="text-right">
                                                 <Tag value="Hadir" severity="success" className="mb-1" />
-                                                <p className="text-xs text-gray-600">{formatTime(attendance.attend)}</p>
+                                                <p className="text-xs text-gray-600">{attendance.attend.slice(0, 5)}</p>
                                             </div>
                                         ) : (
                                             <Tag value="Belum" severity="secondary" />

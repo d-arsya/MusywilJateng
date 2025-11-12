@@ -7,8 +7,6 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
-use App\Models\Meeting;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -45,7 +43,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
-    Route::inertia('/', 'admin');
+    Route::redirect('/', 'dashboard');
     Route::get('/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
     Route::get('/penginapan', [BuildingController::class, 'index'])->name('admin.penginapan');
     Route::post('/penginapan', [BuildingController::class, 'store']);
@@ -71,8 +69,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::get('/kegiatan/assign/{meeting:code}', [MeetingController::class, 'assign']);
     Route::put('/kegiatan/assign/{meeting:code}', [MeetingController::class, 'assignUsers']);
     Route::put('/kegiatan/unassign/{meeting:code}', [MeetingController::class, 'unassignUsers']);
-    Route::inertia('/kegiatan/scan', 'admin/kegiatan/scan');
-    Route::inertia('/kegiatan/stats', 'admin/kegiatan/stats');
+    Route::get('/kegiatan/scan/{meeting:code}', [MeetingController::class, 'scan']);
+    Route::post('/kegiatan/scan/{meeting_code}/{user_code}', [MeetingController::class, 'attend']);
+    Route::get('/kegiatan/stats/{meeting:code}', [MeetingController::class, 'stats']);
     Route::get('/kegiatan/{meeting:code}/edit', [MeetingController::class, 'edit']);
     Route::put('/kegiatan/{meeting:code}', [MeetingController::class, 'update']);
 });

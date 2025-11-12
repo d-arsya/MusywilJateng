@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class MeetingController extends Controller
 {
@@ -72,6 +73,90 @@ class MeetingController extends Controller
     {
         return inertia('admin/kegiatan/create', ['meeting' => $meeting, 'isEdit' => true]);
     }
+    public function stats(Meeting $meeting)
+    {
+        $meetings = Meeting::with(['attendances' => function ($q) {
+            $q->where('user_id', Auth::id());
+        }])
+            ->orderBy('date')
+            ->get();
+        $schedule = $meetings->groupBy(function ($meeting) {
+            return Carbon::parse($meeting->date)
+                ->locale('id')
+                ->translatedFormat('l, d F Y');
+        })->map(function ($items, $date) {
+            return [
+                'date' => $date,
+                'activities' => $items->map(function ($meeting) {
+                    $attendance = $meeting->attendances->first(); // may be null
+
+                    return [
+                        'name' => $meeting->name,
+                        'description' => $meeting->description,
+                        'location' => $meeting->room,
+                        'time' => substr($meeting->start_time, 0, 5) . ' - ' . substr($meeting->end_time, 0, 5),
+                        'attended' => $attendance?->attend ?? null, // optional: include user's attendance
+                    ];
+                })->sortBy('time')->values(),
+            ];
+        })->values();
+
+        $users = User::with(['employment', 'office', 'attendances'])->get();
+        $attendances = $users->map(function ($user) use ($meeting) {
+            // cari attendance untuk meeting tertentu
+            $attendance = $user->attendances->firstWhere('meeting_id', $meeting->id);
+
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'phone' => $user->phone,
+                'office' => $user->office,
+                'employment' => $user->employment,
+                'assigned' => !is_null($attendance),                // ada attendance untuk meeting ini
+                'attend' => $attendance?->attend,       // attendance-nya sudah terisi jam attend
+            ];
+        })->sortByDesc('attend')->values();
+        return inertia('admin/kegiatan/stats', compact('meeting', 'attendances', 'schedule'));
+    }
+    public function scan(Meeting $meeting)
+    {
+        $attendances = Attendance::with(['user', 'user.office', 'user.employment'])->where('meeting_id', $meeting->id)->get();
+        return inertia('admin/kegiatan/scan', compact('meeting', 'attendances'));
+    }
+
+    public function attend($meeting_code, $user_code)
+    {
+        $meeting = Meeting::where('code', $meeting_code)->firstOrFail();
+        $user = User::where('code', $user_code)->firstOrFail();
+
+        $att = Attendance::where('user_id', $user->id)->where('meeting_id', $meeting->id)->whereNull('attend')->first();
+        if ($att) {
+            $att->update(['attend' => now()]);
+            dispatch(function () {
+                $this->firebase();
+            });
+            return back(303)->with('success', 'Peserta berhasil presensi.');
+        }
+    }
+    public function firebase()
+    {
+        $url = "https://musywil-hidayatullah-6-default-rtdb.firebaseio.com/jateng.json";
+        $response = Http::get($url);
+        if (!$response->successful()) {
+            return response()->json(['error' => 'Failed to read data'], 500);
+        }
+        $data = $response->json();
+        $state = isset($data['state']) ? $data['state'] : 0;
+        $state++;
+        $updateResponse = Http::put($url, ['state' => $state]);
+
+        if ($updateResponse->successful()) {
+            return true;
+        }
+
+        return false;;
+    }
+
     public function assignUsers(Request $request, Meeting $meeting)
     {
         $userIds = explode(',', $request->query('users'));
