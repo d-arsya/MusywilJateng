@@ -1,1 +1,0 @@
-import{j as r}from"./app-Cl3TptfG.js";import{F as t}from"./full-Bfso8aIJ.js";/* empty css            */import"./header-DqfbgmuK.js";import"./x-B8PpvPys.js";import"./createLucideIcon-q_PR75Rr.js";function u(){return r.jsx(t,{children:r.jsx("h1",{children:"Halaman Full"})})}export{u as default};

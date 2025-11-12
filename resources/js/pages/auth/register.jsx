@@ -1,6 +1,8 @@
 import PublicLayout from '@/layouts/public';
+import getCroppedImg from '@/lib/crop'; // helper (lihat bawah)
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import Cropper from 'react-easy-crop';
 
 export default function RegisterPage({ offices, employments }) {
     const [profilePhoto, setProfilePhoto] = useState(null);
@@ -14,6 +16,12 @@ export default function RegisterPage({ offices, employments }) {
         capsize: '',
         avatar: null,
     });
+    const [preview, setPreview] = useState(null);
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const [showCropper, setShowCropper] = useState(false);
+    const [imageSrc, setImageSrc] = useState(null);
     transform((data) => ({
         ...data,
         employment_id: data.employment,
@@ -31,14 +39,29 @@ export default function RegisterPage({ offices, employments }) {
             onSuccess: () => console.log('SUCCESS'),
         });
     }
-    const [preview, setPreview] = useState(null);
+
+    const onCropComplete = (_, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels);
+    };
 
     const handlePhotoChange = (e) => {
         if (e.target.files && e.target.files[0]) {
-            setData('avatar', e.target.files[0]);
-            setProfilePhoto(e.target.files[0]);
-            setPreview(URL.createObjectURL(e.target.files[0]));
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImageSrc(reader.result);
+                setShowCropper(true);
+            };
+            reader.readAsDataURL(e.target.files[0]);
         }
+    };
+
+    const handleCropDone = async () => {
+        const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+        setPreview(croppedImage);
+        const res = await fetch(croppedImage);
+        const blob = await res.blob();
+        setData('avatar', blob);
+        setShowCropper(false);
     };
 
     return (
@@ -59,6 +82,29 @@ export default function RegisterPage({ offices, employments }) {
                         )}
                         <input required type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
                     </label>
+                    {showCropper && (
+                        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60">
+                            <div className="relative h-80 w-80 bg-black">
+                                <Cropper
+                                    image={imageSrc}
+                                    crop={crop}
+                                    zoom={zoom}
+                                    aspect={1}
+                                    onCropChange={setCrop}
+                                    onZoomChange={setZoom}
+                                    onCropComplete={onCropComplete}
+                                />
+                            </div>
+                            <div className="mt-4 flex gap-4">
+                                <button onClick={() => setShowCropper(false)} className="rounded bg-gray-300 px-4 py-2">
+                                    Batal
+                                </button>
+                                <button onClick={handleCropDone} className="rounded bg-emerald-500 px-4 py-2 text-white">
+                                    Pilih
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Nama Lengkap */}
