@@ -17,7 +17,7 @@ const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
         room: meeting?.room || '',
         description: meeting?.description || '',
         status: meeting?.status || 'Belum',
-        all: true,
+        all: meeting?.all || true,
     });
 
     const [errors, setErrors] = useState({});
@@ -227,13 +227,11 @@ const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
                             className="w-full"
                         />
                     </div>
-                    {isEdit || (
-                        <SelectButton
-                            value={data.all ? 'Semua' : 'Sebagian'}
-                            onChange={(e) => setData('all', e.value == 'Semua')}
-                            options={['Semua', 'Sebagian']}
-                        />
-                    )}
+                    <SelectButton
+                        value={data.all ? 'Semua' : 'Sebagian'}
+                        onChange={(e) => setData('all', e.value == 'Semua')}
+                        options={['Semua', 'Sebagian']}
+                    />
                 </div>
 
                 {/* Info Box */}

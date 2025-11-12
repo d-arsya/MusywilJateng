@@ -20,12 +20,25 @@ class User extends Authenticatable
     {
         parent::boot();
         static::creating(function ($user) {
-            // Generate unique 6 karakter code
             do {
                 $code = strtolower(Str::random(6));
             } while (self::where('code', $code)->exists());
 
             $user->code = $code;
+        });
+        static::created(function ($user) {
+            $meetingIds = Meeting::where('all', true)->pluck('id');
+            $now = now();
+            if ($meetingIds->isNotEmpty()) {
+                $attendances = $meetingIds->map(fn($id) => [
+                    'user_id' => $user->id,
+                    'meeting_id' => $id,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ])->toArray();
+
+                Attendance::insert($attendances); // batch insert
+            }
         });
     }
 

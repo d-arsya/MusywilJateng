@@ -54,7 +54,8 @@ class MeetingController extends Controller
             'date' => 'required|date|after_or_equal:today',
             'description' => 'nullable|string',
             'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time'
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'all' => 'boolean',
         ]);
         $meeting->update($validated);
         return redirect()->route('admin.kegiatan')
