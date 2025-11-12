@@ -126,9 +126,9 @@ export default function RegisterPage({ offices, employments }) {
                             className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                         />
                     </div>
-                    <div>
+                    <div className="">
                         <h1 className="mb-2">Kepulangan</h1>
-                        <inpute
+                        <input
                             required
                             value={data.depart}
                             onChange={(e) => setData('depart', e.target.value)}

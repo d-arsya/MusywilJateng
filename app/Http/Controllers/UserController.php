@@ -163,6 +163,11 @@ class UserController extends Controller
     {
         return inertia('dashboard');
     }
+    public function materi()
+    {
+        $materials = [];
+        return inertia('materi', compact('materials'));
+    }
     public function profile()
     {
         $user = User::with(['office', 'employment', 'room.building'])->whereId(Auth::id())->first();

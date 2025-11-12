@@ -1,5 +1,5 @@
 import PublicLayout from '@/layouts/public';
-import { Link, router, useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 
 export default function LoginPage() {
     const { data, setData } = useForm({
@@ -32,9 +32,9 @@ export default function LoginPage() {
                     </button>
                     <p className="text-center text-sm text-gray-500">
                         Belum punya kode?{' '}
-                        <Link href="#" className="font-semibold text-emerald-700 hover:underline">
+                        <a href="https://wa.me/6281234895030" className="font-semibold text-emerald-700 hover:underline">
                             Hubungi Admin
-                        </Link>
+                        </a>
                     </p>
                 </form>
             </div>

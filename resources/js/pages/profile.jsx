@@ -120,7 +120,7 @@ export default function ProfilePage({ user }) {
                                 }}
                                 className="hidden"
                             />
-                            <h1 className="mb-2 text-center text-3xl font-bold text-white">{user.name}</h1>
+                            <h1 className="mb-2 text-center text-xl font-bold text-white">{user.name}</h1>
 
                             {/* Kode Akses */}
                             <div className="mb-4 rounded-full bg-white/20 px-6 py-2 backdrop-blur-sm">
@@ -259,7 +259,7 @@ export default function ProfilePage({ user }) {
                                             <Clock className="h-5 w-5 text-purple-600" />
                                             <span className="font-medium text-gray-700">Durasi Menginap</span>
                                         </div>
-                                        <span className="text-2xl font-bold text-purple-600">{calculateDuration()} Hari</span>
+                                        <span className="text-xl font-bold text-purple-600">{calculateDuration()} Hari</span>
                                     </div>
                                 </div>
                             </div>
@@ -277,7 +277,7 @@ export default function ProfilePage({ user }) {
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <p className="text-sm text-gray-600">Gedung & Kamar</p>
-                                                    <p className="text-xl font-bold text-gray-800">
+                                                    <p className="text-md font-bold text-gray-800">
                                                         {user.room.building.name} - {user.room.name}
                                                     </p>
                                                 </div>
@@ -298,13 +298,13 @@ export default function ProfilePage({ user }) {
                                 QR Code Presensi
                             </h2>
                         </div>
-                        <div className="p-6 text-center">
-                            <div className="mx-auto mb-4 flex h-48 w-48 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100">
+                        <div className="py-6 text-center">
+                            <div className="mx-auto mb-4 flex h-60 w-60 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100">
                                 {/* Placeholder for QR Code */}
                                 <QRCode
                                     value={app.url + '/s/' + user.code} // dynamically from user.code
                                     size={128}
-                                    className="h-32 w-32 bg-none text-emerald-600"
+                                    className="h-52 w-52 bg-none text-emerald-600"
                                     bgColor="none"
                                 />
                             </div>

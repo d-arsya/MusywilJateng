@@ -2,35 +2,15 @@ import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
 import { FileText } from 'lucide-react';
 
-const materials = [
-    {
-        title: 'Tata Tertib Musywil VI',
-        description: 'Panduan lengkap tata tertib dan etika peserta selama mengikuti Musyawarah Wilayah VI Hidayatullah',
-        file: '/assets/pdf/a.pdf',
-    },
-    {
-        title: 'Jadwal Kegiatan',
-        description: 'Rundown acara lengkap dari hari pertama hingga penutupan termasuk waktu dan lokasi setiap kegiatan',
-        file: '/assets/pdf/a.pdf',
-    },
-    {
-        title: 'Materi Pembukaan',
-        description: 'Sambutan ketua umum dan visi misi Hidayatullah untuk periode mendatang beserta program kerja strategis',
-        file: '/assets/pdf/a.pdf',
-    },
-    {
-        title: 'Laporan Pertanggungjawaban',
-        description: 'Laporan keuangan dan program kerja periode sebelumnya serta evaluasi pencapaian target organisasi',
-        file: '/assets/pdf/a.pdf',
-    },
-    {
-        title: 'Rancangan Anggaran',
-        description: 'Proposal anggaran dasar dan anggaran rumah tangga untuk periode kepengurusan yang akan datang',
-        file: '/assets/pdf/a.pdf',
-    },
-];
+// const materials = [
+//     {
+//         title: 'Tata Tertib Musywil VI',
+//         description: 'Panduan lengkap tata tertib dan etika peserta selama mengikuti Musyawarah Wilayah VI Hidayatullah',
+//         file: '/assets/pdf/a.pdf',
+//     },
+// ];
 
-export default function MaterialPage() {
+export default function MaterialPage({ materials }) {
     return (
         <AuthLayout>
             <div className="space-y-8">
@@ -41,6 +21,16 @@ export default function MaterialPage() {
 
                 {/* Division Cards */}
                 <div className="grid grid-cols-1 gap-6">
+                    {materials.length == 0 && (
+                        <div className="rounded-md border-gray-200 bg-gray-50 bg-gray-100 p-4">
+                            <div className="flex items-center gap-3">
+                                <FileText size={20} />
+                                <div className="flex-1">
+                                    <p className="text-sm text-gray-600">Belum ada materi yang diunggah</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {materials.map((item, index) => {
                         return (
                             <a

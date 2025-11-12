@@ -200,12 +200,12 @@ const DashboardPenginapan = ({ buildings, totalUnassigned }) => {
             <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
                 <div className="flex flex-wrap gap-3">
                     <Button label="Tambah Gedung Baru" icon={<Plus size={16} />} className="p-button-success" onClick={handleAddBuilding} />
-                    <Button
+                    {/* <Button
                         label="Lihat Peserta Belum Terplotting"
                         icon={<Users size={16} />}
                         className="p-button-warning"
                         onClick={() => router.get('/admin/penginapan/unassigned')}
-                    />
+                    /> */}
                 </div>
             </div>
 

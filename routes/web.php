@@ -39,12 +39,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [UserController::class, 'editProfile']);
     Route::inertia('/card', 'card');
     Route::get('/jadwal', [MeetingController::class, 'userView']);
-    Route::inertia('/full', 'full');
-    Route::inertia('materi', 'materi');
+    Route::get('materi', [UserController::class, 'materi']);
 });
 
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
-    Route::redirect('/', 'dashboard');
+    Route::redirect('', 'dashboard');
     Route::get('/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
     Route::get('/penginapan', [BuildingController::class, 'index'])->name('admin.penginapan');
     Route::post('/penginapan', [BuildingController::class, 'store']);
