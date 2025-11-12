@@ -3,7 +3,7 @@ import { Calendar, CalendarDays, CheckCircle, Clock, FileText, MapPin, Users, XC
 import { Avatar } from 'primereact/avatar';
 import { Chart } from 'primereact/chart';
 import { ConfirmDialog } from 'primereact/confirmdialog';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const totalParticipants = attendances.length;
