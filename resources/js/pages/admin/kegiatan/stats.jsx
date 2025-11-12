@@ -35,7 +35,7 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const handleUpdate = () => {
         router.reload({ attendances });
     };
-    setInterval(handleUpdate, 5000);
+    setInterval(handleUpdate, 15000);
     const filterOptions = [
         { label: 'Semua', value: 'Semua' },
         { label: 'Hadir', value: 'Hadir' },
