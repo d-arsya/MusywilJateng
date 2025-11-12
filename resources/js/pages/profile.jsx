@@ -1,5 +1,6 @@
 import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
+import getCroppedImg from '@/lib/crop';
 import { useForm } from '@inertiajs/react';
 import {
     Award,
@@ -20,7 +21,8 @@ import {
 import { Avatar } from 'primereact/avatar';
 import { Divider } from 'primereact/divider';
 import { Tag } from 'primereact/tag';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Cropper from 'react-easy-crop';
 import QRCode from 'react-qr-code';
 
 export default function ProfilePage({ user }) {
@@ -58,6 +60,16 @@ export default function ProfilePage({ user }) {
         DMW: 'warning',
         Kampus: 'help',
         Orpen: 'danger',
+    };
+
+    const [showCropper, setShowCropper] = useState(false);
+    const [imageSrc, setImageSrc] = useState(null);
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
+    const onCropComplete = (_, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels);
     };
 
     useEffect(() => {
@@ -116,10 +128,51 @@ export default function ProfilePage({ user }) {
                                 type="file"
                                 accept="image/jpeg,image/jpg,image/png,image/webp"
                                 onChange={(e) => {
-                                    setData('avatar', e.target.files?.[0]);
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = () => {
+                                            setImageSrc(reader.result);
+                                            setShowCropper(true);
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
                                 }}
                                 className="hidden"
                             />
+                            {showCropper && (
+                                <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60">
+                                    <div className="relative h-80 w-80 bg-black">
+                                        <Cropper
+                                            image={imageSrc}
+                                            crop={crop}
+                                            zoom={zoom}
+                                            aspect={1}
+                                            onCropChange={setCrop}
+                                            onZoomChange={setZoom}
+                                            onCropComplete={onCropComplete}
+                                        />
+                                    </div>
+                                    <div className="mt-4 flex gap-4">
+                                        <button onClick={() => setShowCropper(false)} className="rounded bg-gray-300 px-4 py-2">
+                                            Batal
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+                                                const res = await fetch(croppedImage);
+                                                const blob = await res.blob();
+                                                setData('avatar', blob);
+                                                setShowCropper(false);
+                                            }}
+                                            className="rounded bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700"
+                                        >
+                                            Pilih
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
                             <h1 className="mb-2 text-center text-xl font-bold text-white">{user.name}</h1>
 
                             {/* Kode Akses */}

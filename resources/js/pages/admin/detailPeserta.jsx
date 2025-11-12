@@ -1,7 +1,9 @@
 import AdminLayout from '@/layouts/admin';
+import getCroppedImg from '@/lib/crop'; // helper dari sebelumnya
 import { useForm } from '@inertiajs/react';
 import { AlertCircle, Briefcase, Calendar, Phone, Save, Upload, User, X } from 'lucide-react';
 import { useState } from 'react';
+import Cropper from 'react-easy-crop';
 
 // const offices = [
 //     { id: 1, name: 'DPW Jawa Tengah' },
@@ -38,27 +40,35 @@ export default function AdminEditUserPage({ employments, user, offices }) {
         setFormData(name, value);
     };
 
+    const [imageSrc, setImageSrc] = useState(null);
+    const [showCropper, setShowCropper] = useState(false);
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
+    const onCropComplete = (_, croppedAreaPixels) => setCroppedAreaPixels(croppedAreaPixels);
+
     const handleAvatarChange = (e) => {
         const file = e.target.files?.[0];
-        if (file) {
-            setFormData('avatar', file);
-            if (file.size > 2048 * 1024) {
-                setErrors((prev) => ({ ...prev, avatar: 'Ukuran file maksimal 2MB' }));
-                return;
-            }
-            if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
-                setErrors((prev) => ({ ...prev, avatar: 'Format file harus JPG, PNG, atau WebP' }));
-                return;
-            }
+        if (!file) return;
 
-            // Preview
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setAvatarPreview(reader.result);
-            };
-            reader.readAsDataURL(file);
-            setErrors((prev) => ({ ...prev, avatar: null }));
+        if (file.size > 2048 * 1024) {
+            setErrors((prev) => ({ ...prev, avatar: 'Ukuran file maksimal 2MB' }));
+            return;
         }
+        if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
+            setErrors((prev) => ({ ...prev, avatar: 'Format file harus JPG, PNG, atau WebP' }));
+            return;
+        }
+
+        // Preview sementara ke cropper
+        const reader = new FileReader();
+        reader.onload = () => {
+            setImageSrc(reader.result);
+            setShowCropper(true);
+        };
+        reader.readAsDataURL(file);
+        setErrors((prev) => ({ ...prev, avatar: null }));
     };
 
     const handleSubmit = async (e) => {
@@ -121,6 +131,42 @@ export default function AdminEditUserPage({ employments, user, offices }) {
                                         className="hidden"
                                     />
                                 </div>
+                                {showCropper && (
+                                    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60">
+                                        <div className="relative h-80 w-80 bg-black">
+                                            <Cropper
+                                                image={imageSrc}
+                                                crop={crop}
+                                                zoom={zoom}
+                                                aspect={1}
+                                                onCropChange={setCrop}
+                                                onZoomChange={setZoom}
+                                                onCropComplete={onCropComplete}
+                                            />
+                                        </div>
+                                        <div className="mt-4 flex gap-4">
+                                            <button onClick={() => setShowCropper(false)} className="rounded bg-gray-300 px-4 py-2">
+                                                Batal
+                                            </button>
+                                            <button
+                                                onClick={async () => {
+                                                    const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+                                                    setAvatarPreview(croppedImage);
+
+                                                    const res = await fetch(croppedImage);
+                                                    const blob = await res.blob();
+                                                    setFormData('avatar', blob);
+
+                                                    setShowCropper(false);
+                                                }}
+                                                className="rounded bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700"
+                                            >
+                                                Pilih
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
                                 <div className="flex-1">
                                     <p className="mb-1 font-medium text-gray-700">Upload foto peserta</p>
                                     <p className="text-sm text-gray-500">Format: JPG, PNG, WebP (Max 2MB)</p>
