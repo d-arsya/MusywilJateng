@@ -110,21 +110,27 @@ export default function RegisterPage({ offices, employments }) {
                 </select>
 
                 {/* Tanggal Kedatangan & Kepulangan */}
-                <div className="flex gap-4">
-                    <input
-                        value={data.arrive}
-                        onChange={(e) => setData('arrive', e.target.value)}
-                        type="date"
-                        placeholder="Tanggal Kedatangan"
-                        className="w-1/2 rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                    />
-                    <input
-                        value={data.depart}
-                        onChange={(e) => setData('depart', e.target.value)}
-                        type="date"
-                        placeholder="Tanggal Kepulangan"
-                        className="w-1/2 rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                    />
+                <div className="grid grid-cols-2 gap-x-3">
+                    <div className="">
+                        <h1 className="mb-2">Kedatangan</h1>
+                        <input
+                            value={data.arrive}
+                            onChange={(e) => setData('arrive', e.target.value)}
+                            type="date"
+                            placeholder="Tanggal Kedatangan"
+                            className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                        />
+                    </div>
+                    <div>
+                        <h1 className="mb-2">Kepulangan</h1>
+                        <input
+                            value={data.depart}
+                            onChange={(e) => setData('depart', e.target.value)}
+                            type="date"
+                            placeholder="Tanggal Kepulangan"
+                            className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                        />
+                    </div>
                 </div>
 
                 {/* Ukuran Peci */}
