@@ -73,8 +73,7 @@ class UserController extends Controller
             . "Alhamdulillah, pendaftaran Anda untuk *Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan* telah berhasil dicatat.\n\n"
 
             . "📋 *DETAIL REGISTRASI*\n"
-            . "━━━━━━━━━━━━━━━\n"
-            . "```\n"
+            . "━━━\n"
             . "Nama        : {$user->name}\n"
             . "Utusan      : {$office->type} - {$office->name}\n"
             . "Jabatan     : {$employment->name}\n"
@@ -83,10 +82,10 @@ class UserController extends Controller
             . "Kedatangan  : {$arriveDate}\n"
             . "Kepulangan  : {$departDate}\n"
             . "Kode Akses  : {$user->code}\n"
-            . "```\n\n"
+            . "\n\n"
 
             . "🌐 *AKSES APLIKASI*\n"
-            . "━━━━━━━━━━━━━━━\n"
+            . "━━━\n"
             . "Silakan buka link berikut:\n"
             . "{$link}/s/{$user->code}\n\n"
 
@@ -97,7 +96,7 @@ class UserController extends Controller
             . "• Jadwal & denah lokasi\n\n"
 
             . "📝 *LANGKAH SELANJUTNYA*\n"
-            . "━━━━━━━━━━━━━━━\n"
+            . "━━━\n"
             . "1. Lengkapi kontribusi pembayaran\n"
             . "2. Upload bukti transfer\n"
             . "3. Tunggu verifikasi panitia\n"
@@ -108,7 +107,7 @@ class UserController extends Controller
 
             . "Barakallahu fiikum 🤲\n\n"
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
-            . "—\n"
+            . "---\n"
             . "🕌 *Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
 
         dispatch(function () use ($user, $message) {
