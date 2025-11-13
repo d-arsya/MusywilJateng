@@ -1,20 +1,16 @@
 import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
-import { MapPin } from 'lucide-react';
 
 export default function DenahPage() {
     return (
         <AuthLayout>
-            {/* <img src="/assets/img/denah.jpg" alt="" /> */}
-            <div className="rounded-md border-gray-200 bg-gray-50 bg-gray-100 p-4">
-                <div className="flex items-center gap-3">
-                    <MapPin size={20} />
-                    <div className="flex-1">
-                        <p className="text-sm text-gray-600">Denah sedang kami siapkan</p>
-                    </div>
-                </div>
+            <div className="px-1 py-4">
+                <h1 className="my-3 text-lg font-extrabold">Denah Lantai 3 Gedung Mekah</h1>
+                <img src="/assets/img/denah-lantai-3.jpg" alt="" />
+                <h1 className="my-3 text-lg font-extrabold">Denah Lantai 4 Gedung Mekah</h1>
+                <img src="/assets/img/denah-lantai-4.jpg" alt="" />
+                <HelpSection />
             </div>
-            <HelpSection />
         </AuthLayout>
     );
 }
