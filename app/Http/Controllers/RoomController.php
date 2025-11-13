@@ -60,14 +60,14 @@ class RoomController extends Controller
 
     public function update(Request $request, Building $building, Room $room)
     {
-        $request->validate(['name' => 'required|string|max:20|min:3']);
+        $request->validate(['name' => 'required|string|max:60|min:3']);
         $room->update($request->all());
         return redirect()->route('admin.gedung', $building->name)
             ->with('success', 'Kamar berhasil diubah!');
     }
     public function store(Request $request, Building $building)
     {
-        $request->validate(['name' => 'required|string|max:20|min:3']);
+        $request->validate(['name' => 'required|string|max:60|min:3']);
         $building->rooms()->create($request->all());
         return redirect()->route('admin.gedung', $building->name)
             ->with('success', 'Kamar berhasil ditambahkan!');

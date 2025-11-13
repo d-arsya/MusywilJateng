@@ -23,14 +23,14 @@ class BuildingController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:20|min:3']);
+        $request->validate(['name' => 'required|string|max:60|min:3']);
         Building::create($request->all());
         return redirect()->route('admin.penginapan')
             ->with('success', 'Kegiatan berhasil ditambahkan!');
     }
     public function update(Request $request, Building $building)
     {
-        $request->validate(['name' => 'required|string|max:20|min:3']);
+        $request->validate(['name' => 'required|string|max:60|min:3']);
         $building->update($request->all());
         return redirect()->route('admin.penginapan')
             ->with('success', 'Kegiatan berhasil diubah!');

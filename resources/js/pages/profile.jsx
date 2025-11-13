@@ -77,15 +77,6 @@ export default function ProfilePage({ user }) {
 
         // Optional: validate before upload
         const file = data.avatar;
-        if (file.size > 2 * 1024 * 1024) {
-            alert('Ukuran file maksimal 2MB');
-            return;
-        }
-
-        if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
-            alert('Format file harus JPG, PNG, atau WebP');
-            return;
-        }
 
         // Auto-upload
         post('/profile', {
