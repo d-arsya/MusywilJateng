@@ -90,30 +90,25 @@ export default function Dashboard({ auth, app }) {
                 {/* Header Image tetap */}
                 <div className="relative w-full max-w-xl">
                     {/* Background ID Card */}
-                    <img src="/assets/img/card-horizontal.jpg" alt="Banner" className="w-full rounded-lg shadow-md" />
+                    <img src="/assets/img/card-horizontal.png" alt="Banner" className="w-full rounded-lg shadow-md" />
 
                     {/* Foto Profil */}
-                    <div className="absolute bottom-6 left-6 rounded-sm bg-white p-1">
+                    <div className="absolute bottom-3 left-3 rounded-sm bg-white p-1">
                         <QRCode
                             value={app.url + '/s/' + user.code} // dynamically generated from user.code
                             size={64} // roughly same as your h-16 w-16
                             className="h-16 w-16"
                         />
                     </div>
-                    {/* <img
-                        src={user.avatar}
-                        alt="Foto Profil"
-                        className="absolute right-12 bottom-10 h-20 w-20 rounded-full border-2 border-white bg-emerald-800 object-cover shadow-lg"
-                    /> */}
                     <Avatar
                         image={user.avatar || undefined}
                         label={!user.avatar ? user.name.charAt(0) : undefined}
                         size="xlarge"
                         shape="circle"
-                        className="absolute right-20 bottom-10 h-20 w-20 rounded-full border-2 border-white bg-emerald-800 text-white shadow-lg [&_img]:object-cover"
-                        style={{ width: '60px', height: '60px', fontSize: '24px' }}
+                        className="absolute right-12 bottom-8 h-32 w-32 rounded-full border-2 border-white bg-emerald-800 text-white shadow-lg [&_img]:object-cover"
+                        style={{ width: '80px', height: '80px', fontSize: '24px' }}
                     />
-                    <div className="text-md absolute top-12 left-6 font-medium text-white drop-shadow-lg">
+                    <div className="absolute top-3 right-2 w-1/2 text-sm font-medium text-white drop-shadow-lg">
                         {user.name}
                         <p className="text-xs font-thin">
                             {user.office.type} {user.office.name}
