@@ -56,6 +56,13 @@ class RoomController extends Controller
         return redirect()->back()
             ->with('success', 'Kamar berhasil diassign.');
     }
+    public function assignUsers(Request $request, Room $room)
+    {
+        $users = explode(',', $request->query('code'));
+        User::whereIn('id', $users)->update(['room_id' => $room->id]);
+        return redirect()->back()
+            ->with('success', 'Kamar berhasil diassign.');
+    }
 
 
     public function update(Request $request, Building $building, Room $room)

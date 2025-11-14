@@ -58,6 +58,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::get('/penginapan/gedung/{building:name}/kamar/{room}', [RoomController::class, 'show']);
     Route::get('/penginapan/unassigned', [RoomController::class, 'unassigned']);
     Route::put('/penginapan/unassigned/{code}', [RoomController::class, 'unassignedUser']);
+    Route::put('/penginapan/assigned/{room}', [RoomController::class, 'assignUsers']);
     Route::put('/penginapan/assign', [RoomController::class, 'assign']);
     Route::put('/penginapan/{building}', [BuildingController::class, 'update']);
     Route::delete('/penginapan/{building}', [BuildingController::class, 'destroy']);

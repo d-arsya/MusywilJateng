@@ -1,5 +1,5 @@
 import AdminLayout from '@/layouts/admin';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { ArrowLeft, Briefcase, DoorOpen, Phone, UserPlus, Users } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
@@ -22,6 +22,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
     const [selectedBuilding, setSelectedBuilding] = useState(null);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [availableRooms, setAvailableRooms] = useState([]);
+    const { put } = useForm(null);
 
     // Handlers
     const handleBack = () => {
@@ -33,7 +34,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
         setSelectedBuilding(null);
         setSelectedRoom(null);
         setAvailableRooms([]);
-        // setShowAssignDialog(true);
+        setShowAssignDialog(true);
     };
 
     const handleAssignBulk = () => {
@@ -42,7 +43,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
         setSelectedBuilding(null);
         setSelectedRoom(null);
         setAvailableRooms([]);
-        // setShowAssignDialog(true);
+        setShowAssignDialog(true);
     };
 
     const handleBuildingChange = (building) => {
@@ -53,18 +54,10 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
 
     const handleAssignToRoom = () => {
         if (!selectedRoom) return;
-
-        // Update room count
-        const building = buildings.find((b) => b.id === selectedBuilding.id);
-        const room = building.rooms.find((r) => r.id === selectedRoom.id);
-        room.users_count += selectedUsers.length;
-
-        // Remove assigned users
-        setUsers(users.filter((u) => !selectedUsers.includes(u.id)));
-        setSelectedUsers([]);
-        setShowAssignDialog(false);
-
-        alert(`Berhasil assign ${selectedUsers.length} peserta ke ${selectedBuilding.name} - ${selectedRoom.name}`);
+        console.log('HALO');
+        put(`/admin/penginapan/assigned/${selectedRoom.id}?code=${selectedUsers.join(',')}`, {
+            onFinish: () => setShowAssignDialog(false),
+        });
     };
 
     const handleClearSelection = () => {
@@ -190,7 +183,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
             </div>
 
             {/* Bulk Actions Bar */}
-            {/* {selectedUsers.length > 0 && (
+            {selectedUsers.length > 0 && (
                 <div className="mb-6 rounded-lg bg-emerald-600 p-4 text-white shadow-lg">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -212,7 +205,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
                         </div>
                     </div>
                 </div>
-            )} */}
+            )}
 
             {/* Filters & Search */}
             <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
@@ -275,7 +268,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
                     <Column field="name" header="Nama Peserta" body={userNameTemplate} />
                     <Column field="office.name" header="Utusan" body={officeTemplate} />
                     <Column field="employment.name" header="Jabatan" body={employmentTemplate} style={{ width: '150px' }} />
-                    {/* <Column header="Aksi" body={actionTemplate} style={{ width: '150px' }} /> */}
+                    <Column header="Aksi" body={actionTemplate} style={{ width: '150px' }} />
                 </DataTable>
             </div>
 
@@ -292,7 +285,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
                     </div>
                 }
             >
-                <div className="flex flex-col gap-4 pt-4">
+                <div className="flex h-72 flex-col gap-4 pt-4">
                     {selectedUsers.length > 1 && (
                         <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
                             <p className="text-sm text-blue-800">
