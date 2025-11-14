@@ -199,7 +199,7 @@ class MeetingController extends Controller
     {
         $employments = Employment::all();
         $offices = Office::all();
-        $users = User::with(['employment', 'office', 'attendances'])->get();
+        $users = User::with(['employment', 'office', 'attendances'])->wherePaid(true)->get();
         $allUsers = $users->map(function ($user) use ($meeting) {
             // cari attendance untuk meeting tertentu
             $attendance = $user->attendances->firstWhere('meeting_id', $meeting->id);
