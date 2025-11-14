@@ -220,8 +220,8 @@ export default function AdminDashboardPage({ users }) {
                         value={filteredUsers}
                         dataKey="id"
                         paginator
-                        rows={10}
-                        rowsPerPageOptions={[10, 25, 50, 100]}
+                        rows={20}
+                        rowsPerPageOptions={[10, 20, 40, 50, 100, 200, 300, 400]}
                         globalFilter={globalFilter}
                         header={header}
                         emptyMessage={
