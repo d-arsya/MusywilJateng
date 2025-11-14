@@ -118,16 +118,12 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'max:20'],
             'capsize' => ['required', 'integer'],
             'arrive' => ['required', 'date'],
-            'depart' => ['required', 'date', 'after_or_equal:arrive'],
-            'avatar' => ['sometimes', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'depart' => ['required', 'date', 'after_or_equal:arrive']
         ]);
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
             $validated['avatar'] = asset(Storage::url($path));
-        } else {
-            // keep existing avatar
-            unset($validated['avatar']);
         }
         $user->update($validated);
         return redirect()->route('admin.peserta');
@@ -141,7 +137,7 @@ class UserController extends Controller
             // 'office_id' => ['required', 'exists:offices,id'],
             // 'name' => ['required', 'string', 'max:255'],
             // 'phone' => ['required', 'string', 'max:20'],
-            // 'capsize' => ['required', 'integer'],
+            // 'capsize' => ['required', 'integer'],    
             // 'arrive' => ['required', 'date'],
             // 'depart' => ['required', 'date', 'after_or_equal:arrive'],
             'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
