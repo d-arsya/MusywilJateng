@@ -92,19 +92,8 @@ const AdminMeetingScanner = ({ meeting, attendances }) => {
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
-                // optional: show success feedback
+                showToast('success', 'Berhasil!', `Berhasil presensi`);
                 setScanResult(null);
-                console.log('Attendance recorded ✅');
-                startScanner();
-            },
-            onError: () => {
-                // handle fail — also restart scanner
-                console.error('Failed to record attendance ❌');
-                startScanner();
-            },
-            onFinish: () => {
-                // fallback to ensure scanner always restarts
-                startScanner();
             },
         });
     };
@@ -215,33 +204,26 @@ const AdminMeetingScanner = ({ meeting, attendances }) => {
                 </div>
             </div>
 
-            {/* Actions */}
-            <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-                <div className="flex items-center gap-3">
-                    {!scannerActive ? (
-                        <button className="cursor-pointer rounded-md bg-emerald-700 p-2 text-white" onClick={startScanner}>
-                            Buka Scanner
-                        </button>
-                    ) : (
-                        <button className="cursor-pointer rounded-md bg-red-700 p-2 text-white" onClick={stopScanner}>
-                            Tutup Scanner
-                        </button>
-                    )}
-                    <button className="cursor-pointer rounded-md bg-amber-700 p-2 text-white" onClick={refreshData}>
-                        Refresh Data
-                    </button>
-                </div>
-            </div>
-
             {/* Main Content */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 {/* LEFT: Scanner */}
                 <div className="space-y-6">
                     {/* QR Scanner */}
                     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                        <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-800">
-                            <QrCode className="text-emerald-600" size={20} />
-                            QR Code Scanner
+                        <h2 className="mb-4 flex justify-between gap-2 text-lg font-semibold text-gray-800">
+                            <span className="flex items-center gap-2">
+                                <QrCode className="text-emerald-600" size={20} />
+                                QR Code Scanner
+                            </span>
+                            {!scannerActive ? (
+                                <button className="cursor-pointer rounded-md bg-emerald-700 p-2 text-white" onClick={startScanner}>
+                                    Buka Scanner
+                                </button>
+                            ) : (
+                                <button className="cursor-pointer rounded-md bg-red-700 p-2 text-white" onClick={stopScanner}>
+                                    Tutup Scanner
+                                </button>
+                            )}
                         </h2>
 
                         <div className="mb-4 overflow-hidden rounded-lg bg-gray-900" style={{ minHeight: '300px' }}>
