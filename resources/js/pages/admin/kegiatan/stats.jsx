@@ -3,7 +3,7 @@ import { Calendar, CalendarDays, CheckCircle, Clock, FileText, MapPin, Users, XC
 import { Avatar } from 'primereact/avatar';
 import { Chart } from 'primereact/chart';
 import { ConfirmDialog } from 'primereact/confirmdialog';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const totalParticipants = attendances.length;
@@ -11,14 +11,20 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const totalNotAttended = totalParticipants - totalAttended;
     const usersAttended = attendances.filter((a) => a.attend !== null);
     const [filterUser, setFilterUser] = useState('Hadir');
+    const prevAttendances = useRef(JSON.stringify(attendances));
 
     useEffect(() => {
-        router.reload({ attendances }); // immediate
-
-        const interval = setInterval(() => {
-            router.reload({ attendances });
+        const interval = setInterval(async () => {
+            const response = await router.reload({
+                only: ['attendances'],
+                onSuccess: (page) => {
+                    const newData = JSON.stringify(page.props.attendances);
+                    if (newData !== prevAttendances.current) {
+                        prevAttendances.current = newData;
+                    }
+                },
+            });
         }, 5000);
-
         return () => clearInterval(interval);
     }, []);
 
