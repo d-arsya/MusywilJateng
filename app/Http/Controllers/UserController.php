@@ -118,7 +118,8 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'max:20'],
             'capsize' => ['required', 'integer'],
             'arrive' => ['required', 'date'],
-            'depart' => ['required', 'date', 'after_or_equal:arrive']
+            'depart' => ['required', 'date', 'after_or_equal:arrive'],
+            'avatar' => ['nullable']
         ]);
 
         if ($request->hasFile('avatar')) {
