@@ -1,10 +1,9 @@
 import { show } from '@/actions/App/Http/Controllers/UserController';
 import AdminLayout from '@/layouts/admin';
 import { Link } from '@inertiajs/react';
-import { Calendar, CheckCircle2, Clock, Eye, Phone, UserCheck, Users } from 'lucide-react';
+import { Calendar, CheckCircle2, Clock, Phone, UserCheck, Users } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Badge } from 'primereact/badge';
-import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
@@ -81,7 +80,7 @@ export default function AdminDashboardPage({ users }) {
                     <InputText
                         value={globalFilter}
                         onChange={(e) => setGlobalFilter(e.target.value)}
-                        placeholder="Cari nama, kode, atau nomor telepon..."
+                        placeholder="Cari nama, utusan, atau nomor telepon..."
                         className="w-full pl-10"
                     />
                 </div>
@@ -181,22 +180,6 @@ export default function AdminDashboardPage({ users }) {
         );
     };
 
-    const actionsTemplate = (user) => {
-        return (
-            <div className="flex gap-2">
-                <Button
-                    icon={<Eye className="h-4 w-4" />}
-                    rounded
-                    outlined
-                    severity="info"
-                    tooltip="Lihat Detail"
-                    tooltipOptions={{ position: 'top' }}
-                    onClick={() => show(user.code)}
-                />
-            </div>
-        );
-    };
-
     // Filter data based on employment selection
     const filteredUsers = selectedEmployment ? users.filter((u) => u.employment.name === selectedEmployment) : users;
 
@@ -223,6 +206,7 @@ export default function AdminDashboardPage({ users }) {
                         rows={20}
                         rowsPerPageOptions={[10, 20, 40, 50, 100, 200, 300, 400]}
                         globalFilter={globalFilter}
+                        globalFilterFields={['name', 'office.name', 'phone']}
                         header={header}
                         emptyMessage={
                             <div className="py-12 text-center">

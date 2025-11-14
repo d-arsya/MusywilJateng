@@ -1,0 +1,1 @@
+import{j as a}from"./app-u-9ZS7L1.js";import{b as r,a as s}from"./header-lK1Yo4rR.js";function t({children:e}){return a.jsxs("div",{className:"flex min-h-screen flex-col bg-gray-50 bg-gradient-to-br from-emerald-50 to-teal-100",children:[a.jsx(r,{}),a.jsx("main",{className:"mx-auto w-full max-w-7xl flex-1 p-6",children:e}),a.jsx(s,{})]})}export{t as F};
