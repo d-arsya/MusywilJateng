@@ -145,7 +145,7 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
                                     <FileText className="mt-1 text-gray-500" size={20} />
                                     <div>
                                         <p className="mb-1 text-sm text-gray-600">Deskripsi</p>
-                                        <p className="text-gray-800">{meeting.description}</p>
+                                        <p className="whitespace-pre-line text-gray-800">{meeting.description}</p>
                                     </div>
                                 </div>
                             </div>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('room');
             $table->date('date');
             $table->char('code', 10)->unique();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->time('start_time');
             $table->time('end_time');
             $table->boolean('all')->default(true);

@@ -121,8 +121,8 @@ const AdminMeetingAssign = ({ meeting, offices, employments, allUsers }) => {
         return (
             <div className="flex items-center gap-3">
                 <Avatar
-                    image={user.avatar || undefined}
-                    label={!user.avatar ? user.name.charAt(0) : undefined}
+                    image={rowData.avatar || undefined}
+                    label={!rowData.avatar ? rowData.name.charAt(0) : undefined}
                     size="normal"
                     shape="circle"
                     className="bg-emerald-600 text-white"

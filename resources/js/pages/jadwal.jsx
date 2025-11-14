@@ -38,7 +38,7 @@ export default function JadwalPage({ schedule }) {
                                     <span className="text-lg font-semibold text-gray-800">{activity.name}</span>
 
                                     {/* Deskripsi */}
-                                    <p className="mt-1 text-sm text-gray-600">{activity.description}</p>
+                                    <p className="mt-1 text-sm whitespace-pre-line text-gray-600">{activity.description}</p>
 
                                     {/* Lokasi & Jam */}
                                     <div className="mt-2 flex flex-col gap-4 text-sm text-gray-500">
