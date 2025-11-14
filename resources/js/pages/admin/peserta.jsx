@@ -252,15 +252,13 @@ export default function AdminDashboardPage({ users }) {
                         <Column
                             body={employmentTemplate}
                             header="Jabatan"
-                            filter
-                            filterField="employment.name"
                             sortable
                             sortField="employment.name"
                             headerClassName="hidden md:table-cell"
                             bodyClassName="hidden md:table-cell"
                         />
 
-                        <Column body={codeTemplate} header="Kode Akses" sortable field="code" />
+                        <Column body={codeTemplate} header="Kode Akses" field="code" />
 
                         <Column field="capsize" header="Peci" sortable headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
                         <Column body={scheduleTemplate} header="Jadwal" headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
