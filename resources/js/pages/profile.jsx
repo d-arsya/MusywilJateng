@@ -176,9 +176,9 @@ export default function ProfilePage({ user }) {
 
                             {/* Status Pembayaran */}
                             <Tag
-                                value={user.payment_verified ? 'Terverifikasi' : 'Menunggu Verifikasi'}
-                                severity={user.payment_verified ? 'success' : 'warning'}
-                                icon={user.payment_verified ? <CheckCircle className="mr-1 h-3 w-3" /> : <Clock className="mr-1 h-3 w-3" />}
+                                value={user.paid ? 'Terverifikasi' : 'Menunggu Verifikasi'}
+                                severity={user.paid ? 'success' : 'warning'}
+                                icon={user.paid ? <CheckCircle className="mr-1 h-3 w-3" /> : <Clock className="mr-1 h-3 w-3" />}
                                 className="rounded-md bg-white/20 p-2 font-semibold backdrop-blur-sm"
                             />
                         </div>
