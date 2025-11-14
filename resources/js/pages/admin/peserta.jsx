@@ -262,6 +262,7 @@ export default function AdminDashboardPage({ users }) {
 
                         <Column body={codeTemplate} header="Kode Akses" sortable field="code" />
 
+                        <Column field="capsize" header="Peci" sortable headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
                         <Column body={scheduleTemplate} header="Jadwal" headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
                     </DataTable>
                 </div>

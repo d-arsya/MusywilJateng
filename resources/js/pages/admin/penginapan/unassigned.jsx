@@ -1,6 +1,6 @@
 import AdminLayout from '@/layouts/admin';
 import { router } from '@inertiajs/react';
-import { ArrowLeft, Briefcase, DoorOpen, Phone, Search, UserPlus, Users } from 'lucide-react';
+import { ArrowLeft, Briefcase, DoorOpen, Phone, UserPlus, Users } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
@@ -33,7 +33,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
         setSelectedBuilding(null);
         setSelectedRoom(null);
         setAvailableRooms([]);
-        setShowAssignDialog(true);
+        // setShowAssignDialog(true);
     };
 
     const handleAssignBulk = () => {
@@ -42,7 +42,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
         setSelectedBuilding(null);
         setSelectedRoom(null);
         setAvailableRooms([]);
-        setShowAssignDialog(true);
+        // setShowAssignDialog(true);
     };
 
     const handleBuildingChange = (building) => {
@@ -190,7 +190,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
             </div>
 
             {/* Bulk Actions Bar */}
-            {selectedUsers.length > 0 && (
+            {/* {selectedUsers.length > 0 && (
                 <div className="mb-6 rounded-lg bg-emerald-600 p-4 text-white shadow-lg">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -212,7 +212,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
 
             {/* Filters & Search */}
             <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
@@ -220,7 +220,6 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
                     <div className="md:col-span-2">
                         <label className="mb-2 block text-sm font-medium text-gray-700">Cari Peserta</label>
                         <span className="p-input-icon-left w-full">
-                            <Search size={16} className="text-gray-400" />
                             <InputText
                                 placeholder="Nama, telepon, atau utusan..."
                                 value={searchQuery}
@@ -276,7 +275,7 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
                     <Column field="name" header="Nama Peserta" body={userNameTemplate} />
                     <Column field="office.name" header="Utusan" body={officeTemplate} />
                     <Column field="employment.name" header="Jabatan" body={employmentTemplate} style={{ width: '150px' }} />
-                    <Column header="Aksi" body={actionTemplate} style={{ width: '150px' }} />
+                    {/* <Column header="Aksi" body={actionTemplate} style={{ width: '150px' }} /> */}
                 </DataTable>
             </div>
 
