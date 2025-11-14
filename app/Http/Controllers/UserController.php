@@ -119,15 +119,14 @@ class UserController extends Controller
             'capsize' => ['required', 'integer'],
             'arrive' => ['required', 'date'],
             'depart' => ['required', 'date', 'after_or_equal:arrive'],
-            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'avatar' => ['sometimes', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ]);
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
-            $link = Storage::url($path);
-            $url = asset($link);
-            $validated['avatar'] = $url;
+            $validated['avatar'] = asset(Storage::url($path));
         } else {
+            // keep existing avatar
             unset($validated['avatar']);
         }
         $user->update($validated);
