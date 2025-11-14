@@ -18,7 +18,7 @@ class BuildingController extends Controller
             // total rooms in this building
             $building->rooms_count = $building->rooms->count();
         });
-        $totalUnassigned = User::whereNull('room_id')->count();
+        $totalUnassigned = User::wherePaid(true)->whereNull('room_id')->count();
         return inertia('admin/penginapan', compact('buildings', 'totalUnassigned'));
     }
     public function store(Request $request)
@@ -58,7 +58,7 @@ class BuildingController extends Controller
         $rooms->each(function ($room) {
             $room->users_count = $room->users->count();
         });
-        $unassignedUsers = User::with(['office', 'employment'])->whereNull('room_id')->get();
+        $unassignedUsers = User::with(['office', 'employment'])->wherePaid(true)->whereNull('room_id')->get();
         return inertia('admin/detailGedung', compact('building', 'rooms', 'unassignedUsers'));
     }
 }

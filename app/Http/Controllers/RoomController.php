@@ -15,7 +15,7 @@ class RoomController extends Controller
     public function show(Building $building, string $room)
     {
         $room = Room::whereBuildingId($building->id)->whereName($room)->with(['building', 'users', 'users.office', 'users.employment'])->first();
-        $unassignedUsers = User::with(['office', 'employment'])->whereNull('room_id')->get();
+        $unassignedUsers = User::with(['office', 'employment'])->wherePaid(true)->whereNull('room_id')->get();
         $otherRooms = Room::with(['building'])->whereNot('id', $room->id)->get();
         return inertia('admin/detailKamar', compact('room', 'unassignedUsers', 'otherRooms'));
     }
@@ -95,7 +95,7 @@ class RoomController extends Controller
     {
         // $room = Room::whereId($room->id)->with(['building', 'users', 'users.office', 'users.employment'])->first();
         // dd($room);
-        $users = User::with(['office', 'employment'])->whereNull('room_id')->get();
+        $users = User::with(['office', 'employment'])->wherePaid(true)->whereNull('room_id')->get();
         $employments = Employment::all();
         $buildings = Building::with(['rooms.users'])->get();
 
