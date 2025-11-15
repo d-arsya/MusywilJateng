@@ -178,21 +178,23 @@ export default function Dashboard({ auth, app }) {
                             </LinkTag>
                         );
                     })}
-                    <button
-                        onClick={handleNotification}
-                        className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-                    >
-                        <div className="relative z-10 flex flex-col items-center justify-center">
-                            <div>
-                                <span className="text-3xl text-emerald-700">
-                                    <Lock />
+                    {!user.sended && (
+                        <button
+                            onClick={handleNotification}
+                            className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                        >
+                            <div className="relative z-10 flex flex-col items-center justify-center">
+                                <div>
+                                    <span className="text-3xl text-emerald-700">
+                                        <Lock />
+                                    </span>
+                                </div>
+                                <span className="mb-1 text-center text-sm font-bold text-gray-800 transition-colors duration-300 group-hover:text-gray-900">
+                                    Kode
                                 </span>
                             </div>
-                            <span className="mb-1 text-center text-sm font-bold text-gray-800 transition-colors duration-300 group-hover:text-gray-900">
-                                Kode
-                            </span>
-                        </div>
-                    </button>
+                        </button>
+                    )}
                 </div>
             </div>
         </AuthLayout>
