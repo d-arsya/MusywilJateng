@@ -178,7 +178,7 @@ export default function Dashboard({ auth, app }) {
                             </LinkTag>
                         );
                     })}
-                    {!user.sended && (
+                    {user.sended == 0 && (
                         <button
                             onClick={handleNotification}
                             className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
