@@ -131,7 +131,7 @@ class UserController extends Controller
     }
     public function sendCode(string $code)
     {
-        $user = User::whereCode($code)->first();
+        $user = User::with(['office', 'employment'])->whereCode($code)->first();
         $link = config('app.url');
         $employment = $user->employment;
         $office = $user->office;
@@ -173,9 +173,7 @@ class UserController extends Controller
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "---\n"
             . "🕌 *Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
-        dispatch(function () use ($user, $message) {
-            $this->send($user->phone, $message);
-        });
+        $this->send($user->phone, $message);
         return redirect()->back();
     }
     public function editProfile(Request $request)
