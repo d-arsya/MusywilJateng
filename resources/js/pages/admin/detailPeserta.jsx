@@ -210,13 +210,21 @@ export default function AdminEditUserPage({ employments, user, offices, room }) 
                                 </div>
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-gray-700">Kamar</label>
-                                    <input
-                                        type="text"
-                                        disabled
-                                        value={`${room.building.name} ${room.name}`}
-                                        className={`w-full rounded-lg border-2 border-gray-200 bg-gray-100 px-4 py-3 transition focus:border-emerald-500 focus:outline-none`}
-                                    />
-                                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                                    {room ? (
+                                        <input
+                                            type="text"
+                                            disabled
+                                            value={`${room.building.name} ${room.name}`}
+                                            className={`w-full rounded-lg border-2 border-gray-200 bg-gray-100 px-4 py-3 transition focus:border-emerald-500 focus:outline-none`}
+                                        />
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            disabled
+                                            value={`Belum dapat kamar`}
+                                            className={`w-full rounded-lg border-2 border-gray-200 bg-gray-100 px-4 py-3 transition focus:border-emerald-500 focus:outline-none`}
+                                        />
+                                    )}
                                 </div>
 
                                 {/* Phone */}
