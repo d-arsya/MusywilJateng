@@ -1,6 +1,6 @@
 import AuthLayout from '@/layouts/auth';
-import { Link, useForm } from '@inertiajs/react';
-import { Calendar, CheckCircle2, FileText, Home, Images, Map, MapPin, Phone, XCircle } from 'lucide-react';
+import { Link, router, useForm } from '@inertiajs/react';
+import { Calendar, CheckCircle2, FileText, Home, Images, Lock, Map, MapPin, Phone, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { useRef } from 'react';
 import QRCode from 'react-qr-code';
@@ -57,6 +57,9 @@ export default function Dashboard({ auth, app }) {
         const file = e.target.files[0];
         console.log(file);
         handleUpload(file);
+    };
+    const handleNotification = () => {
+        router.get('/n/' + user.code);
     };
     const handleUpload = async (file) => {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -175,6 +178,21 @@ export default function Dashboard({ auth, app }) {
                             </LinkTag>
                         );
                     })}
+                    <button
+                        onClick={handleNotification}
+                        className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                    >
+                        <div className="relative z-10 flex flex-col items-center justify-center">
+                            <div>
+                                <span className="text-3xl text-emerald-700">
+                                    <Lock />
+                                </span>
+                            </div>
+                            <span className="mb-1 text-center text-sm font-bold text-gray-800 transition-colors duration-300 group-hover:text-gray-900">
+                                Kode
+                            </span>
+                        </div>
+                    </button>
                 </div>
             </div>
         </AuthLayout>

@@ -129,7 +129,55 @@ class UserController extends Controller
         $user->update($validated);
         return redirect()->route('admin.peserta');
     }
+    public function sendCode(string $code)
+    {
+        $user = User::whereCode($code)->first();
+        $link = config('app.url');
+        $employment = $user->employment;
+        $office = $user->office;
 
+        $arriveDate = $this->formatTanggalIndo($user->arrive);
+        $departDate = $this->formatTanggalIndo($user->depart);
+        $message = "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ\n\n"
+            . "Assalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
+            . "*Marhaban Ya Akhi {$user->name}* 🤝\n\n"
+            . "Alhamdulillah, pendaftaran Anda untuk *Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan* telah berhasil dicatat.\n\n"
+            . "📋 *DETAIL REGISTRASI*\n"
+            . "━━━━━━\n"
+            . "👤 Nama: {$user->name}\n"
+            . "🏢 Utusan: {$office->type} - {$office->name}\n"
+            . "📌 Jabatan: {$employment->name}\n"
+            . "📱 Telepon: {$user->phone}\n"
+            . "🧢 Ukuran Peci: {$user->capsize}\n"
+            . "📅 Kedatangan: {$arriveDate}\n"
+            . "📅 Kepulangan: {$departDate}\n"
+            . "🔑 Kode Akses: *{$user->code}*\n\n"
+            . "🌐 *AKSES APLIKASI*\n"
+            . "━━━━━━\n"
+            . "Silakan akses sistem melalui link berikut:\n"
+            . "🔗 {$link}/s/{$user->code}\n\n"
+            . "Simpan kode akses Anda dengan baik. Kode ini diperlukan untuk:\n"
+            . "✅ Login ke aplikasi\n"
+            . "✅ Presensi kegiatan (QR Code)\n"
+            . "✅ Akses informasi penginapan\n"
+            . "✅ Jadwal dan denah lokasi\n\n"
+            . "📝 *LANGKAH SELANJUTNYA*\n"
+            . "━━━━━━\n"
+            . "1️⃣ Lengkapi kontribusi pembayaran\n"
+            . "2️⃣ Upload bukti transfer di aplikasi\n"
+            . "3️⃣ Tunggu verifikasi dari panitia\n"
+            . "4️⃣ Cek informasi kamar penginapan\n\n"
+            . "Jika ada pertanyaan, hubungi:\n"
+            . "📱 Sekretariat: 6281234895030\n\n"
+            . "Barakallahu fiikum 🤲\n\n"
+            . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
+            . "---\n"
+            . "🕌 *Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
+        dispatch(function () use ($user, $message) {
+            $this->send($user->phone, $message);
+        });
+        return redirect()->back();
+    }
     public function editProfile(Request $request)
     {
         $user = Auth::user();
