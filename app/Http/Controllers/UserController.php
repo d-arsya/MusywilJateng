@@ -177,6 +177,34 @@ class UserController extends Controller
         $this->send($user->phone, $message);
         return redirect()->back();
     }
+    public function sendCodeAdmin(string $code)
+    {
+        $user = User::with(['office', 'employment'])->whereCode($code)->first();
+        $link = config('app.url');
+        $message = "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ\n\n"
+            . "Assalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
+            . "Kode Akses: {$user->code}\n\n"
+            . "*AKSES APLIKASI*\n"
+            . "Silakan akses sistem melalui link berikut:\n"
+            . "{$link}/s/{$user->code}\n\n"
+            . "Jika ada pertanyaan, hubungi:\n"
+            . "Sekretariat: 6281234895030\n\n"
+            . "Barakallahu fiikum\n\n"
+            . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
+            . "---\n"
+            . "*Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
+        $user->update(['sended' => true]);
+        $message = str_replace(
+            [" ", "\n"],
+            ["%20", "%0A"],
+            $message
+        );
+        $phone = str_starts_with($user->phone, '08') ? str_replace('08', '628', $user->phone) : $user->phone;
+        return redirect()->to("https://wa.me/{$phone}?text={$message}")
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
+    }
     public function editProfile(Request $request)
     {
         $user = Auth::user();

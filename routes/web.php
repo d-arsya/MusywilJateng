@@ -32,6 +32,7 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
 Route::controller(UserController::class)->group(function () {
     Route::post('register', 'store')->middleware('guest');
     Route::get('n/{code}', 'sendCode')->name('auth.guest');
+    Route::get('a/{code}', 'sendCodeAdmin');
 });
 Route::get('t/{code}', [AuthController::class, 'logout'])->name('auth.logout');
 Route::post('/pembayaran/{type}/{code}', [PaymentController::class, 'change'])->middleware('auth:admin');

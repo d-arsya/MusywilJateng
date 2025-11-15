@@ -1,6 +1,6 @@
 import AdminLayout from '@/layouts/admin';
 import getCroppedImg from '@/lib/crop'; // helper dari sebelumnya
-import { Link, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { AlertCircle, Briefcase, Calendar, Phone, Save, Upload, User, X } from 'lucide-react';
 import { useState } from 'react';
 import Cropper from 'react-easy-crop';
@@ -97,9 +97,9 @@ export default function AdminEditUserPage({ employments, user, offices, room }) 
                         </div>
                         <div className="flex gap-2 md:justify-end">
                             <div className="rounded-lg bg-blue-300 px-4 py-2 hover:bg-blue-400">
-                                <Link href={`/n/${formData.code}`} className="text-sm font-semibold text-blue-700">
+                                <a href={`/a/${formData.code}`} className="text-sm font-semibold text-blue-700">
                                     Kirim Ke Peserta
-                                </Link>
+                                </a>
                             </div>
                             <div className="rounded-lg bg-emerald-100 px-4 py-2">
                                 <span className="text-sm font-semibold text-emerald-700">{formData.code}</span>
