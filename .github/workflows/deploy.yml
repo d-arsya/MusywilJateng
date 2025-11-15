@@ -1,4 +1,4 @@
-name: Deploy to Arenhost
+name: Deploy Laravel
 
 on:
   push:
@@ -6,23 +6,43 @@ on:
       - main
 
 jobs:
-  deploy:
+  docker-build:
     runs-on: ubuntu-latest
-    environment: ARENHOST
+    environment: BBJVPS
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Deploy on Arenhost server via SSH
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: disyfa/muswil-jateng:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker-build
+    environment: BBJVPS
+
+    steps:
+      - name: Deploy on VPS
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /home/pondoknu/disyfa.cloud/musywil
-            git restore .
-            git pull
-            ../../composer update
-            php artisan cache:clear
+            cd /var/www/disyfa-muswil-jateng
+            docker pull disyfa/muswil-jateng:latest
+            docker compose up -d
