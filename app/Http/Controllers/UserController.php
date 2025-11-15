@@ -219,7 +219,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with(['employment', 'office'])->get();
+        $users = User::with(['employment', 'office', 'room', 'room.building'])->get();
         return inertia('admin/peserta', compact('users'));
     }
     public function adminDashboard()
@@ -295,6 +295,7 @@ class UserController extends Controller
     {
         $offices = Office::all()->groupBy('type');
         $employments = Employment::all()->toArray();
-        return inertia('admin/detailPeserta', compact('user', 'offices', 'employments'));
+        $room = Room::with('building')->whereId($user->room_id)->first();
+        return inertia('admin/detailPeserta', compact('user', 'offices', 'employments', 'room'));
     }
 }

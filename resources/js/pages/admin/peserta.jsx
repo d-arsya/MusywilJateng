@@ -155,27 +155,17 @@ export default function AdminDashboardPage({ users }) {
     const codeTemplate = (user) => {
         return (
             <div className="md:text-md rounded-lg border border-emerald-200 bg-emerald-50 p-1 text-center font-mono text-xs font-bold text-emerald-600 md:px-3 md:py-2">
-                {user.code}
+                <Link href={`/n/${user.code}`}>{user.code}</Link>
             </div>
         );
     };
 
-    const scheduleTemplate = (user) => {
-        const arriveDate = new Date(user.arrive).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-        const departDate = new Date(user.depart).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-
+    const roomTemplate = (user) => {
+        console.log(user);
         return (
             <div className="text-sm">
-                <div className="mb-1 flex items-center text-gray-600">
-                    <Calendar className="mr-1 h-3 w-3 text-emerald-500" />
-                    <span className="font-medium">Tiba:</span>
-                    <span className="ml-1">{arriveDate}</span>
-                </div>
-                <div className="flex items-center text-gray-600">
-                    <Calendar className="mr-1 h-3 w-3 text-red-500" />
-                    <span className="font-medium">Pulang:</span>
-                    <span className="ml-1">{departDate}</span>
-                </div>
+                {user.room?.building.name} <br />
+                {user.room?.name}
             </div>
         );
     };
@@ -242,10 +232,10 @@ export default function AdminDashboardPage({ users }) {
                             bodyClassName="hidden md:table-cell"
                         />
 
-                        <Column body={codeTemplate} header="Kode Akses" field="code" />
+                        {/* <Column body={codeTemplate} header="Kode Akses" field="code" /> */}
 
                         <Column field="capsize" header="Peci" sortable headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
-                        <Column body={scheduleTemplate} header="Jadwal" headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
+                        <Column body={roomTemplate} header="Kamar" headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
                     </DataTable>
                 </div>
             </div>

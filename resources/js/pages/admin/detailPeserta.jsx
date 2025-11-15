@@ -1,6 +1,6 @@
 import AdminLayout from '@/layouts/admin';
 import getCroppedImg from '@/lib/crop'; // helper dari sebelumnya
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { AlertCircle, Briefcase, Calendar, Phone, Save, Upload, User, X } from 'lucide-react';
 import { useState } from 'react';
 import Cropper from 'react-easy-crop';
@@ -28,7 +28,7 @@ import Cropper from 'react-easy-crop';
 //     code: 'ABC123',
 // };
 
-export default function AdminEditUserPage({ employments, user, offices }) {
+export default function AdminEditUserPage({ employments, user, offices, room }) {
     const initialUser = user;
     const { data: formData, setData: setFormData, post } = useForm(initialUser);
     const [avatarPreview, setAvatarPreview] = useState(initialUser.avatar);
@@ -90,13 +90,20 @@ export default function AdminEditUserPage({ employments, user, offices }) {
             <div className="min-h-screen p-4 md:p-8">
                 <div className="mx-auto max-w-4xl">
                     {/* Header */}
-                    <div className="mb-6 flex items-center justify-between">
+                    <div className="mb-6 flex flex-col gap-y-3 md:flex-row md:items-center md:justify-between">
                         <div>
                             <h1 className="text-3xl font-bold text-gray-800">Edit Data Peserta</h1>
                             <p className="mt-1 text-sm text-gray-600">Perbarui informasi peserta Muswil VI Hidayatullah</p>
                         </div>
-                        <div className="rounded-lg bg-emerald-100 px-4 py-2">
-                            <span className="text-sm font-semibold text-emerald-700">Kode: {formData.code}</span>
+                        <div className="flex gap-2 md:justify-end">
+                            <div className="rounded-lg bg-blue-300 px-4 py-2 hover:bg-blue-400">
+                                <Link href={`/n/${formData.code}`} className="text-sm font-semibold text-blue-700">
+                                    Kirim Ke Peserta
+                                </Link>
+                            </div>
+                            <div className="rounded-lg bg-emerald-100 px-4 py-2">
+                                <span className="text-sm font-semibold text-emerald-700">{formData.code}</span>
+                            </div>
                         </div>
                     </div>
 
@@ -189,7 +196,7 @@ export default function AdminEditUserPage({ employments, user, offices }) {
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 {/* Name */}
-                                <div className="md:col-span-2">
+                                <div>
                                     <label className="mb-2 block text-sm font-medium text-gray-700">Nama Lengkap *</label>
                                     <input
                                         type="text"
@@ -198,6 +205,16 @@ export default function AdminEditUserPage({ employments, user, offices }) {
                                         onChange={handleChange}
                                         className={`w-full rounded-lg border-2 ${errors.name ? 'border-red-300' : 'border-gray-200'} px-4 py-3 transition focus:border-emerald-500 focus:outline-none`}
                                         placeholder="Masukkan nama lengkap"
+                                    />
+                                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-gray-700">Kamar</label>
+                                    <input
+                                        type="text"
+                                        disabled
+                                        value={`${room.building.name} ${room.name}`}
+                                        className={`w-full rounded-lg border-2 border-gray-200 bg-gray-100 px-4 py-3 transition focus:border-emerald-500 focus:outline-none`}
                                     />
                                     {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                                 </div>
