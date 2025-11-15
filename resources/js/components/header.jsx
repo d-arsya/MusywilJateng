@@ -26,7 +26,7 @@ export function PrivateHeader() {
 
     const menuItems = [
         {
-            text: 'Dashboard',
+            text: 'Dash',
             link: '/admin/dashboard',
         },
         {
