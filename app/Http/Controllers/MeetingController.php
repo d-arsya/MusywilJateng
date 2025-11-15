@@ -133,29 +133,8 @@ class MeetingController extends Controller
         $att = Attendance::where('user_id', $user->id)->where('meeting_id', $meeting->id)->whereNull('attend')->first();
         if ($att) {
             $att->update(['attend' => now()]);
-            dispatch(function () {
-                $this->firebase();
-            });
             return back(303)->with('success', 'Peserta berhasil presensi.');
         }
-    }
-    public function firebase()
-    {
-        $url = "https://musywil-hidayatullah-6-default-rtdb.firebaseio.com/jateng.json";
-        $response = Http::get($url);
-        if (!$response->successful()) {
-            return response()->json(['error' => 'Failed to read data'], 500);
-        }
-        $data = $response->json();
-        $state = isset($data['state']) ? $data['state'] : 0;
-        $state++;
-        $updateResponse = Http::put($url, ['state' => $state]);
-
-        if ($updateResponse->successful()) {
-            return true;
-        }
-
-        return false;;
     }
 
     public function assignUsers(Request $request, Meeting $meeting)

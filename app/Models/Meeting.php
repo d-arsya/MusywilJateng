@@ -36,6 +36,36 @@ class Meeting extends Model
                     });
             }
         });
+
+        static::updated(function ($meeting) {
+            if ($meeting->all) {
+                User::query()
+                    ->select('id')
+                    ->chunk(1000, function ($users) use ($meeting) {
+                        $attendances = [];
+
+                        foreach ($users as $user) {
+                            // Check if attendance exists
+                            $exists = Attendance::where('user_id', $user->id)
+                                ->where('meeting_id', $meeting->id)
+                                ->exists();
+
+                            if (! $exists) {
+                                $attendances[] = [
+                                    'user_id' => $user->id,
+                                    'meeting_id' => $meeting->id,
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ];
+                            }
+                        }
+
+                        if (!empty($attendances)) {
+                            Attendance::insert($attendances);
+                        }
+                    });
+            }
+        });
     }
 
     public function attendances()
