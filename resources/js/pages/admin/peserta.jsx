@@ -13,19 +13,19 @@ import { useState } from 'react';
 
 export default function AdminDashboardPage({ users }) {
     const [globalFilter, setGlobalFilter] = useState('');
-    const [selectedEmployment, setSelectedEmployment] = useState(null);
+    const [selectedEmployment, setSelectedEmployment] = useState('all');
 
     // Statistics calculation
     const stats = {
         total: users.length,
         verified: users.filter((u) => u.paid).length,
         pending: users.filter((u) => !u.paid && u.invoice != null).length,
-        arriving: users.filter((u) => new Date(u.arrive) <= new Date()).length,
+        arriving: users.filter((u) => u.room_id == null).length,
     };
 
     // Employment filter options
     const employmentOptions = [
-        { label: 'Semua Jabatan', value: null },
+        { label: 'Semua Jabatan', value: 'all' },
         { label: 'Pembina', value: 'Pembina' },
         { label: 'Pengurus', value: 'Pengurus' },
         { label: 'Pengawas', value: 'Pengawas' },
@@ -51,7 +51,7 @@ export default function AdminDashboardPage({ users }) {
                         <CheckCircle2 className="h-8 w-8 opacity-80" />
                         <Badge value={stats.verified} severity="success" className="bg-white/20" />
                     </div>
-                    <p className="text-sm opacity-90">Terverifikasi</p>
+                    <p className="text-sm opacity-90">Sudah Membayar</p>
                     <p className="text-2xl font-bold">{stats.verified}</p>
                 </div>
 
@@ -60,16 +60,16 @@ export default function AdminDashboardPage({ users }) {
                         <Clock className="h-8 w-8 opacity-80" />
                         <Badge value={stats.pending} severity="warning" className="bg-white/20" />
                     </div>
-                    <p className="text-sm opacity-90">Menunggu</p>
+                    <p className="text-sm opacity-90">Menunggu Verifikasi</p>
                     <p className="text-2xl font-bold">{stats.pending}</p>
                 </div>
 
-                <div className="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-4 text-white shadow-lg">
+                <div className="rounded-xl bg-gradient-to-br from-red-500 to-red-600 p-4 text-white shadow-lg">
                     <div className="mb-2 flex items-center justify-between">
                         <Calendar className="h-8 w-8 opacity-80" />
                         <Badge value={stats.arriving} className="bg-white/20" />
                     </div>
-                    <p className="text-sm opacity-90">Sudah Tiba</p>
+                    <p className="text-sm opacity-90">Belum Terplotting</p>
                     <p className="text-2xl font-bold">{stats.arriving}</p>
                 </div>
             </div>
@@ -171,7 +171,29 @@ export default function AdminDashboardPage({ users }) {
     };
 
     // Filter data based on employment selection
-    const filteredUsers = selectedEmployment ? users.filter((u) => u.employment.name === selectedEmployment) : users;
+    const filteredUsers = users
+        .filter((u) => {
+            console.log(selectedEmployment);
+            if (selectedEmployment == 'all') {
+                const matchSearch =
+                    u.name.toLowerCase().includes(globalFilter.toLowerCase()) ||
+                    u.phone.includes(globalFilter) ||
+                    u.office.name.toLowerCase().includes(globalFilter.toLowerCase()) ||
+                    u.employment.name.toLowerCase().includes(globalFilter.toLowerCase());
+                return matchSearch;
+            } else {
+                const matchSearch =
+                    (u.name.toLowerCase().includes(globalFilter.toLowerCase()) ||
+                        u.phone.includes(globalFilter) ||
+                        u.office.name.toLowerCase().includes(globalFilter.toLowerCase())) &&
+                    u.employment.name.toLowerCase() == selectedEmployment.toLowerCase();
+                return matchSearch;
+            }
+        })
+        .sort((a, b) => {
+            const nameCompare = a.name.localeCompare(b.name);
+            if (nameCompare !== 0) return nameCompare;
+        });
 
     return (
         <AdminLayout>
@@ -195,8 +217,6 @@ export default function AdminDashboardPage({ users }) {
                         paginator
                         rows={20}
                         rowsPerPageOptions={[10, 20, 40, 50, 100, 200, 300, 400]}
-                        globalFilter={globalFilter}
-                        globalFilterFields={['name', 'office.name', 'phone']}
                         header={header}
                         emptyMessage={
                             <div className="py-12 text-center">
