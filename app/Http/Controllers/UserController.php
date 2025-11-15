@@ -173,6 +173,7 @@ class UserController extends Controller
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "---\n"
             . "🕌 *Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
+        $user->update(['sended' => true]);
         $this->send($user->phone, $message);
         return redirect()->back();
     }
