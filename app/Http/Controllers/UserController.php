@@ -102,10 +102,10 @@ class UserController extends Controller
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "---\n"
             . "🕌 *Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
-        dispatch(function () use ($user, $message) {
-            $this->send($user->phone, $message);
-        });
-        return redirect()->route('user.dashboard')
+        // dispatch(function () use ($user, $message) {
+        //     $this->send($user->phone, $message);
+        // });
+        return redirect()->route('auth.enter', ['code' => $user->code])
             ->with('success', 'User berhasil ditambahkan!');
     }
 
