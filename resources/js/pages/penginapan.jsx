@@ -162,7 +162,7 @@ const PenginapanPage = ({ myRoom }) => {
                         <div className="flex items-center gap-3">
                             <Users className="text-blue-600" size={20} />
                             <div className="flex-1">
-                                <p className="text-sm text-gray-600">Anda belum mendapatkan kamar</p>
+                                <p className="text-sm text-gray-600">Silahkan lakukan pembayaran kontribusi terlebih dahulu</p>
                             </div>
                         </div>
                     </div>
