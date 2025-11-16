@@ -164,14 +164,6 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
                                     <Clock className="text-purple-600" size={20} />
                                     {getTitle()}
                                 </h3>
-                                {/* <SelectButton
-                                    value={filterUser}
-                                    onChange={(e) => {
-                                        console.log(e.value);
-                                        setFilterUser(e.value);
-                                    }}
-                                    options={filterOptions}
-                                /> */}
                             </div>
                             <div className="max-h-80 space-y-3 overflow-y-auto pr-2">
                                 {usersAttended.map((attendance) => (

@@ -48,7 +48,6 @@ const DashboardPenginapan = ({ buildings, totalUnassigned }) => {
         } else {
             post('/admin/penginapan', {
                 onError: (errs) => {
-                    console.log(data);
                     console.log('Validation Errors:', errs); // ✅ logs server-side validation errors
                 },
                 onSuccess: () => console.log('SUCCESS'),

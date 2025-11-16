@@ -61,7 +61,6 @@ const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
             return;
         }
         if (isEdit) {
-            console.log(data);
             put('/admin/kegiatan/' + meeting.code, {
                 onError: (errs) => {
                     console.log('Validation Errors:', errs); // ✅ logs server-side validation errors

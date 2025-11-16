@@ -72,7 +72,6 @@ export default function AdminEditUserPage({ employments, user, offices, room }) 
     };
 
     const handleSubmit = async (e) => {
-        console.log(formData);
         e.preventDefault();
         post('/admin/peserta/' + formData.code, {
             onError: (err) => console.log(err),

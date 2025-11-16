@@ -54,7 +54,6 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
 
     const handleAssignToRoom = () => {
         if (!selectedRoom) return;
-        console.log('HALO');
         put(`/admin/penginapan/assigned/${selectedRoom.id}?code=${selectedUsers.join(',')}`, {
             onFinish: () => setShowAssignDialog(false),
         });

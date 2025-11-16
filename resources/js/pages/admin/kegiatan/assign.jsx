@@ -68,29 +68,6 @@ const AdminMeetingAssign = ({ meeting, offices, employments, allUsers }) => {
         put('/admin/kegiatan/unassign/' + meeting.code + '?users=' + userIds.join(','), {
             onError: (err) => console.log(err),
         });
-        // // Check if any selected user has attended
-        // const usersToUnassign = allUsers.filter((u) => selectedAssigned.includes(u.id));
-        // const hasAttended = usersToUnassign.some((u) => u.attended);
-
-        // if (hasAttended) {
-        //     alert('Tidak bisa unassign peserta yang sudah check-in!');
-        //     return;
-        // }
-
-        // confirmDialog({
-        //     message: `Unassign ${usersToUnassign.length} peserta dari kegiatan ini?`,
-        //     header: 'Konfirmasi Unassign',
-        //     icon: 'pi pi-exclamation-triangle',
-        //     acceptLabel: 'Unassign',
-        //     rejectLabel: 'Batal',
-        //     acceptClassName: 'p-button-danger',
-        //     accept: () => {
-        //         const updatedUsers = allUsers.map((u) => (selectedAssigned.includes(u.id) ? { ...u, assigned: false } : u));
-        //         setAllUsers(updatedUsers);
-        //         setSelectedAssigned([]);
-        //         alert(`Berhasil unassign ${usersToUnassign.length} peserta`);
-        //     },
-        // });
     };
 
     // Filtering

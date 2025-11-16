@@ -147,7 +147,6 @@ const DetailKamar = ({ room, unassignedUsers, otherRooms }) => {
 
     const handleMoveBulk = () => {
         if (!targetRoom || newData.length === 0) return;
-        console.log(newData);
         putNewData('/admin/penginapan/assign', {
             onSuccess: () => setShowMoveDialog(false),
             onError: (err) => console.log(err),

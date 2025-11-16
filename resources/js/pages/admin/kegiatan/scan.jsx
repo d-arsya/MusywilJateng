@@ -108,20 +108,6 @@ const AdminMeetingScanner = ({ meeting, attendances }) => {
         router.get('/admin/kegiatan');
     };
 
-    const refreshData = () => {
-        console.log('Refresh attendance data from API');
-        // API call
-    };
-
-    // Format time
-    const formatTime = (dateString) => {
-        if (!dateString) return '-';
-        return new Date(dateString).toLocaleTimeString('id-ID', {
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-    };
-
     return (
         <FullLayout>
             {/* Breadcrumb */}

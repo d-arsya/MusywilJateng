@@ -161,7 +161,6 @@ export default function AdminDashboardPage({ users }) {
     };
 
     const roomTemplate = (user) => {
-        console.log(user);
         return (
             <div className="text-sm">
                 {user.room?.building.name} <br />
@@ -173,7 +172,6 @@ export default function AdminDashboardPage({ users }) {
     // Filter data based on employment selection
     const filteredUsers = users
         .filter((u) => {
-            console.log(selectedEmployment);
             if (selectedEmployment == 'all') {
                 const matchSearch =
                     u.name.toLowerCase().includes(globalFilter.toLowerCase()) ||
