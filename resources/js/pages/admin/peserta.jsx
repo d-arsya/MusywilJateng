@@ -69,7 +69,7 @@ export default function AdminDashboardPage({ users }) {
                         <Calendar className="h-8 w-8 opacity-80" />
                         <Badge value={stats.arriving} className="bg-white/20" />
                     </div>
-                    <p className="text-sm opacity-90">Belum Terplotting</p>
+                    <p className="text-sm opacity-90">Belum Bayar</p>
                     <p className="text-2xl font-bold">{stats.arriving}</p>
                 </div>
             </div>
@@ -214,7 +214,7 @@ export default function AdminDashboardPage({ users }) {
                         dataKey="id"
                         paginator
                         rows={20}
-                        rowsPerPageOptions={[10, 20, 40, 50, 100, 200, 300, 400]}
+                        rowsPerPageOptions={[20, 50, 100, 200, 500]}
                         header={header}
                         emptyMessage={
                             <div className="py-12 text-center">

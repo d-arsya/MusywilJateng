@@ -2,7 +2,7 @@ import AuthLayout from '@/layouts/auth';
 import { Link, router, useForm } from '@inertiajs/react';
 import { Calendar, CheckCircle2, FileText, Home, Images, Lock, Map, MapPin, Phone, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import QRCode from 'react-qr-code';
 
 const menuItems = [
@@ -46,6 +46,12 @@ const menuItems = [
 export default function Dashboard({ auth, app }) {
     const fileInputRef = useRef(null);
     const user = auth.user;
+
+    useEffect(() => {
+        if (user && user.code) {
+            localStorage.setItem('user_code', user.code);
+        }
+    }, [user]);
     const { data, setData, post } = useForm({
         invoice: null,
     });

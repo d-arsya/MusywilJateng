@@ -8,6 +8,8 @@ class LandingPageController extends Controller
 {
     public function home()
     {
-        return inertia('landingpage');
+        return inertia('landingpage', [
+            'from' => request('from') ?? 'all',
+        ]);
     }
 }

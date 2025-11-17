@@ -308,8 +308,8 @@ export default function AdminDashboardPage({ payments }) {
                         onRowUnselect={handleRowUnselect}
                         dataKey="id"
                         paginator
-                        rows={15}
-                        rowsPerPageOptions={[15, 25, 50, 100]}
+                        rows={20}
+                        rowsPerPageOptions={[20, 50, 100, 200, 500]}
                         globalFilter={globalFilter}
                         header={header}
                         emptyMessage={

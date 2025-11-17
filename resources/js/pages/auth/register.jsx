@@ -1,11 +1,17 @@
 import PublicLayout from '@/layouts/public';
 import getCroppedImg from '@/lib/crop'; // helper (lihat bawah)
 import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Cropper from 'react-easy-crop';
 
 export default function RegisterPage({ offices, employments }) {
     const [profilePhoto, setProfilePhoto] = useState(null);
+    useEffect(() => {
+        const code = localStorage.getItem('user_code');
+        if (code) {
+            router.visit(`/s/${code}`);
+        }
+    }, []);
     const { data, setData, post, errors, transform } = useForm({
         name: '',
         phone: '',

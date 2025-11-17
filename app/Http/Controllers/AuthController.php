@@ -44,12 +44,12 @@ class AuthController extends Controller
     {
         if ($code === env('ADMIN_CODE')) {
             Auth::guard('admin')->logout();
-            return redirect()->route('landingpage');
+            return redirect()->route('landingpage', ['from' => 'logout']);
         }
         $user = User::whereCode($code)->first();
         if ($user) {
             Auth::logout($user);
-            return redirect()->route('landingpage');
+            return redirect()->route('landingpage', ['from' => 'logout']);
         }
         return redirect()->route('login');
     }

@@ -1,10 +1,17 @@
 import PublicLayout from '@/layouts/public';
 import { router, useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 export default function LoginPage() {
     const { data, setData } = useForm({
         code: '',
     });
+    useEffect(() => {
+        const code = localStorage.getItem('user_code');
+        if (code) {
+            router.visit(`/s/${code}`);
+        }
+    }, []);
     function submitLogin(e) {
         e.preventDefault();
         router.get('/s/' + data.code);

@@ -1,9 +1,14 @@
 import { PublicFooter, PublicHeader } from '@/components/header';
 import { Link } from '@inertiajs/react';
 import { Calendar, CheckCircle, Home, MapPin, QrCode, Users } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function MunasHidayatullahLanding() {
+export default function MunasHidayatullahLanding({ from = 'all' }) {
+    useEffect(() => {
+        if (from === 'logout') {
+            localStorage.removeItem('user_code');
+        }
+    }, [from]);
     const [activeTab, setActiveTab] = useState('home');
 
     return (
