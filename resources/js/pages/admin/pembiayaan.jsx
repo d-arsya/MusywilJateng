@@ -116,10 +116,10 @@ export default function AdminDashboardPage({ payments }) {
                 <div className="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-4 text-white shadow-lg">
                     <div className="mb-2 flex items-center justify-between">
                         <Users className="h-8 w-8 opacity-80" />
-                        <Badge value={stats.total} className="bg-white/20" />
+                        <Badge value={payments.length} className="bg-white/20" />
                     </div>
                     <p className="text-sm opacity-90">Total Peserta</p>
-                    <p className="text-2xl font-bold">{stats.total}</p>
+                    <p className="text-2xl font-bold">{payments.length}</p>
                 </div>
 
                 <div className="rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 p-4 text-white shadow-lg">
