@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UserExport;
 use App\Models\Attendance;
 use App\Models\Building;
 use App\Models\Employment;
@@ -13,7 +14,7 @@ use App\Traits\WhatsAppTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Pest\Mutate\Mutators\Logical\TrueToFalse;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -281,6 +282,8 @@ class UserController extends Controller
 
         $mockOfficeDistribution = $users->groupBy(fn($u) => $u->office->name ?? 'Tidak Diketahui')
             ->map(fn($group) => $group->count());
+        $mockCapsize = $users->groupBy(fn($u) => $u->capsize ?? 'Tidak Diketahui')
+            ->map(fn($group) => $group->count());
 
         $mockEmploymentDistribution = $users->groupBy(fn($u) => $u->employment->name ?? 'Tidak Diketahui')
             ->map(fn($group) => $group->count());
@@ -313,6 +316,7 @@ class UserController extends Controller
         ];
         return inertia('admin/dashboard', compact(
             'mockStats',
+            'mockCapsize',
             'mockTodayMeetings',
             'mockOfficeDistribution',
             'mockEmploymentDistribution'
@@ -325,5 +329,10 @@ class UserController extends Controller
         $employments = Employment::all()->toArray();
         $room = Room::with('building')->whereId($user->room_id)->first();
         return inertia('admin/detailPeserta', compact('user', 'offices', 'employments', 'room'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new UserExport, 'Data Peserta_' . now() . '.xlsx');
     }
 }

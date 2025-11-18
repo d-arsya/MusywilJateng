@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/jadwal', [MeetingController::class, 'userView']);
     Route::get('materi', [UserController::class, 'materi']);
 });
-
+Route::get('/export', [UserController::class, 'export'])->middleware('auth:admin');
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::redirect('', 'dashboard');
     Route::get('/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');

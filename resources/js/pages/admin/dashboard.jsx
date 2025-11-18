@@ -19,7 +19,7 @@ import {
 import { Button } from 'primereact/button';
 import { Chart } from 'primereact/chart';
 
-export default function AdminDashboardPage({ mockTodayMeetings, mockOfficeDistribution, mockEmploymentDistribution, mockStats }) {
+export default function AdminDashboardPage({ mockCapsize, mockTodayMeetings, mockOfficeDistribution, mockEmploymentDistribution, mockStats }) {
     // Chart data
     const officeChartData = {
         labels: Object.keys(mockOfficeDistribution),
@@ -33,6 +33,16 @@ export default function AdminDashboardPage({ mockTodayMeetings, mockOfficeDistri
                     '#8B5CF6', // Purple
                     '#EF4444', // Red
                 ],
+            },
+        ],
+    };
+    const capsizeChartData = {
+        labels: Object.keys(mockCapsize),
+        datasets: [
+            {
+                label: 'Ukuran Peci',
+                data: Object.values(mockCapsize),
+                backgroundColor: ['#3B82F6'],
             },
         ],
     };
@@ -53,6 +63,14 @@ export default function AdminDashboardPage({ mockTodayMeetings, mockOfficeDistri
     };
 
     const chartOptions = {
+        scales: {
+            y: {
+                beginAtZero: true, // IMPORTANT: baseline is 0
+                ticks: {
+                    precision: 0,
+                },
+            },
+        },
         plugins: {
             legend: {
                 position: 'bottom',
@@ -325,6 +343,16 @@ export default function AdminDashboardPage({ mockTodayMeetings, mockOfficeDistri
                                 </div>
                             ))}
                         </div>
+                    </div>
+                </div>
+                <div className="grid gap-6">
+                    {/* Office Distribution */}
+                    <div className="rounded-2xl bg-white p-6 shadow-lg">
+                        <h2 className="mb-4 flex items-center text-xl font-bold text-gray-800">
+                            <PieChart className="mr-2 h-5 w-5 text-blue-600" />
+                            Ukuran Peci
+                        </h2>
+                        <Chart type="bar" data={capsizeChartData} options={chartOptions} />
                     </div>
                 </div>
             </div>

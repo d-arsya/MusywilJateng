@@ -1,7 +1,7 @@
 import { show } from '@/actions/App/Http/Controllers/UserController';
 import AdminLayout from '@/layouts/admin';
 import { Link } from '@inertiajs/react';
-import { Calendar, CheckCircle2, Clock, Phone, UserCheck, Users } from 'lucide-react';
+import { Calendar, CheckCircle2, Clock, Download, Phone, UserCheck, Users } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Badge } from 'primereact/badge';
 import { Column } from 'primereact/column';
@@ -205,6 +205,9 @@ export default function AdminDashboardPage({ users }) {
                         </h1>
                         <p className="mt-1 text-gray-600">Muswil VI Hidayatullah 2025</p>
                     </div>
+                    <a href="/export" className="flex items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-700">
+                        <Download /> Export
+                    </a>
                 </div>
 
                 {/* DataTable */}
