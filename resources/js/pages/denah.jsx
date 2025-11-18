@@ -9,6 +9,8 @@ export default function DenahPage() {
                 <img src="/assets/img/denah-lantai-3.jpg" alt="" />
                 <h1 className="my-3 text-lg font-extrabold">Denah Lantai 4 Gedung Mekah</h1>
                 <img src="/assets/img/denah-lantai-4.jpg" alt="" />
+                <h1 className="my-3 text-lg font-extrabold">Denah Lantai 5 Gedung Mekah</h1>
+                <img src="/assets/img/denah-lantai-5.jpg" alt="" />
                 <HelpSection />
             </div>
         </AuthLayout>
