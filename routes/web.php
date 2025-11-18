@@ -26,8 +26,9 @@ Route::redirect('/home', '/dashboard')->name('home');
 Route::middleware('guest')->controller(AuthController::class)->group(function () {
     Route::get('login', 'login')->name('login');
     Route::get('register', 'register')->name('auth.register');
-    Route::get('s/{code}', 'enter')->name('auth.enter');
 });
+
+Route::get('s/{code}', [AuthController::class, 'enter'])->name('auth.enter');
 
 Route::controller(UserController::class)->group(function () {
     Route::post('register', 'store')->middleware('guest');
