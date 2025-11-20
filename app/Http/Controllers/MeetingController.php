@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MeetingExport;
 use App\Models\Attendance;
 use App\Models\Employment;
 use App\Models\Meeting;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MeetingController extends Controller
 {
@@ -135,6 +137,11 @@ class MeetingController extends Controller
             $att->update(['attend' => now()]);
             return back(303)->with('success', 'Peserta berhasil presensi.');
         }
+    }
+
+    public function export(Meeting $meeting)
+    {
+        return Excel::download(new MeetingExport($meeting), 'Laporan Kehadiran ' . $meeting->name . '.xlsx');
     }
 
     public function assignUsers(Request $request, Meeting $meeting)

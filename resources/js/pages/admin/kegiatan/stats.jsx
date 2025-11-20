@@ -1,9 +1,10 @@
-import { router } from '@inertiajs/react';
-import { Calendar, CalendarDays, CheckCircle, Clock, FileText, MapPin, Users, XCircle } from 'lucide-react';
+import { router, usePoll } from '@inertiajs/react';
+import { Calendar, CalendarDays, CheckCircle, Clock, Download, FileText, MapPin, Users, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { Chart } from 'primereact/chart';
 import { ConfirmDialog } from 'primereact/confirmdialog';
-import { useEffect, useRef, useState } from 'react';
+import { SelectButton } from 'primereact/selectbutton';
+import { useState } from 'react';
 
 const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const totalParticipants = attendances.length;
@@ -11,22 +12,17 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const totalNotAttended = totalParticipants - totalAttended;
     const usersAttended = attendances.filter((a) => a.attend !== null);
     const [filterUser, setFilterUser] = useState('Hadir');
-    const prevAttendances = useRef(JSON.stringify(attendances));
-
-    useEffect(() => {
-        const interval = setInterval(async () => {
-            const response = await router.reload({
-                only: ['attendances'],
-                onSuccess: (page) => {
-                    const newData = JSON.stringify(page.props.attendances);
-                    if (newData !== prevAttendances.current) {
-                        prevAttendances.current = newData;
-                    }
-                },
-            });
-        }, 5000);
-        return () => clearInterval(interval);
-    }, []);
+    const userViewed = attendances.filter((a) => {
+        switch (filterUser) {
+            case 'Hadir':
+                return a.attend !== null;
+            case 'Belum':
+                return a.attend == null;
+            default:
+                return true;
+        }
+    });
+    usePoll(5000, { only: ['attendances'] });
 
     const chartData = {
         labels: ['Hadir', 'Belum Hadir'],
@@ -157,7 +153,16 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
                             </div>
                         )}
                     </div>
-                    {usersAttended.length > 0 && (
+                    <div className="flex items-center justify-between pb-6">
+                        <SelectButton value={filterUser} onChange={(e) => setFilterUser(e.value)} options={filterOptions} />
+                        <a
+                            href={`/export/${meeting.code}`}
+                            className="flex items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-700"
+                        >
+                            <Download /> Export
+                        </a>
+                    </div>
+                    {userViewed.length > 0 && (
                         <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
                             <div className="mb-4 flex justify-between gap-2 text-lg font-semibold text-gray-800">
                                 <h3 className="flex items-center gap-2">
@@ -166,7 +171,7 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
                                 </h3>
                             </div>
                             <div className="max-h-80 space-y-3 overflow-y-auto pr-2">
-                                {usersAttended.map((attendance) => (
+                                {userViewed.map((attendance) => (
                                     <div key={attendance.id} className="flex items-center gap-3">
                                         <Avatar
                                             label={attendance.name.charAt(0)}
@@ -181,7 +186,7 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
                                             </p>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-sm font-semibold text-emerald-600">{attendance.attend.slice(0, 5)}</p>
+                                            <p className="text-sm font-semibold text-emerald-600">{attendance.attend?.slice(0, 5)}</p>
                                         </div>
                                     </div>
                                 ))}
