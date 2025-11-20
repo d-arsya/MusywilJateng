@@ -2,15 +2,14 @@ import HelpSection from '@/components/help';
 import AuthLayout from '@/layouts/auth';
 import { FileText } from 'lucide-react';
 
-// const materials = [
-//     {
-//         title: 'Tata Tertib Musywil VI',
-//         description: 'Panduan lengkap tata tertib dan etika peserta selama mengikuti Musyawarah Wilayah VI Hidayatullah',
-//         file: '/assets/pdf/a.pdf',
-//     },
-// ];
-
-export default function MaterialPage({ materials }) {
+export default function MaterialPage() {
+    const materials = [
+        {
+            title: 'Jadwal Musywil VI',
+            description: 'Jadwal Kegiatan Musyawarah Wilayah VI Hidayatullah',
+            file: '/assets/pdf/Jadwal Muswil 2025.pdf',
+        },
+    ];
     return (
         <AuthLayout>
             <div className="space-y-8">

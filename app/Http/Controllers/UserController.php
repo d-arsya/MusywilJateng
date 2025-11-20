@@ -237,8 +237,7 @@ class UserController extends Controller
     }
     public function materi()
     {
-        $materials = [];
-        return inertia('materi', compact('materials'));
+        return inertia('materi');
     }
     public function profile()
     {
