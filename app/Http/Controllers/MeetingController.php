@@ -53,6 +53,7 @@ class MeetingController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'room' => 'required|string|max:255',
+            'status' => 'required|string|in:Belum,Sedang,Telah',
             'date' => 'required|date',
             'description' => 'nullable|string',
             'start_time' => 'required|date_format:H:i',

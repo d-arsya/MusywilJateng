@@ -3,7 +3,7 @@ name: Deploy Laravel
 on:
   push:
     branches:
-      - jateng
+      - kaltara
 
 jobs:
   docker-build:
@@ -28,7 +28,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: disyfa/muswil-jateng:latest
+          tags: disyfa/muswil-kaltara:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,6 +43,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /var/www/disyfa-muswil-jateng
-            docker pull disyfa/muswil-jateng:latest
+            cd /var/www/disyfa-muswil-kaltara
+            docker pull disyfa/muswil-kaltara:latest
             docker compose up -d

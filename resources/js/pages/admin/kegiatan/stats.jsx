@@ -10,7 +10,6 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
     const totalParticipants = attendances.length;
     const totalAttended = attendances.filter((a) => a.attend !== null).length;
     const totalNotAttended = totalParticipants - totalAttended;
-    const usersAttended = attendances.filter((a) => a.attend !== null);
     const [filterUser, setFilterUser] = useState('Hadir');
     const userViewed = attendances.filter((a) => {
         switch (filterUser) {
