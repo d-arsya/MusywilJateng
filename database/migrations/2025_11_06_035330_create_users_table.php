@@ -25,8 +25,6 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('invoice')->nullable();
             $table->boolean('paid')->default(false);
-            $table->boolean('verified')->default(false);
-            $table->boolean('admin')->default(false);
             $table->integer('capsize');
             $table->date('arrive');
             $table->date('depart');

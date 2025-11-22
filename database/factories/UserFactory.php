@@ -29,9 +29,7 @@ class UserFactory extends Factory
             'name'          => fake()->name(),
             'phone'         => fake()->phoneNumber(),
             'paid'          => fake()->boolean(50),
-            'verified'      => fake()->boolean(50),
-            'admin'         => fake()->boolean(0),
-            'capsize'       => fake()->numberBetween(1, 100),
+            'capsize'       => fake()->numberBetween(6, 13),
             'arrive'        => $arrive,
             'depart'        => $arrive->copy()->addDays(fake()->numberBetween(2, 10)),
         ];
