@@ -153,11 +153,11 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
                             </div>
                         )}
                     </div>
-                    <div className="flex items-center justify-between pb-6">
+                    <div className="flex flex-col gap-y-3 pb-6 md:flex-row md:items-center md:justify-between">
                         <SelectButton value={filterUser} onChange={(e) => setFilterUser(e.value)} options={filterOptions} />
                         <a
                             href={`/export/${meeting.code}`}
-                            className="flex items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-700"
+                            className="flex w-max items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-700"
                         >
                             <Download /> Export
                         </a>
@@ -174,7 +174,8 @@ const AdminMeetingDetail = ({ meeting, attendances, schedule }) => {
                                 {userViewed.map((attendance) => (
                                     <div key={attendance.id} className="flex items-center gap-3">
                                         <Avatar
-                                            label={attendance.name.charAt(0)}
+                                            image={attendance.avatar || undefined}
+                                            label={!attendance.avatar ? attendance.name.charAt(0) : undefined}
                                             size="normal"
                                             shape="circle"
                                             className="bg-emerald-600 text-white"
