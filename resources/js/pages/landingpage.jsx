@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 import { Calendar, CheckCircle, Home, MapPin, QrCode, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function MunasHidayatullahLanding({ from = 'all' }) {
+export default function MunasHidayatullahLanding({ from = 'all', users, offices, meetings }) {
     useEffect(() => {
         if (from === 'logout') {
             localStorage.removeItem('user_code');
@@ -110,15 +110,15 @@ export default function MunasHidayatullahLanding({ from = 'all' }) {
                 <div className="container mx-auto px-4">
                     <div className="grid gap-8 text-center md:grid-cols-4">
                         <div>
-                            <div className="mb-2 text-4xl font-bold">500+</div>
+                            <div className="mb-2 text-4xl font-bold">{users}</div>
                             <div className="text-emerald-200">Peserta Terdaftar</div>
                         </div>
                         <div>
-                            <div className="mb-2 text-4xl font-bold">38</div>
-                            <div className="text-emerald-200">DPW Se-Indonesia</div>
+                            <div className="mb-2 text-4xl font-bold">{offices}</div>
+                            <div className="text-emerald-200">DPD Se-Jateng</div>
                         </div>
                         <div>
-                            <div className="mb-2 text-4xl font-bold">50+</div>
+                            <div className="mb-2 text-4xl font-bold">{meetings}</div>
                             <div className="text-emerald-200">Kegiatan</div>
                         </div>
                         <div>
