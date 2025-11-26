@@ -7,7 +7,6 @@ WORKDIR /app
 COPY . /app 
 
 RUN install-php-extensions \
-    pdo_mysql \
     pdo_pgsql \
     pgsql \
     mbstring \
