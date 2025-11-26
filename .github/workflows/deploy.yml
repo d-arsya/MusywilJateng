@@ -8,7 +8,7 @@ on:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    environment: BBJVPS
+    environment: VPS
 
     steps:
       - name: Checkout repository
@@ -33,7 +33,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: docker-build
-    environment: BBJVPS
+    environment: VPS
 
     steps:
       - name: Deploy on VPS
@@ -42,7 +42,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
           script: |
-            cd /var/www/disyfa-muswil-jateng
+            cd /media/muswil-jateng
             docker pull disyfa/muswil-jateng:latest
             docker compose up -d
