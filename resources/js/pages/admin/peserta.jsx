@@ -1,4 +1,3 @@
-import { show } from '@/actions/App/Http/Controllers/UserController';
 import AdminLayout from '@/layouts/admin';
 import { Link } from '@inertiajs/react';
 import { Calendar, CheckCircle2, Clock, Download, Phone, UserCheck, Users } from 'lucide-react';
@@ -99,7 +98,7 @@ export default function AdminDashboardPage({ users }) {
     // Custom body templates
     const userNameTemplate = (user) => {
         return (
-            <Link href={show(user.code)} className="-m-2 flex items-center space-x-3 rounded-lg p-2 transition hover:bg-gray-50">
+            <Link href={'/peserta/' + user.code} className="-m-2 flex items-center space-x-3 rounded-lg p-2 transition hover:bg-gray-50">
                 <Avatar
                     image={user.avatar || `https://ui-avatars.com/api/?name=${user.name}&background=10b981&color=fff`}
                     shape="circle"

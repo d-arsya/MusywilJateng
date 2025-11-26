@@ -102,7 +102,7 @@ export function PublicFooter() {
             <div className="container mx-auto px-4">
                 <div className="text-center">
                     <p className="mb-2 text-emerald-200">© 2025 Musyawarah Wilayah VI Hidayatullah</p>
-                    <p className="text-sm text-emerald-300">Website Official Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan</p>
+                    <p className="text-sm text-emerald-300">Website Official Musyawarah Wilayah VI Hidayatullah Kalimantan Utara</p>
                 </div>
             </div>
         </footer>

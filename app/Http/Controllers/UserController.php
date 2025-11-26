@@ -139,10 +139,11 @@ class UserController extends Controller
 
         $arriveDate = $this->formatTanggalIndo($user->arrive);
         $departDate = $this->formatTanggalIndo($user->depart);
+        $appName = config('app.name');
         $message = "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ\n\n"
             . "Assalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "*Marhaban Ya Akhi {$user->name}* 🤝\n\n"
-            . "Alhamdulillah, pendaftaran Anda untuk *Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan* telah berhasil dicatat.\n\n"
+            . "Alhamdulillah, pendaftaran Anda untuk *{$appName}* telah berhasil dicatat.\n\n"
             . "📋 *DETAIL REGISTRASI*\n"
             . "━━━━━━\n"
             . "👤 Nama: {$user->name}\n"
@@ -173,7 +174,7 @@ class UserController extends Controller
             . "Barakallahu fiikum 🤲\n\n"
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "---\n"
-            . "🕌 *Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
+            . "🕌 *Panitia {$appName}*";
         $user->update(['sended' => true]);
         $this->send($user->phone, $message);
         return redirect()->back();
