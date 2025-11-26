@@ -42,6 +42,7 @@ class MeetingController extends Controller
             'description' => 'nullable|string',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
+            'status' => 'required|in:Belum,Telah,Sedang',
             'all' => 'boolean',
         ]);
         Meeting::create($validated);
@@ -57,6 +58,7 @@ class MeetingController extends Controller
             'description' => 'nullable|string',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
+            'status' => 'required|in:Belum,Telah,Sedang',
             'all' => 'boolean',
         ]);
         $meeting->update($validated);

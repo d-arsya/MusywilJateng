@@ -1,6 +1,6 @@
 import AuthLayout from '@/layouts/auth';
 import { Link, router, useForm } from '@inertiajs/react';
-import { Calendar, CheckCircle2, FileText, Home, Images, Lock, Map, MapPin, Phone, XCircle } from 'lucide-react';
+import { Calendar, CheckCircle2, FileText, Home, Images, Map, MapPin, Phone, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { useEffect, useRef } from 'react';
 import QRCode from 'react-qr-code';
@@ -184,7 +184,7 @@ export default function Dashboard({ auth, app }) {
                             </LinkTag>
                         );
                     })}
-                    {user.sended == 0 && (
+                    {/* {user.sended == 0 && (
                         <button
                             onClick={handleNotification}
                             className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
@@ -200,7 +200,7 @@ export default function Dashboard({ auth, app }) {
                                 </span>
                             </div>
                         </button>
-                    )}
+                    )} */}
                 </div>
             </div>
         </AuthLayout>
