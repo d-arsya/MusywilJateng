@@ -5,9 +5,9 @@ import { FileText } from 'lucide-react';
 export default function MaterialPage() {
     const materials = [
         {
-            title: 'Jadwal Musywil VI',
-            description: 'Jadwal Kegiatan Musyawarah Wilayah VI Hidayatullah',
-            file: '/assets/pdf/Jadwal Muswil 2025.pdf',
+            title: 'Undangan Musywil II',
+            description: 'Undangan Musyawarah Wilayah III Hidayatullah',
+            file: '/assets/pdf/Undangan Muswil 2025.pdf',
         },
     ];
     return (

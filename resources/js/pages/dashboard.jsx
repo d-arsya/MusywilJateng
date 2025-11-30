@@ -19,7 +19,7 @@ const menuItems = [
     {
         title: 'Lokasi',
         icon: <MapPin size={24} />,
-        link: 'https://maps.app.goo.gl/Ep7jZZinzWccHden9',
+        link: 'https://maps.app.goo.gl/8xzyxYMEDLWpLR3AA',
     },
     {
         title: 'Denah',
@@ -39,7 +39,7 @@ const menuItems = [
     {
         title: 'Admin',
         icon: <Phone size={24} />,
-        link: 'https://wa.me/6281234895030',
+        link: 'https://wa.me/6281253999313',
     },
 ];
 
@@ -99,7 +99,7 @@ export default function Dashboard({ auth, app }) {
                 {/* Header Image tetap */}
                 <div className="relative w-full max-w-xl">
                     {/* Background ID Card */}
-                    <img src="/assets/img/card-horizontal.png" alt="Banner" className="w-full rounded-lg shadow-md" />
+                    <img src="/assets/img/card-horizontal.jpg" alt="Banner" className="w-full rounded-lg shadow-md" />
 
                     {/* Foto Profil */}
                     <div className="absolute bottom-3 left-3 rounded-sm bg-white p-1">
@@ -117,7 +117,7 @@ export default function Dashboard({ auth, app }) {
                         className="absolute right-12 bottom-8 h-32 w-32 rounded-full border-2 border-white bg-emerald-800 text-white shadow-lg [&_img]:object-cover"
                         style={{ width: '80px', height: '80px', fontSize: '24px' }}
                     />
-                    <div className="absolute top-3 right-2 w-1/2 text-sm font-medium text-white drop-shadow-lg">
+                    <div className="absolute top-12 left-6 text-sm font-medium text-white drop-shadow-lg">
                         {user.name}
                         <p className="text-xs font-thin">
                             {user.office.type} {user.office.name}

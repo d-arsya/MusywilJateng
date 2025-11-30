@@ -9,7 +9,8 @@ export default function JadwalPage({ schedule }) {
                 <div className="space-y-3">
                     <h2 className="text-3xl font-bold text-gray-800">Jadwal Kegiatan</h2>
                     <p className="text-gray-600">
-                        Lihat jadwal lengkap kegiatan Musywarah Wilayah VI Hidayatullah yang Anda ikuti. Pastikan hadir tepat waktu untuk setiap sesi.
+                        Lihat jadwal lengkap kegiatan Musywarah Wilayah III Hidayatullah yang Anda ikuti. Pastikan hadir tepat waktu untuk setiap
+                        sesi.
                     </p>
                 </div>
                 {schedule.length < 1 && (

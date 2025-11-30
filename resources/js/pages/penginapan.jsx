@@ -89,7 +89,7 @@ const PenginapanPage = ({ myRoom }) => {
                                 <Users className="text-blue-600" size={20} />
                                 <div className="flex-1">
                                     <p className="text-sm text-gray-600">
-                                        Anda berbagi kamar dengan <strong>{totalRoommates} orang</strong> lainnya
+                                        Anda berbagi kamar dengan <strong>{totalRoommates - 1} orang</strong> lainnya
                                     </p>
                                 </div>
                             </div>

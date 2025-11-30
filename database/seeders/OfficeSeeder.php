@@ -17,28 +17,16 @@ class OfficeSeeder extends Seeder
             'DMW'
         ],
         'DPD' => [
-            'Surakarta',
-            'Sukoharjo',
-            'Sragen',
-            'Karanganyar',
-            'Klaten',
-            'Wonogiri',
-            'Sleman',
-            'Kota Yogyakarta',
-            'Bantul',
-            'Kulonprogo',
-            'Gunungkidul',
-            'Magelang',
-            'Kota Magelang',
-            'Temanggung',
-            'Purworejo',
-            'Kebumen',
-            'Cilacap',
-            'Banyumas',
+            'Tarakan',
+            'Malinau',
+            'Nunukan',
+            'Tana Tidung',
+            'Bulungan',
         ],
         'Kampus Madya' => [
-            'As Sakinah',
-            'Al Kahfi',
+            'Nunukan',
+            'Bulungan',
+            'Tarakan'
         ],
         'Organisasi Pendukung' => [
             'Mushida',
@@ -46,8 +34,7 @@ class OfficeSeeder extends Seeder
         ],
         'Amal Usaha' => [
             'BMH',
-            'LBH',
-            'BWH',
+            'Pos Dai',
             'SAR',
         ],
     ];

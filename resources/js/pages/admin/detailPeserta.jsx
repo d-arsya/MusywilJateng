@@ -92,7 +92,7 @@ export default function AdminEditUserPage({ employments, user, offices, room }) 
                     <div className="mb-6 flex flex-col gap-y-3 md:flex-row md:items-center md:justify-between">
                         <div>
                             <h1 className="text-3xl font-bold text-gray-800">Edit Data Peserta</h1>
-                            <p className="mt-1 text-sm text-gray-600">Perbarui informasi peserta Muswil VI Hidayatullah</p>
+                            <p className="mt-1 text-sm text-gray-600">Perbarui informasi peserta Muswil III Hidayatullah</p>
                         </div>
                         <div className="flex gap-2 md:justify-end">
                             <div className="rounded-lg bg-blue-300 px-4 py-2 hover:bg-blue-400">

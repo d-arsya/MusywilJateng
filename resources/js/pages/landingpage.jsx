@@ -115,7 +115,7 @@ export default function MunasHidayatullahLanding({ from = 'all', users, offices,
                         </div>
                         <div>
                             <div className="mb-2 text-4xl font-bold">{offices}</div>
-                            <div className="text-emerald-200">DPD Se-Jateng</div>
+                            <div className="text-emerald-200">DPD Se-Kaltara</div>
                         </div>
                         <div>
                             <div className="mb-2 text-4xl font-bold">{meetings}</div>
@@ -155,7 +155,7 @@ export default function MunasHidayatullahLanding({ from = 'all', users, offices,
                 <div className="rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 p-12 text-center text-white shadow-2xl">
                     <h3 className="mb-4 text-3xl font-bold">Siap Bergabung?</h3>
                     <p className="mb-8 text-xl text-emerald-100">
-                        Daftarkan diri Anda sekarang dan jadilah bagian dari Musyawarah Wilayah VI Hidayatullah
+                        Daftarkan diri Anda sekarang dan jadilah bagian dari Musyawarah Wilayah III Hidayatullah
                     </p>
                     <Link
                         href="/register"

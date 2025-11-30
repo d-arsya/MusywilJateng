@@ -161,7 +161,13 @@ const DetailKamar = ({ room, unassignedUsers, otherRooms }) => {
     const userNameTemplate = (rowData) => {
         return (
             <div className="flex items-center gap-3">
-                <Avatar label={rowData.name.charAt(0)} size="large" shape="circle" className="bg-emerald-600 text-white" />
+                <Avatar
+                    image={rowData.avatar ?? null}
+                    label={rowData.name.charAt(0)}
+                    size="large"
+                    shape="circle"
+                    className="bg-emerald-600 text-white"
+                />
                 <div>
                     <div className="font-semibold text-gray-800">{rowData.name}</div>
                     <div className="flex items-center gap-1 text-sm text-gray-600">
@@ -402,7 +408,13 @@ const DetailKamar = ({ room, unassignedUsers, otherRooms }) => {
                                     }}
                                 >
                                     <input type="checkbox" checked={newData.users.includes(user.id)} onChange={() => {}} className="h-4 w-4" />
-                                    <Avatar label={user.name.charAt(0)} size="normal" shape="circle" className="bg-emerald-600 text-white" />
+                                    <Avatar
+                                        image={user.avatar ?? null}
+                                        label={user.name.charAt(0)}
+                                        size="normal"
+                                        shape="circle"
+                                        className="bg-emerald-600 text-white"
+                                    />
                                     <div className="flex-1">
                                         <div className="font-semibold text-gray-800">{user.name}</div>
                                         <div className="text-sm text-gray-600">

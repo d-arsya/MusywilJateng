@@ -43,7 +43,7 @@ export default function CardPage({ auth, app }) {
                 {/* Card container */}
                 <div ref={cardRef} className="relative w-full max-w-xl">
                     {/* Background ID Card */}
-                    <img src="/assets/img/card-vertical.jpg" alt="Banner" className="w-full rounded-lg shadow-md" />
+                    <img src="/assets/img/card-vertical.png" alt="Banner" className="w-full rounded-lg shadow-md" />
 
                     {/* Overlay content */}
                     <div className="absolute top-2/5 left-1/2 flex w-full -translate-x-1/2 transform flex-col items-center space-y-3">

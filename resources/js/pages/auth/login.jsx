@@ -39,7 +39,7 @@ export default function LoginPage() {
                     </button>
                     <p className="text-center text-sm text-gray-500">
                         Belum punya kode?{' '}
-                        <a href="https://wa.me/6285640040326" className="font-semibold text-emerald-700 hover:underline">
+                        <a href="https://wa.me/6281253999313" className="font-semibold text-emerald-700 hover:underline">
                             Hubungi Admin
                         </a>
                     </p>

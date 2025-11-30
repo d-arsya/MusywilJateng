@@ -67,7 +67,13 @@ const PesertaUnassigned = ({ users, employments, buildings, offices }) => {
     const userNameTemplate = (rowData) => {
         return (
             <div className="flex items-center gap-3">
-                <Avatar label={rowData.name.charAt(0)} size="large" shape="circle" className="bg-orange-600 text-white" />
+                <Avatar
+                    image={rowData.avatar ?? null}
+                    label={rowData.name.charAt(0)}
+                    size="large"
+                    shape="circle"
+                    className="bg-orange-600 text-white"
+                />
                 <div>
                     <div className="font-semibold text-gray-800">{rowData.name}</div>
                     <div className="flex items-center gap-1 text-sm text-gray-600">

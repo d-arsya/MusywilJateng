@@ -16,14 +16,18 @@ class DatabaseSeeder extends Seeder
             Storage::disk('public')->deleteDirectory('avatars');
             Storage::disk('public')->makeDirectory('avatars');
         }
+        if (Storage::disk('public')->exists('invoices')) {
+            Storage::disk('public')->deleteDirectory('invoices');
+            Storage::disk('public')->makeDirectory('invoices');
+        }
         $this->call([
             OfficeSeeder::class,
             EmploymentSeeder::class,
-            BuildingSeeder::class,
-            RoomSeeder::class,
-            UserSeeder::class,
-            MeetingSeeder::class,
-            AttendanceSeeder::class
+            // BuildingSeeder::class,
+            // RoomSeeder::class,
+            // UserSeeder::class,
+            // MeetingSeeder::class,
+            // AttendanceSeeder::class
         ]);
     }
 }

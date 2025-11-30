@@ -89,7 +89,7 @@ export default function AdminDashboardPage({ mockCapsize, mockTodayMeetings, moc
                 <div className="grid grid-cols-1 md:grid-cols-2">
                     <div>
                         <h1 className="text-3xl font-bold text-gray-800">Dashboard Admin</h1>
-                        <p className="mt-1 text-gray-600">Muswil VI Hidayatullah 2025</p>
+                        <p className="mt-1 text-gray-600">Muswil III Hidayatullah 2025</p>
                     </div>
                     <div className="text-left md:text-right">
                         <p className="text-sm text-gray-500">Hari ini</p>

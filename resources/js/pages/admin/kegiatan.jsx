@@ -198,7 +198,7 @@ const AdminMeetingDashboard = ({ meetings }) => {
             {/* Header */}
             <div className="mb-6">
                 <h1 className="mb-2 text-3xl font-bold text-gray-800">Manajemen Kegiatan</h1>
-                <p className="text-gray-600">Kelola jadwal kegiatan dan presensi peserta Munas</p>
+                <p className="text-gray-600">Kelola jadwal kegiatan dan presensi peserta Muswil</p>
             </div>
 
             {/* Stats Bar */}

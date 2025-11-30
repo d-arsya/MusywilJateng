@@ -360,7 +360,13 @@ const DetailGedung = ({ building, rooms, unassignedUsers }) => {
                                     }}
                                 >
                                     <input type="checkbox" checked={userData.users.includes(user.id)} onChange={() => {}} className="h-4 w-4" />
-                                    <Avatar label={user.name.charAt(0)} size="normal" shape="circle" className="bg-emerald-600 text-white" />
+                                    <Avatar
+                                        image={user.avatar ?? null}
+                                        label={user.name.charAt(0)}
+                                        size="normal"
+                                        shape="circle"
+                                        className="bg-emerald-600 text-white"
+                                    />
                                     <div className="flex-1">
                                         <div className="font-semibold text-gray-800">{user.name}</div>
                                         <div className="text-sm text-gray-600">

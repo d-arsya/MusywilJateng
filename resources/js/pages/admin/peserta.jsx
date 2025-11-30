@@ -98,7 +98,7 @@ export default function AdminDashboardPage({ users }) {
     // Custom body templates
     const userNameTemplate = (user) => {
         return (
-            <Link href={'/peserta/' + user.code} className="-m-2 flex items-center space-x-3 rounded-lg p-2 transition hover:bg-gray-50">
+            <Link href={'/admin/peserta/' + user.code} className="-m-2 flex items-center space-x-3 rounded-lg p-2 transition hover:bg-gray-50">
                 <Avatar
                     image={user.avatar || `https://ui-avatars.com/api/?name=${user.name}&background=10b981&color=fff`}
                     shape="circle"
@@ -202,7 +202,7 @@ export default function AdminDashboardPage({ users }) {
                             <Users className="mr-3 h-8 w-8 text-emerald-600" />
                             Manajemen Peserta
                         </h1>
-                        <p className="mt-1 text-gray-600">Muswil VI Hidayatullah 2025</p>
+                        <p className="mt-1 text-gray-600">Muswil III Hidayatullah 2025</p>
                     </div>
                     <a href="/export" className="flex items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-700">
                         <Download /> Export

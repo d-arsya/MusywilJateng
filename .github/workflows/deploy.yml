@@ -47,3 +47,4 @@ jobs:
             cd /media/muswil-kaltara
             docker pull disyfa/muswil-kaltara:latest
             docker compose up -d
+            docker exec -t muswil-kaltara php artisan migrate:fresh --seed --force

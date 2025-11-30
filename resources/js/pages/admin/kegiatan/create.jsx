@@ -118,7 +118,7 @@ const AdminMeetingForm = ({ isEdit = false, meeting = null }) => {
                             <InputText
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                placeholder="Contoh: Pembukaan Munas VI"
+                                placeholder="Contoh: Pembukaan Muswil III"
                                 className={`w-full ${errors.name ? 'p-invalid' : ''}`}
                             />
                         </div>

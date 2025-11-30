@@ -71,7 +71,7 @@ class UserController extends Controller
         $message = "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ\n\n"
             . "Assalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "*Marhaban Ya Akhi {$user->name}* 🤝\n\n"
-            . "Alhamdulillah, pendaftaran Anda untuk *Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan* telah berhasil dicatat.\n\n"
+            . "Alhamdulillah, pendaftaran Anda untuk *Musyawarah Wilayah III Hidayatullah - Kalimantan Utara* telah berhasil dicatat.\n\n"
             . "📋 *DETAIL REGISTRASI*\n"
             . "━━━━━━\n"
             . "👤 Nama: {$user->name}\n"
@@ -98,11 +98,11 @@ class UserController extends Controller
             . "3️⃣ Tunggu verifikasi dari panitia\n"
             . "4️⃣ Cek informasi kamar penginapan\n\n"
             . "Jika ada pertanyaan, hubungi:\n"
-            . "📱 Sekretariat: 6285640040326\n\n"
+            . "📱 Sekretariat: 6281253999313\n\n"
             . "Barakallahu fiikum 🤲\n\n"
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "---\n"
-            . "🕌 *Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
+            . "🕌 *Panitia Musyawarah Wilayah III Hidayatullah - Kalimantan Utara*";
         // dispatch(function () use ($user, $message) {
         //     $this->send($user->phone, $message);
         // });
@@ -170,7 +170,7 @@ class UserController extends Controller
             . "3️⃣ Tunggu verifikasi dari panitia\n"
             . "4️⃣ Cek informasi kamar penginapan\n\n"
             . "Jika ada pertanyaan, hubungi:\n"
-            . "📱 Sekretariat: 6285640040326\n\n"
+            . "📱 Sekretariat: 6281253999313\n\n"
             . "Barakallahu fiikum 🤲\n\n"
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "---\n"
@@ -190,11 +190,11 @@ class UserController extends Controller
             . "Silakan akses sistem melalui link berikut:\n"
             . "{$link}/s/{$user->code}\n\n"
             . "Jika ada pertanyaan, hubungi:\n"
-            . "Sekretariat: 6285640040326\n\n"
+            . "Sekretariat: 6281253999313\n\n"
             . "Barakallahu fiikum\n\n"
             . "Wassalamu'alaikum Warahmatullahi Wabarakatuh\n\n"
             . "---\n"
-            . "*Panitia Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan*";
+            . "*Panitia Musyawarah Wilayah III Hidayatullah - Kalimantan Utara*";
         $user->update(['sended' => true]);
         $message = str_replace(
             [" ", "\n"],

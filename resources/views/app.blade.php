@@ -16,7 +16,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Sistem Manajemen Munas VI Hidayatullah 2025 - Platform digital untuk pendaftaran peserta, verifikasi pembayaran, manajemen penginapan, jadwal kegiatan, dan presensi real-time.">
+        content="Sistem Manajemen Musyawarah Wilayah III Hidayatullah Kaltara 2025 - Platform digital untuk pendaftaran peserta, verifikasi pembayaran, manajemen penginapan, jadwal kegiatan, dan presensi real-time.">
     <meta name="keywords"
         content="Munas Hidayatullah, Musyawarah Nasional Hidayatullah,Musyawarah Wilayah Hidayatullah, Hidayatullah 2025, Munas VI, Sistem Manajemen Event Islam">
     <meta name="author" content="Panitia {{ config('app.name') }}">
@@ -25,18 +25,18 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content={{ config('app.url') }}>
-    <meta property="og:title" content="Musyawarah Wilayah VI Hidayatullah 2025 - Sistem Manajemen Terintegrasi">
+    <meta property="og:title" content="Musyawarah Wilayah III Hidayatullah 2025 - Sistem Manajemen Terintegrasi">
     <meta property="og:description"
-        content="Platform digital untuk pengelolaan Musyawarah Wilayah VI Hidayatullah dengan fitur lengkap: registrasi, pembayaran, penginapan, jadwal, dan presensi.">
+        content="Platform digital untuk pengelolaan Musyawarah Wilayah III Hidayatullah dengan fitur lengkap: registrasi, pembayaran, penginapan, jadwal, dan presensi.">
     <meta property="og:image" content="{{ config('app.url') }}/assets/img/jumbotron.png">
     <meta property="og:locale" content="id_ID">
-    <meta property="og:site_name" content="Musyawarah Wilayah VI Hidayatullah Kalimantan Utara">
+    <meta property="og:site_name" content="Musyawarah Wilayah III Hidayatullah Kalimantan Utara">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://munashidayatullah.id/">
     <meta name="twitter:title" content="Munas VI Hidayatullah 2025">
-    <meta name="twitter:description" content="Sistem Manajemen Terintegrasi untuk Musyawarah Wilayah VI Hidayatullah">
+    <meta name="twitter:description" content="Sistem Manajemen Terintegrasi untuk Musyawarah Wilayah III Hidayatullah">
     <meta name="twitter:image" content="{{ config('app.url') }}/assets/img/jumbotron.png">
 
 
