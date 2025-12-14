@@ -254,7 +254,13 @@ export default function AdminDashboardPage({ users }) {
 
                         {/* <Column body={codeTemplate} header="Kode Akses" field="code" /> */}
 
-                        <Column field="capsize" header="Peci" sortable headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
+                        <Column
+                            field="clothsize"
+                            header="Baju"
+                            sortable
+                            headerClassName="hidden xl:table-cell"
+                            bodyClassName="hidden xl:table-cell"
+                        />
                         <Column body={roomTemplate} header="Kamar" headerClassName="hidden xl:table-cell" bodyClassName="hidden xl:table-cell" />
                     </DataTable>
                 </div>

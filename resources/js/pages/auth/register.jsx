@@ -19,7 +19,7 @@ export default function RegisterPage({ offices, employments }) {
         employment: '',
         arrive: '',
         depart: '',
-        capsize: '',
+        clothsize: '',
         avatar: null,
     });
     const [preview, setPreview] = useState(null);
@@ -194,15 +194,14 @@ export default function RegisterPage({ offices, employments }) {
                 {/* Ukuran Peci */}
                 <select
                     required
-                    value={data.capsize}
-                    onChange={(e) => setData('capsize', e.target.value)}
+                    value={data.clothsize}
+                    onChange={(e) => setData('clothsize', e.target.value)}
                     className="w-full rounded-lg border border-gray-300 px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                 >
-                    <option value="">Pilih Ukuran Peci</option>
-                    {[...Array(8)].map((_, i) => {
-                        const size = i + 5; // generates 5,6,7,...,12
+                    <option value="">Pilih Ukuran Baju</option>
+                    {['S', 'M', 'L', 'XL', 'XXL'].map((size, i) => {
                         return (
-                            <option key={size} value={size}>
+                            <option key={i} value={size}>
                                 {size}
                             </option>
                         );

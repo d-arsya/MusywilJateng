@@ -19,7 +19,7 @@ import {
 import { Button } from 'primereact/button';
 import { Chart } from 'primereact/chart';
 
-export default function AdminDashboardPage({ mockCapsize, mockTodayMeetings, mockOfficeDistribution, mockEmploymentDistribution, mockStats }) {
+export default function AdminDashboardPage({ mockClothsize, mockTodayMeetings, mockOfficeDistribution, mockEmploymentDistribution, mockStats }) {
     // Chart data
     const officeChartData = {
         labels: Object.keys(mockOfficeDistribution),
@@ -36,12 +36,12 @@ export default function AdminDashboardPage({ mockCapsize, mockTodayMeetings, moc
             },
         ],
     };
-    const capsizeChartData = {
-        labels: Object.keys(mockCapsize),
+    const clothsizeChartData = {
+        labels: Object.keys(mockClothsize),
         datasets: [
             {
-                label: 'Ukuran Peci',
-                data: Object.values(mockCapsize),
+                label: 'Ukuran Baju',
+                data: Object.values(mockClothsize),
                 backgroundColor: ['#3B82F6'],
             },
         ],
@@ -350,9 +350,9 @@ export default function AdminDashboardPage({ mockCapsize, mockTodayMeetings, moc
                     <div className="rounded-2xl bg-white p-6 shadow-lg">
                         <h2 className="mb-4 flex items-center text-xl font-bold text-gray-800">
                             <PieChart className="mr-2 h-5 w-5 text-blue-600" />
-                            Ukuran Peci
+                            Ukuran Baju
                         </h2>
-                        <Chart type="bar" data={capsizeChartData} options={chartOptions} />
+                        <Chart type="bar" data={clothsizeChartData} options={chartOptions} />
                     </div>
                 </div>
             </div>

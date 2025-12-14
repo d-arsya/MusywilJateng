@@ -93,8 +93,6 @@ class RoomController extends Controller
     }
     public function unassigned()
     {
-        // $room = Room::whereId($room->id)->with(['building', 'users', 'users.office', 'users.employment'])->first();
-        // dd($room);
         $users = User::with(['office', 'employment'])->wherePaid(true)->whereNull('room_id')->get();
         $employments = Employment::all();
         $buildings = Building::with(['rooms.users'])->get();

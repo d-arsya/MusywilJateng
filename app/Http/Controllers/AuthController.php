@@ -26,10 +26,8 @@ class AuthController extends Controller
     public function enter(string $code)
     {
         if ($code == env('ADMIN_CODE')) {
-            // return 'Halo';
             $admin = new AdminUser();
             Auth::guard('admin')->login($admin);
-            // dd(Auth::guard('admin')->check());
             return redirect()->route('admin.dashboard');
         }
         $user = User::whereCode($code)->first();

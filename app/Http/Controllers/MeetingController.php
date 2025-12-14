@@ -29,7 +29,6 @@ class MeetingController extends Controller
 
             return $meeting;
         });
-        // attendance_rate: 80,
 
         return inertia('admin/kegiatan', compact('meetings'));
     }
@@ -99,7 +98,7 @@ class MeetingController extends Controller
                         'description' => $meeting->description,
                         'location' => $meeting->room,
                         'time' => substr($meeting->start_time, 0, 5) . ' - ' . substr($meeting->end_time, 0, 5),
-                        'attended' => $attendance?->attend ?? null, // optional: include user's attendance
+                        'attended' => $attendance?->attend ?? null,
                     ];
                 })->sortBy('time')->values(),
             ];
@@ -107,7 +106,6 @@ class MeetingController extends Controller
 
         $users = User::with(['employment', 'office', 'attendances'])->get();
         $attendances = $users->map(function ($user) use ($meeting) {
-            // cari attendance untuk meeting tertentu
             $attendance = $user->attendances->firstWhere('meeting_id', $meeting->id);
 
             return [
@@ -117,8 +115,8 @@ class MeetingController extends Controller
                 'phone' => $user->phone,
                 'office' => $user->office,
                 'employment' => $user->employment,
-                'assigned' => !is_null($attendance),                // ada attendance untuk meeting ini
-                'attend' => $attendance?->attend,       // attendance-nya sudah terisi jam attend
+                'assigned' => !is_null($attendance),
+                'attend' => $attendance?->attend,
             ];
         })->sortByDesc('attend')->values();
         return inertia('admin/kegiatan/stats', compact('meeting', 'attendances', 'schedule'));
@@ -150,10 +148,8 @@ class MeetingController extends Controller
     {
         $userIds = explode(',', $request->query('users'));
 
-        // Pastikan tidak ada data kosong
         $userIds = array_filter($userIds);
 
-        // Hindari duplikasi attendance
         $existing = Attendance::where('meeting_id', $meeting->id)
             ->pluck('user_id')
             ->toArray();
@@ -189,7 +185,6 @@ class MeetingController extends Controller
         $offices = Office::all();
         $users = User::with(['employment', 'office', 'attendances'])->wherePaid(true)->get();
         $allUsers = $users->map(function ($user) use ($meeting) {
-            // cari attendance untuk meeting tertentu
             $attendance = $user->attendances->firstWhere('meeting_id', $meeting->id);
 
             return [
@@ -198,8 +193,8 @@ class MeetingController extends Controller
                 'phone' => $user->phone,
                 'office' => $user->office,
                 'employment' => $user->employment,
-                'assigned' => !is_null($attendance),                // ada attendance untuk meeting ini
-                'attended' => !is_null($attendance?->attend),       // attendance-nya sudah terisi jam attend
+                'assigned' => !is_null($attendance),
+                'attended' => !is_null($attendance?->attend),
             ];
         });
         return inertia('admin/kegiatan/assign', compact('meeting', 'employments', 'offices', 'allUsers'));
@@ -212,14 +207,12 @@ class MeetingController extends Controller
             return $item->meeting->date;
         });
 
-        // Group meetings by formatted date
         $grouped = $sorted->groupBy(function ($item) {
             return Carbon::parse($item->meeting->date)
                 ->locale('id')
                 ->translatedFormat('l, d F Y');
         });
 
-        // Transform into your desired structure
         $schedule = $grouped->map(function ($items, $date) {
             return [
                 'date' => $date,
@@ -232,7 +225,7 @@ class MeetingController extends Controller
                         'location' => $meeting->room,
                         'time' => substr($meeting->start_time, 0, 5) . ' - ' . substr($meeting->end_time, 0, 5),
                     ];
-                })->sortBy('time')->values(), // optional: sort by start time
+                })->sortBy('time')->values(),
             ];
         })->values();
         return inertia('jadwal', compact('schedule'));

@@ -12,10 +12,7 @@ class BuildingController extends Controller
     {
         $buildings = Building::with(['rooms', 'rooms.users'])->get();
         $buildings->each(function ($building) {
-            // total users in all rooms of this building
             $building->users_count = $building->rooms->sum(fn($room) => $room->users->count());
-
-            // total rooms in this building
             $building->rooms_count = $building->rooms->count();
         });
         $totalUnassigned = User::wherePaid(true)->whereNull('room_id')->count();
@@ -47,7 +44,6 @@ class BuildingController extends Controller
             return redirect()->route('admin.penginapan')
                 ->with('success', 'Gedung berhasil dihapus!');
         } catch (\Throwable $th) {
-            //throw $th;
             return redirect()->route('admin.penginapan')
                 ->with('error', 'Gedung gagal dihapus!');
         }

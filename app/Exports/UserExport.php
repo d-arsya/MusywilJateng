@@ -28,7 +28,7 @@ class UserExport implements FromCollection, WithHeadings, WithMapping, WithEvent
             $user->name,
             $user->phone,
             $user->paid ? 'Sudah Bayar' : 'Belum Bayar',
-            $user->capsize
+            $user->clothsize
         ];
     }
 
@@ -42,7 +42,7 @@ class UserExport implements FromCollection, WithHeadings, WithMapping, WithEvent
             'Nama',
             'Telepon',
             'Pembayaran',
-            'Ukuran Peci',
+            'Ukuran Baju',
         ];
     }
 
@@ -52,17 +52,11 @@ class UserExport implements FromCollection, WithHeadings, WithMapping, WithEvent
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet;
 
-                // ====================================
-                // 1. Style heading (bold + center)
-                // ====================================
                 $sheet->getStyle('A1:H1')->applyFromArray([
                     'font' => ['bold' => true],
                     'alignment' => ['horizontal' => 'center'],
                 ]);
 
-                // ====================================
-                // 2. Border seluruh tabel
-                // ====================================
                 $highestRow = $sheet->getHighestRow();
 
                 $sheet->getStyle("A1:H{$highestRow}")->applyFromArray([
@@ -73,10 +67,6 @@ class UserExport implements FromCollection, WithHeadings, WithMapping, WithEvent
                     ]
                 ]);
 
-                // ====================================
-                // 3. Payment column highlight
-                //    (Optional bisa dihapus)
-                // ====================================
                 for ($row = 2; $row <= $highestRow; $row++) {
                     $value = $sheet->getCell("H{$row}")->getValue();
                     if ($value === 'Belum Bayar') {

@@ -54,7 +54,7 @@ export default function MunasHidayatullahLanding({ from = 'all', users, offices,
                         </div>
                         <h4 className="mb-2 text-xl font-bold text-gray-800">Pendaftaran Peserta</h4>
                         <p className="text-gray-600">
-                            Pendaftaran mudah dengan data lengkap: nama, telepon, foto, utusan, jabatan, ukuran peci, dan jadwal kedatangan
+                            Pendaftaran mudah dengan data lengkap: nama, telepon, foto, utusan, jabatan, ukuran baju, dan jadwal kedatangan
                         </p>
                     </div>
 

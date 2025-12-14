@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'name'          => fake()->name(),
             'phone'         => fake()->phoneNumber(),
             'paid'          => fake()->boolean(50),
-            'capsize'       => fake()->numberBetween(6, 13),
+            'clothsize'       => fake()->randomElement(['S', 'M', 'L', 'XL', 'XXL']),
             'arrive'        => $arrive,
             'depart'        => $arrive->copy()->addDays(fake()->numberBetween(2, 10)),
         ];

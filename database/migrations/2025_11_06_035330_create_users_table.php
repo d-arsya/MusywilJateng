@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('invoice')->nullable();
             $table->boolean('paid')->default(false);
-            $table->integer('capsize');
+            $table->enum('clothsize', ['S', 'M', 'L', 'XL', 'XXL']);
             $table->date('arrive');
             $table->date('depart');
             $table->timestamps();

@@ -5,29 +5,6 @@ import { AlertCircle, Briefcase, Calendar, Phone, Save, Upload, User, X } from '
 import { useState } from 'react';
 import Cropper from 'react-easy-crop';
 
-// const offices = [
-//     { id: 1, name: 'DPW Jawa Tengah' },
-//     { id: 2, name: 'DPD Surakarta' },
-//     { id: 3, name: 'DMW Jawa Tengah' },
-//     { id: 4, name: 'Kampus Madya Al Kahfi' },
-//     { id: 5, name: 'Orpen BMH' },
-//     { id: 6, name: 'Amal Usaha' },
-// ];
-
-// Mock user data
-// const initialUser = {
-//     id: 1,
-//     name: 'Ahmad Fauzi',
-//     phone: '081234567890',
-//     employment_id: 2,
-//     office_id: 2,
-//     capsize: 56,
-//     arrive: '2025-11-20',
-//     depart: '2025-11-23',
-//     avatar: '/assets/avatars/user1.jpg',
-//     code: 'ABC123',
-// };
-
 export default function AdminEditUserPage({ employments, user, offices, room }) {
     const initialUser = user;
     const { data: formData, setData: setFormData, post } = useForm(initialUser);
@@ -242,18 +219,25 @@ export default function AdminEditUserPage({ employments, user, offices, room }) 
                                     />
                                     {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
                                 </div>
-
-                                {/* Cap Size */}
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-gray-700">Ukuran Peci *</label>
-                                    <input
-                                        type="number"
-                                        name="capsize"
-                                        value={formData.capsize}
+                                    <label className="mb-2 block text-sm font-medium text-gray-700">Ukuran Baju *</label>
+                                    <select
+                                        required
+                                        name="clothsize"
+                                        value={formData.clothsize}
                                         onChange={handleChange}
-                                        className={`w-full rounded-lg border-2 ${errors.capsize ? 'border-red-300' : 'border-gray-200'} px-4 py-3 transition focus:border-emerald-500 focus:outline-none`}
-                                    />
-                                    {errors.capsize && <p className="mt-1 text-sm text-red-600">{errors.capsize}</p>}
+                                        className={`w-full rounded-lg border ${errors.clothsize ? 'border-red-300' : 'border-gray-300'} px-4 py-3 transition duration-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none`}
+                                    >
+                                        <option value="">Pilih Ukuran Peci</option>
+                                        {['S', 'M', 'L', 'XL', 'XXL'].map((size, i) => {
+                                            return (
+                                                <option key={i} value={size}>
+                                                    {size}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                    {errors.clothsize && <p className="mt-1 text-sm text-red-600">{errors.clothsize}</p>}
                                 </div>
                             </div>
                         </div>

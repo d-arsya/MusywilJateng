@@ -49,7 +49,7 @@ class UserController extends Controller
             'office_id' => ['required', 'exists:offices,id'],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
-            'capsize' => ['required', 'integer'],
+            'clothsize' => ['required', 'string', 'in:S,M,L,XL,XXL'],
             'arrive' => ['required', 'date'],
             'depart' => ['required', 'date', 'after_or_equal:arrive'],
             'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
@@ -78,7 +78,7 @@ class UserController extends Controller
             . "🏢 Utusan: {$office->type} - {$office->name}\n"
             . "📌 Jabatan: {$employment->name}\n"
             . "📱 Telepon: {$user->phone}\n"
-            . "🧢 Ukuran Peci: {$user->capsize}\n"
+            . "🧢 Ukuran Baju: {$user->clothsize}\n"
             . "📅 Kedatangan: {$arriveDate}\n"
             . "📅 Kepulangan: {$departDate}\n"
             . "🔑 Kode Akses: *{$user->code}*\n\n"
@@ -117,7 +117,7 @@ class UserController extends Controller
             'office_id' => ['required', 'exists:offices,id'],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
-            'capsize' => ['required', 'integer'],
+            'clothsize' => ['required', 'string', 'in:S,M,L,XL,XXL'],
             'arrive' => ['required', 'date'],
             'depart' => ['required', 'date', 'after_or_equal:arrive'],
             'avatar' => ['nullable']
@@ -150,7 +150,7 @@ class UserController extends Controller
             . "🏢 Utusan: {$office->type} - {$office->name}\n"
             . "📌 Jabatan: {$employment->name}\n"
             . "📱 Telepon: {$user->phone}\n"
-            . "🧢 Ukuran Peci: {$user->capsize}\n"
+            . "🧢 Ukuran Baju: {$user->clothsize}\n"
             . "📅 Kedatangan: {$arriveDate}\n"
             . "📅 Kepulangan: {$departDate}\n"
             . "🔑 Kode Akses: *{$user->code}*\n\n"
@@ -211,13 +211,6 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $validated = $request->validate([
-            // 'employment_id' => ['required', 'exists:employments,id'],
-            // 'office_id' => ['required', 'exists:offices,id'],
-            // 'name' => ['required', 'string', 'max:255'],
-            // 'phone' => ['required', 'string', 'max:20'],
-            // 'capsize' => ['required', 'integer'],    
-            // 'arrive' => ['required', 'date'],
-            // 'depart' => ['required', 'date', 'after_or_equal:arrive'],
             'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
@@ -282,7 +275,7 @@ class UserController extends Controller
 
         $mockOfficeDistribution = $users->groupBy(fn($u) => $u->office->name ?? 'Tidak Diketahui')
             ->map(fn($group) => $group->count());
-        $mockCapsize = $users->groupBy(fn($u) => $u->capsize ?? 'Tidak Diketahui')
+        $mockClothsize = $users->groupBy(fn($u) => $u->clothsize ?? 'Tidak Diketahui')
             ->map(fn($group) => $group->count());
 
         $mockEmploymentDistribution = $users->groupBy(fn($u) => $u->employment->name ?? 'Tidak Diketahui')
@@ -316,7 +309,7 @@ class UserController extends Controller
         ];
         return inertia('admin/dashboard', compact(
             'mockStats',
-            'mockCapsize',
+            'mockClothsize',
             'mockTodayMeetings',
             'mockOfficeDistribution',
             'mockEmploymentDistribution'
