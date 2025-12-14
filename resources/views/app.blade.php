@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title inertia>{{ config('app.name') }}</title>
-    <meta name="google-site-verification" content="_gfwvrZhNoRxi_gwxHoCu_q9dLkzPyeBrBGijWTYSh4" />
+    <meta name="google-site-verification" content="vMsrIlhiihA0kzwaYbXPdAzYmtSLeML9z_FHTvAQuJM" />
 
     <link rel="icon" href="/logo.png" sizes="any">
     <link rel="icon" href="/logo.png" type="image/svg+xml">
