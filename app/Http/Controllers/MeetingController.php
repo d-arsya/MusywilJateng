@@ -78,9 +78,7 @@ class MeetingController extends Controller
     }
     public function stats(Meeting $meeting)
     {
-        $meetings = Meeting::with(['attendances' => function ($q) {
-            $q->where('user_id', Auth::id());
-        }])
+        $meetings = Meeting::with(['attendances'])
             ->orderBy('date')
             ->get();
         $schedule = $meetings->groupBy(function ($meeting) {
