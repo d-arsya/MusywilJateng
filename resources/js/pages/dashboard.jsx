@@ -99,7 +99,7 @@ export default function Dashboard({ auth, app }) {
                 {/* Header Image tetap */}
                 <div className="relative w-full max-w-xl">
                     {/* Background ID Card */}
-                    <img src="/assets/img/card-horizontal.jpg" alt="Banner" className="w-full rounded-lg shadow-md" />
+                    <img src="/assets/img/card-horizontal-new.jpg" alt="Banner" className="w-full rounded-lg shadow-md" />
 
                     {/* Foto Profil */}
                     <div className="absolute bottom-3 left-3 rounded-sm bg-white p-1">

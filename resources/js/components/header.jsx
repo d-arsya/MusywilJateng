@@ -8,7 +8,7 @@ export function PublicHeader() {
                 <div className="flex items-center justify-center md:justify-between">
                     <Link href="/" className="flex items-center space-x-3">
                         <div className="rounded-ful flex w-48 items-center justify-center">
-                            <img src="/assets/img/header-horizontal.png" alt="" />
+                            <img src="/assets/img/header-horizontal-new.png" alt="" />
                         </div>
                     </Link>
                 </div>
@@ -53,7 +53,7 @@ export function PrivateHeader() {
                 {/* Logo dan Judul */}
                 <Link href="/" className="flex items-center space-x-3">
                     <div className="flex w-48 items-center justify-center">
-                        <img src="/assets/img/header-horizontal.png" alt="Logo" className="h-full w-full object-contain" />
+                        <img src="/assets/img/header-horizontal-new.png" alt="Logo" className="h-full w-full object-contain" />
                     </div>
                 </Link>
 

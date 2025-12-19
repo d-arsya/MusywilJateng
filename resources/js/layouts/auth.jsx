@@ -22,7 +22,7 @@ export default function AuthLayout({ children }) {
                         className="absolute -top-6 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border border-gray-200 bg-white p-3 shadow-md"
                     >
                         <img
-                            src="/logo-small.png" // ganti dengan path logo kamu
+                            src="/logo-small-new.png" // ganti dengan path logo kamu
                             alt="App Logo"
                             className=""
                         />

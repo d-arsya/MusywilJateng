@@ -21,7 +21,7 @@ export default function LoginPage() {
             <div className="min-h-screen">
                 <form onSubmit={submitLogin} className="w-full max-w-sm space-y-6 rounded-xl border border-gray-200 bg-white p-8 shadow-xl">
                     <div className="mb-4 flex justify-center">
-                        <img src="/logo.png" alt="Logo" className="h-16 w-16 animate-bounce" />
+                        <img src="/logo-new.png" alt="Logo" className="h-16 w-16 animate-bounce" />
                     </div>
                     <h1 className="text-center text-2xl font-bold text-emerald-800">Masuk</h1>
                     <input

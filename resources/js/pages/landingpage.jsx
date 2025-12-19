@@ -20,7 +20,7 @@ export default function MunasHidayatullahLanding({ from = 'all', users, offices,
             <section className="container mx-auto px-4 py-16">
                 <div className="mx-auto max-w-3xl text-center">
                     <div className="flex w-full justify-center">
-                        <img className="w-64" src="/assets/img/jumbotron.png" alt="" />
+                        <img className="w-64" src="/assets/img/jumbotron-new.png" alt="" />
                     </div>
                     {/* <h2 className="text-4xl font-bold text-emerald-900 md:text-5xl">
                         Musyawarah Wilayah VI Hidayatullah DIY - Jateng Bagian Selatan

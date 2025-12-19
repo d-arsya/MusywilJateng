@@ -47,7 +47,7 @@ export default function AdminLayout({ children }) {
                 >
                     <div className="flex items-center justify-between rounded-b-xl bg-white p-4 text-2xl font-bold shadow-2xl">
                         <span className="flex justify-center gap-4">
-                            <img src="/assets/img/header-horizontal.png" className="w-full" alt="" />
+                            <img src="/assets/img/header-horizontal-new.png" className="w-full" alt="" />
                         </span>
                         <button onClick={() => setSidebarOpen(false)} className="rounded p-2 hover:bg-emerald-800 md:hidden">
                             <X size={20} />
@@ -82,7 +82,7 @@ export default function AdminLayout({ children }) {
                             <Menu size={22} />
                         </button>
                         <span className="flex justify-center gap-4">
-                            <img src="/assets/img/header-horizontal.png" className="h-12 w-12" alt="" />
+                            <img src="/assets/img/header-horizontal-new.png" className="h-12 w-12" alt="" />
                             <div>
                                 <h1 className="text-sm font-bold text-black">Musyawarah Wilayah III Hidayatullah</h1>
                                 <p className="text-xs text-emerald-700">Kalimantan Utara</p>

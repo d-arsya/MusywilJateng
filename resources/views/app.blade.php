@@ -8,8 +8,8 @@
     <title inertia>{{ config('app.name') }}</title>
     <meta name="google-site-verification" content="vMsrIlhiihA0kzwaYbXPdAzYmtSLeML9z_FHTvAQuJM" />
 
-    <link rel="icon" href="/logo.png" sizes="any">
-    <link rel="icon" href="/logo.png" type="image/svg+xml">
+    <link rel="icon" href="/logo-new.png" sizes="any">
+    <link rel="icon" href="/logo-new.png" type="image/svg+xml">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#009966">
     <!-- Essential Meta Tags -->
@@ -28,7 +28,7 @@
     <meta property="og:title" content="Musyawarah Wilayah III Hidayatullah 2025 - Sistem Manajemen Terintegrasi">
     <meta property="og:description"
         content="Platform digital untuk pengelolaan Musyawarah Wilayah III Hidayatullah dengan fitur lengkap: registrasi, pembayaran, penginapan, jadwal, dan presensi.">
-    <meta property="og:image" content="{{ config('app.url') }}/assets/img/jumbotron.png">
+    <meta property="og:image" content="{{ config('app.url') }}/assets/img/jumbotron-new.png">
     <meta property="og:locale" content="id_ID">
     <meta property="og:site_name" content="Musyawarah Wilayah III Hidayatullah Kalimantan Utara">
 
@@ -37,7 +37,7 @@
     <meta name="twitter:url" content={{ config('app.url') }}>
     <meta name="twitter:title" content="Munas VI Hidayatullah 2025">
     <meta name="twitter:description" content="Sistem Manajemen Terintegrasi untuk Musyawarah Wilayah III Hidayatullah">
-    <meta name="twitter:image" content="{{ config('app.url') }}/assets/img/jumbotron.png">
+    <meta name="twitter:image" content="{{ config('app.url') }}/assets/img/jumbotron-new.png">
 
 
     <!-- Canonical URL -->
