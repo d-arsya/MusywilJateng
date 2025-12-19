@@ -7,12 +7,8 @@ export function PublicHeader() {
             <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center justify-center md:justify-between">
                     <Link href="/" className="flex items-center space-x-3">
-                        <div className="rounded-ful flex h-12 w-12 items-center justify-center">
+                        <div className="rounded-ful flex w-48 items-center justify-center">
                             <img src="/assets/img/header-horizontal.png" alt="" />
-                        </div>
-                        <div>
-                            <h1 className="text-md font-bold md:text-2xl">Musyawarah Wilayah III Hidayatullah</h1>
-                            <p className="text-sm text-emerald-700">Kalimantan Utara</p>
                         </div>
                     </Link>
                 </div>
@@ -56,12 +52,8 @@ export function PrivateHeader() {
             <div className="container mx-auto flex items-center justify-between px-4 py-4">
                 {/* Logo dan Judul */}
                 <Link href="/" className="flex items-center space-x-3">
-                    <div className="flex w-12 items-center justify-center">
+                    <div className="flex w-48 items-center justify-center">
                         <img src="/assets/img/header-horizontal.png" alt="Logo" className="h-full w-full object-contain" />
-                    </div>
-                    <div>
-                        <h1 className="text-md font-bold md:text-2xl">Musyawarah Wilayah III Hidayatullah</h1>
-                        <p className="text-sm text-emerald-700">Kalimantan Utara</p>
                     </div>
                 </Link>
 

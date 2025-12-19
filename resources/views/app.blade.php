@@ -18,8 +18,8 @@
     <meta name="description"
         content="Sistem Manajemen Musyawarah Wilayah III Hidayatullah Kaltara 2025 - Platform digital untuk pendaftaran peserta, verifikasi pembayaran, manajemen penginapan, jadwal kegiatan, dan presensi real-time.">
     <meta name="keywords"
-        content="Munas Hidayatullah, Musyawarah Nasional Hidayatullah,Musyawarah Wilayah Hidayatullah, Hidayatullah 2025, Munas VI, Sistem Manajemen Event Islam">
-    <meta name="author" content="Panitia {{ config('app.name') }}">
+        content="Munas Hidayatullah, Musyawarah Nasional Hidayatullah,Musyawarah Wilayah Hidayatullah, Hidayatullah 2025, Munas III, Kalimantan Utara, Kaltara, Sistem Manajemen Event Islam">
+    <meta name="author" content="Kamaluddin Arsyad Fadllillah | disyfa.space">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph / Facebook -->
@@ -34,7 +34,7 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://munashidayatullah.id/">
+    <meta name="twitter:url" content={{ config('app.url') }}>
     <meta name="twitter:title" content="Munas VI Hidayatullah 2025">
     <meta name="twitter:description" content="Sistem Manajemen Terintegrasi untuk Musyawarah Wilayah III Hidayatullah">
     <meta name="twitter:image" content="{{ config('app.url') }}/assets/img/jumbotron.png">

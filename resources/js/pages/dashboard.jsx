@@ -1,6 +1,6 @@
 import AuthLayout from '@/layouts/auth';
 import { Link, router, useForm } from '@inertiajs/react';
-import { Calendar, CheckCircle2, FileText, Home, Images, Lock, Map, MapPin, Phone, XCircle } from 'lucide-react';
+import { Calendar, CheckCircle2, FileText, Home, Lock, Map, MapPin, Phone, XCircle } from 'lucide-react';
 import { Avatar } from 'primereact/avatar';
 import { useEffect, useRef } from 'react';
 import QRCode from 'react-qr-code';
@@ -31,11 +31,11 @@ const menuItems = [
         icon: <FileText size={24} />,
         link: '/materi',
     },
-    {
-        title: 'Galeri',
-        icon: <Images size={24} />,
-        link: 'https://drive.google.com',
-    },
+    // {
+    //     title: 'Galeri',
+    //     icon: <Images size={24} />,
+    //     link: 'https://drive.google.com',
+    // },
     {
         title: 'Admin',
         icon: <Phone size={24} />,
