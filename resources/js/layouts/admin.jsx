@@ -82,11 +82,7 @@ export default function AdminLayout({ children }) {
                             <Menu size={22} />
                         </button>
                         <span className="flex justify-center gap-4">
-                            <img src="/assets/img/header-horizontal-new.png" className="h-12 w-12" alt="" />
-                            <div>
-                                <h1 className="text-sm font-bold text-black">Musyawarah Wilayah III Hidayatullah</h1>
-                                <p className="text-xs text-emerald-700">Kalimantan Utara</p>
-                            </div>
+                            <img src="/assets/img/header-horizontal-new.png" className="w-48" alt="" />
                         </span>
                         <div className="w-6" /> {/* spacer */}
                     </header>
