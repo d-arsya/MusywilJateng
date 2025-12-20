@@ -47,9 +47,9 @@ export default function CardPage({ auth, app }) {
 
                     {/* Overlay content */}
                     <div className="absolute top-1/5 left-1/2 flex w-full -translate-x-1/2 transform flex-col items-center space-y-3">
-                        <div className="mt-4 text-center text-xs font-semibold text-black drop-shadow-lg">
-                            {/* {user.name} */}Kamaluddin Arsyad Fadllillah
-                            <p className="mt-6 text-xs font-thin">
+                        <div className="mt-5 text-center text-sm font-semibold text-black drop-shadow-lg">
+                            <span className="mt-0.5 -ml-22 block w-52">{user.name}</span>
+                            <p className="mt-2 ml-4 w-26 text-xs font-thin">
                                 {user.office.type} {user.office.name}
                             </p>
                         </div>
