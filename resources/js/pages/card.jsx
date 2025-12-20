@@ -48,7 +48,7 @@ export default function CardPage({ auth, app }) {
                     {/* Overlay content */}
                     <div className="absolute top-1/5 left-1/2 flex w-full -translate-x-1/2 transform flex-col items-center space-y-3">
                         <div className="mt-4 text-center text-xs font-semibold text-black drop-shadow-lg">
-                            {user.name}
+                            {/* {user.name} */}Kamaluddin Arsyad Fadllillah
                             <p className="mt-6 text-xs font-thin">
                                 {user.office.type} {user.office.name}
                             </p>
@@ -59,13 +59,13 @@ export default function CardPage({ auth, app }) {
                             size="xlarge"
                             shape="circle"
                             className="mt-6 h-32 w-32 rounded-full border-2 border-white bg-emerald-800 shadow-lg [&_img]:object-cover"
-                            style={{ width: '80px', height: '80px', fontSize: '32px' }}
+                            style={{ width: '90px', height: '90px', fontSize: '32px' }}
                         />
                         <div ref={qrRef} className="rounded-sm bg-white p-1">
                             <QRCode
                                 value={app.url + '/s/' + user.code} // dynamically from user.code
                                 size={128}
-                                className="h-20 w-20"
+                                className="h-24 w-24"
                             />
                         </div>
                     </div>
