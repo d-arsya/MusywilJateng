@@ -43,16 +43,22 @@ export default function CardPage({ auth, app }) {
                 {/* Card container */}
                 <div ref={cardRef} className="relative w-full max-w-xl">
                     {/* Background ID Card */}
-                    <img src="/assets/img/card-vertical-new.png" alt="Banner" className="w-full rounded-lg shadow-md" />
+                    <img src="/assets/img/verti.jpeg" alt="Banner" className="w-full rounded-lg shadow-md" />
 
                     {/* Overlay content */}
-                    <div className="absolute bottom-2/11 left-1/2 flex w-full -translate-x-1/2 transform flex-col items-center space-y-3">
+                    <div className="absolute top-1/5 left-1/2 flex w-full -translate-x-1/2 transform flex-col items-center space-y-3">
+                        <div className="mt-3 w-32 text-center text-xs font-semibold text-black drop-shadow-lg">
+                            {user.name}
+                            <p className="mt-3 text-xs font-thin">
+                                {user.office.type} {user.office.name}
+                            </p>
+                        </div>
                         <Avatar
                             image={user.avatar || undefined}
                             label={!user.avatar ? user.name.charAt(0) : undefined}
                             size="xlarge"
                             shape="circle"
-                            className="h-32 w-32 rounded-full border-2 border-white bg-emerald-800 shadow-lg [&_img]:object-cover"
+                            className="mt-6 h-32 w-32 rounded-full border-2 border-white bg-emerald-800 shadow-lg [&_img]:object-cover"
                             style={{ width: '80px', height: '80px', fontSize: '32px' }}
                         />
                         <div ref={qrRef} className="rounded-sm bg-white p-1">
@@ -61,12 +67,6 @@ export default function CardPage({ auth, app }) {
                                 size={128}
                                 className="h-20 w-20"
                             />
-                        </div>
-                        <div className="text-md pb-7 text-center font-semibold text-black drop-shadow-lg">
-                            {user.name}
-                            <p className="mt-3 text-xs font-thin">
-                                {user.office.type} {user.office.name}
-                            </p>
                         </div>
                     </div>
                 </div>
